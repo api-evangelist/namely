@@ -1,0 +1,55 @@
+generated: '2026-08-26'
+method: searched
+source: https://developers.namely.com/docs/getting-started/introduction.md
+docs: https://developers.namely.com/docs/getting-started/introduction.md
+name: Namely API rate limits
+description: >-
+  Namely publishes exactly one rate limit, and it is unusual in two ways worth recording: it
+  applies to a single endpoint rather than the API as a whole, and exhaustion is signalled with
+  HTTP 406 Not Acceptable rather than the conventional 429 Too Many Requests. No rate-limit
+  response headers are documented, so a client has no runtime signal of remaining budget and must
+  detect exhaustion by pattern-matching a status code that normally means content negotiation
+  failed.
+limit_count: 1
+rate_limits:
+  - id: profiles-index
+    scope: per-endpoint
+    endpoint: GET /profiles
+    operation_id: GET_profiles
+    limit: 100
+    window: 1 minute
+    unit: requests
+    burst: null
+    status_on_exhaustion: 406
+    status_name: Not Acceptable
+    retry_after_header: false
+    documented_quote: >-
+      "Currently, Namely's API only throttles the rate of requests to the /profiles endpoint.
+      Specifically, there is a limit of 100 requests per minute to the GET /profiles endpoint. All
+      subsequent requests exceeding this limit will result in a HTTP 406 response code."
+    source: https://developers.namely.com/docs/getting-started/introduction.md
+response_headers:
+  documented: false
+  observed: null
+  note: >-
+    Namely documents no X-RateLimit-*, RateLimit-* or Retry-After headers, and the published
+    Swagger 2.0 document declares no 4xx responses at all, so neither the docs nor the contract
+    give an agent a runtime budget signal. The only way to detect throttling is to treat a 406 on
+    GET /profiles as a rate-limit response.
+other_surfaces:
+  note: >-
+    Namely states that only /profiles is throttled. That is a documented statement of absence for
+    the other 53 operations, not an observed measurement - undocumented backend limits may still
+    exist.
+related_constraints:
+  - id: profiles-pagination-required
+    date: '2017-09-20'
+    description: >-
+      Namely stopped allowing unlimited profile retrievals in a single API call and requires
+      clients to paginate GET /profiles to avoid time-outs.
+    source: https://developers.namely.com/docs/getting-started/changelog.md
+  - id: notifications-page-size
+    date: '2017-08-24'
+    description: >-
+      GET /notifications pagination: per_page defaults to 30 and may be set to a maximum of 50.
+    source: https://developers.namely.com/docs/getting-started/changelog.md

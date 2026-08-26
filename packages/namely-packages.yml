@@ -1,0 +1,84 @@
+generated: '2026-08-26'
+method: searched
+source: >-
+  Registry metadata endpoints (rubygems.org/api/v1, registry.npmjs.org, pypi.org/pypi) and the
+  Namely GitHub organization, queried 2026-08-26.
+name: Namely client libraries
+description: >-
+  Namely ships exactly one first-party SDK - a Ruby gem - and it has not been released since
+  January 2018. The gem is the only client library Namely's own documentation recommends
+  ("If you're a Ruby user, the Namely Ruby gem should simplify the app development process").
+  The npm and PyPI packages named "namely" are community projects by unaffiliated authors and are
+  marked official:false. This is the clearest decay signal available for this provider: the
+  first-party SDK predates the current documentation set by more than a year and predates the
+  2022 Vensure/PrismHR merger entirely.
+official_sdk_count: 1
+community_sdk_count: 2
+packages:
+  - name: namely
+    language: Ruby
+    registry: rubygems
+    registry_url: https://rubygems.org/gems/namely
+    official: true
+    official_evidence: >-
+      Gem authors field is "Namely"; homepage_uri is https://github.com/namely/ruby-client, a repo
+      in Namely's own GitHub organization; and Namely's developer portal links the gem directly
+      from its Introduction page.
+    repository: https://github.com/namely/ruby-client
+    version: 0.2.4
+    published: '2018-01-09'
+    license: MIT
+    downloads_total: 239665
+    description: Wraps the Namely HTTP API in lovely Ruby.
+    documentation: https://www.rubydoc.info/gems/namely/0.2.4
+    status: stale
+    note: >-
+      Last release 2018-01-09, eight years before this profile. The backing repository
+      github.com/namely/ruby-client last saw a push on 2023-12-15 without a corresponding gem
+      release, so the published artifact is older than the source.
+  - name: namely
+    language: JavaScript
+    registry: npm
+    registry_url: https://www.npmjs.com/package/namely
+    official: false
+    official_evidence: >-
+      Repository is github.com/jonathanchrisp/namely - a personal account, not the Namely GitHub
+      organization. Not referenced from Namely's developer portal.
+    repository: https://github.com/jonathanchrisp/namely
+    version: 0.0.1
+    published: '2015-03-30'
+    description: A JS wrapper for the Namely API
+    status: abandoned
+    note: Single 0.0.1 release in 2015. Community project, not a Namely deliverable.
+  - name: namely
+    language: Python
+    registry: pypi
+    registry_url: https://pypi.org/project/namely/
+    official: false
+    official_evidence: >-
+      PyPI author is VadymKhodak (vaddimart@gmail.com) and the package description opens
+      "Non-official Python client". Not referenced from Namely's developer portal.
+    version: null
+    published: null
+    status: community
+    note: >-
+      Checked 2026-08-26; the PyPI JSON endpoint answered 200 and the package self-describes as
+      non-official, so no version is recorded against Namely. Left null deliberately rather than
+      crediting Namely with a third-party release.
+registries_checked:
+  - registry: rubygems
+    result: hit
+  - registry: npm
+    result: hit (community only)
+  - registry: pypi
+    result: hit (community only)
+  - registry: maven-central
+    result: no first-party package found
+  - registry: nuget
+    result: no first-party package found
+  - registry: packagist
+    result: no first-party package found
+  - registry: pkg.go.dev
+    result: >-
+      Namely publishes Go libraries (mjolnir, k8s-pipeliner, ladon fork) but they are internal
+      platform tooling, not clients for the Namely HRIS API.

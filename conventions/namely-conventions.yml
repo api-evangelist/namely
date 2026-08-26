@@ -1,0 +1,252 @@
+generated: '2026-08-26'
+method: searched
+source: >-
+  developers.namely.com articles (introduction, authentication, linked-objects, changelog) plus a
+  derivation pass over openapi/namely-api-openapi.json, 2026-08-26.
+spec: openapi/namely-api-openapi.json
+name: Namely API cross-cutting conventions
+description: >-
+  Namely's REST API is a single-version, tenant-scoped JSON API with a sideloading response
+  envelope inherited from early JSON API. What it does not have matters as much as what it does:
+  no idempotency mechanism, no rate-limit headers, no error schema, no dry-run and no expansion
+  controls. An agent operating this API can rehearse nothing and cannot detect a duplicated write.
+base_url:
+  pattern: https://{company}.namely.com/api/v1
+  templated: true
+  template_variable: company
+  template_note: >-
+    Namely is multi-tenant on customer subdomains. There is no shared API host - every integrator
+    calls their own company's Namely subdomain. Sandbox tenants use the same pattern (the docs'
+    worked examples use acme-sandbox.namely.com and reed-sandbox).
+  in_spec: false
+  in_spec_note: >-
+    The published Swagger 2.0 document declares neither `host` nor `basePath`, so the base URL
+    exists only in prose. A generated client will have no server to call.
+  source: https://developers.namely.com/docs/getting-started/introduction.md
+authentication:
+  style: bearer-or-oauth2
+  header: Authorization
+  see: authentication/namely-authentication.yml
+  applied_in_spec: false
+  note: >-
+    The contract defines an `Authorization` apiKey securityDefinition but applies no `security`
+    requirement to any of its 54 operations.
+media_types:
+  consumes:
+    - application/json
+  produces:
+    - application/json
+  schemes:
+    - https
+  problem_json: false
+response_envelope:
+  style: json-api-linked (pre-1.0 sideloading)
+  source: https://developers.namely.com/docs/getting-started/linked-objects.md
+  shape:
+    root: >-
+      A pluralised resource key (e.g. `job_titles`, `profiles`) whose value is ALWAYS an array,
+      even for a single-resource fetch.
+    per_resource_links: >-
+      Each resource may carry a `links` hash mapping a relationship name to the id (or array of
+      ids) of the related resource.
+    type_map: >-
+      A top-level `links` hash declares the TYPE of each relationship, keyed
+      `<resource>.<relationship>` - needed because the relationship name is not always the type
+      name (a performance review's `manager` is of type `profile`).
+    sideload: >-
+      A top-level `linked` hash carries the full related objects, keyed by pluralised type, to be
+      joined by id.
+  worked_example_source: https://developers.namely.com/docs/getting-started/linked-objects.md
+  write_limitation: >-
+    Linkage is read-only. Namely states: "it is not possible in our current API to do a POST or a
+    PUT that will link objects together." An agent cannot create a profile with a linked team in
+    one call.
+  deviation_from_jsonapi_1_0: >-
+    Uses `linked` rather than `included`, plain id values rather than resource-identifier objects,
+    and application/json rather than application/vnd.api+json.
+pagination:
+  supported: true
+  style: page-number
+  parameters:
+    - name: per_page
+      documented_default: 30
+      documented_max: 50
+      documented_for: /notifications
+      source: https://developers.namely.com/docs/getting-started/changelog.md
+  response_meta:
+    count: Number of records on the current page.
+    total_count: Total records available across all pages.
+    note: >-
+      These two were disambiguated on 2017-08-15; before that `count` returned the full total even
+      on a paginated call.
+  required_on:
+    - GET /profiles
+  required_note: >-
+    Since 2017-09-20 Namely no longer permits unlimited profile retrieval in a single call and
+    requires pagination on /profiles to avoid time-outs.
+  cursor_support: false
+field_expansion:
+  supported: false
+  note: >-
+    No `expand`, `include` or sparse-fieldset parameter is documented or present in the contract.
+    Related data arrives automatically in the `linked` sideload rather than on request.
+custom_fields:
+  supported: true
+  note: >-
+    Every client-created custom profile field the token bearer may see appears as an additional
+    key at the bottom of the profile object. The response shape is therefore tenant-specific and
+    not fully described by the published contract.
+  key_stability: >-
+    Field keys are frozen at creation. Renaming a field in the Namely UI does not change its API
+    key - "if you create a field 'Favorite Film' and later change it to 'Favorite Song', the key
+    label in the API will remain favorite_film" - explicitly to preserve backwards compatibility
+    for live integrations.
+  source: https://developers.namely.com/docs/getting-started/introduction.md
+  scim_extension_urn: 'urn:ietf:params:scim:schemas:extension:custom:2.0:User'
+identifiers:
+  format: UUID v4
+  evidence: >-
+    Documented example ids such as eab2fd23-6168-4084-b8fa-78f01e4f34cb (job title) and
+    243ca6bd-c0c9-4d1b-8b21-7f8acb40a490 (job tier).
+  prefixed: false
+  source: https://developers.namely.com/docs/getting-started/linked-objects.md
+request_id_tracing:
+  supported: false
+  note: No request-id or correlation-id header is documented or declared in the contract.
+idempotency:
+  supported: false
+  idempotency_key_header: null
+  scope: null
+  retention: null
+  note: >-
+    Namely publishes no idempotency mechanism. None of the seven POST operations accepts an
+    Idempotency-Key (or equivalent) header, and the docs never discuss safe retries. A retried
+    POST /profiles, POST /events or POST /folders will create a duplicate. PUT operations are
+    naturally idempotent by HTTP semantics, but that is a property of the verb, not a Namely
+    guarantee. NO Idempotency pointer is emitted for this provider.
+  safe_verbs:
+    - GET
+  naturally_idempotent_verbs:
+    - PUT
+    - DELETE
+  non_idempotent_operations:
+    - POST_folders
+    - POST_events
+    - POST_events-id-comments
+    - POST_likes-event-id
+    - POST_likes-event_comment-comment-id
+    - POST_job_tiers
+    - POST_job_titles
+    - POST_profiles
+    - POST_profiles-fields
+dry_run_mode:
+  supported: false
+  note: >-
+    No preview, validate-only or dry-run parameter exists on any write operation. An agent cannot
+    rehearse a profile creation or a field-schema change before committing it.
+reversibility:
+  grade: documented
+  grade_basis: >-
+    Reversal paths exist for five of the nine create operations as explicit inverse DELETE
+    operations in the published contract, but Namely states NO window for any of them and
+    publishes no restore, undo or soft-delete surface. Under the 0.12.0 rule that is `documented`
+    (0.4), not `verified` (1.0) - a window would require the provider to state one, and they do
+    not.
+  applicable: true
+  applicable_note: The API has a write surface (9 POST, 8 PUT, 9 DELETE operations), so reversibility applies.
+  reversal_paths:
+    - write_operation: POST_folders
+      write: POST /folders
+      reversal_operation: DELETE_folders-id
+      reversal: DELETE /folders/{id}
+      kind: inverse-delete
+      window: null
+      window_documented: false
+      source: openapi/namely-api-openapi.json
+    - write_operation: POST_events
+      write: POST /events
+      reversal_operation: DELETE_events-id
+      reversal: DELETE /events/{id}
+      kind: inverse-delete
+      window: null
+      window_documented: false
+      source: openapi/namely-api-openapi.json
+    - write_operation: POST_events-id-comments
+      write: POST /events/{id}/comments
+      reversal_operation: DELETE_events-eventID-comments-commentID
+      reversal: DELETE /events/{event-id}/comments/{comment-id}
+      kind: inverse-delete
+      window: null
+      window_documented: false
+      source: openapi/namely-api-openapi.json
+    - write_operation: POST_likes-event-id
+      write: POST /likes/event/{id}
+      reversal_operation: DELETE_likes-event-id
+      reversal: DELETE /likes/event/{event-id}
+      kind: inverse-delete (unlike)
+      window: null
+      window_documented: false
+      source: openapi/namely-api-openapi.json
+    - write_operation: POST_likes-event_comment-comment-id
+      write: POST /likes/event_comment/{comment-id}
+      reversal_operation: DELETE_likes-event_comment-comment-id
+      reversal: DELETE /likes/event_comment/{comment-id}
+      kind: inverse-delete (unlike)
+      window: null
+      window_documented: false
+      source: openapi/namely-api-openapi.json
+  irreversible_writes:
+    - operation: POST_profiles
+      write: POST /profiles
+      reason: >-
+        No DELETE, archive, restore or undo operation for a profile exists in the contract. An
+        agent that creates an employee profile cannot remove it through the API.
+      consequence: high
+    - operation: POST_profiles-fields
+      write: POST /profiles/fields
+      reason: >-
+        No DELETE for a custom profile field. Creating a field alters the tenant's profile schema
+        for every employee and cannot be undone through the API.
+      consequence: high
+    - operation: POST_job_tiers
+      write: POST /job_tiers
+      reason: No DELETE for a job tier.
+      consequence: medium
+    - operation: POST_job_titles
+      write: POST /job_titles
+      reason: No DELETE for a job title.
+      consequence: medium
+    - operation: PUT_profiles-id
+      write: PUT /profiles/{id}
+      reason: >-
+        No version history, no revision fetch and no rollback. A PUT overwrites profile data with
+        no way to recover the prior value through the API.
+      consequence: high
+    - operation: DELETE_folders-id
+      write: DELETE /folders/{id}
+      reason: No restore or trash surface for a deleted folder or company resource.
+      consequence: medium
+  warning: >-
+    NO WINDOW IS ASSERTED ANYWHERE IN THIS BLOCK because Namely states none. Do not infer one.
+versioning:
+  see: lifecycle/namely-lifecycle.yml
+  scheme: uri-path (/api/v1)
+error_envelope:
+  documented: false
+  schema_in_spec: false
+  see: errors/namely-problem-types.yml
+  note: >-
+    The contract declares zero 4xx/5xx responses across 54 operations, so no error envelope can be
+    derived and none is documented.
+rate_limit_signalling:
+  see: rate-limits/namely-rate-limits.yml
+  headers: none documented
+  exhaustion_status: 406
+  note: >-
+    406 Not Acceptable rather than 429, with no Retry-After. This is the convention most likely to
+    break a generic client.
+webhooks:
+  supported: false
+  note: >-
+    No webhook, callback or event-subscription surface is documented. Integrations (Okta,
+    Greenhouse, Jobvite, NetSuite) run through Namely Connect as scheduled syncs.

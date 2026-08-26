@@ -1,0 +1,137 @@
+generated: '2026-08-26'
+method: probed
+source: >-
+  Direct HTTPS probes of /.well-known/* on every Namely host reachable from apis.yml and the
+  developer portal, 2026-08-26.
+name: Namely well-known probe
+description: >-
+  Namely serves no /.well-known documents on any host. Every 200 recorded below is an HTML shell,
+  not a document: namely.com is a WordPress site whose catch-all answers /.well-known/security.txt
+  with the full marketing homepage, and api.namely.com answers every /.well-known/* path with the
+  same 5,435-byte HRIS login page. Neither is a served well-known document, so no WellKnown or
+  SecurityTxt pointer is emitted for this provider.
+hosts:
+  - host: namely.com
+    note: Marketing site (WordPress). Catch-all returns HTML for /.well-known/security.txt with a 200.
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        content_type: text/html; charset=UTF-8
+        served_document: false
+        note: HTML marketing homepage (1,157,149 bytes), not RFC 9116 text. Treated as a miss.
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 404
+        served_document: false
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+        served_document: false
+        file: null
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+        served_document: false
+        file: null
+      - path: /.well-known/api-catalog
+        status: 404
+        served_document: false
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 404
+        served_document: false
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 404
+        served_document: false
+        file: null
+      - path: /.well-known/agent.json
+        status: 404
+        served_document: false
+        file: null
+  - host: developers.namely.com
+    note: Stoplight-hosted developer portal. Clean 404s on every well-known path.
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+        served_document: false
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 404
+        served_document: false
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+        served_document: false
+        file: null
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+        served_document: false
+        file: null
+      - path: /.well-known/api-catalog
+        status: 404
+        served_document: false
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 404
+        served_document: false
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 404
+        served_document: false
+        file: null
+      - path: /.well-known/agent.json
+        status: 404
+        served_document: false
+        file: null
+  - host: api.namely.com
+    note: >-
+      Redirects to /users/login and answers EVERY /.well-known/* path with the same 5,435-byte
+      login HTML. A textbook SPA/login catch-all false positive - all eight 200s are misses.
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        content_type: text/html; charset=utf-8
+        served_document: false
+        note: HRIS login page HTML, not RFC 9116 text.
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 200
+        served_document: false
+        note: HRIS login page HTML, not JSON.
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        served_document: false
+        note: HRIS login page HTML, not JSON.
+        file: null
+      - path: /.well-known/oauth-protected-resource
+        status: 200
+        served_document: false
+        note: HRIS login page HTML, not JSON.
+        file: null
+      - path: /.well-known/api-catalog
+        status: 200
+        served_document: false
+        note: HRIS login page HTML, not a linkset.
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 200
+        served_document: false
+        note: HRIS login page HTML, not JSON.
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 200
+        served_document: false
+        note: HRIS login page HTML, not an AgentCard object.
+        file: null
+      - path: /.well-known/agent.json
+        status: 200
+        served_document: false
+        note: HRIS login page HTML, not an AgentCard object.
+        file: null
+summary:
+  hosts_probed: 3
+  paths_probed: 24
+  documents_served: 0
+  agent_card_found: false
+  security_txt_found: false

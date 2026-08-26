@@ -1,0 +1,93 @@
+generated: '2026-08-26'
+method: probed
+source: >-
+  https://stoplight.io/mocks/namely/namely-api/182542 (probed 2026-08-26) plus
+  developers.namely.com worked examples.
+name: Namely sandbox and test surfaces
+description: >-
+  Namely publishes no test-mode keys, no fixture data and no documented sandbox programme. What it
+  does have are two real, reachable test surfaces: named sandbox TENANTS on its own multi-tenant
+  domain (its docs demonstrate against acme-sandbox.namely.com and reed-sandbox), and a live
+  Prism mock server published from its own Stoplight project that any developer can call today
+  without a Namely account. The mock is the only unauthenticated way to exercise the shape of a
+  Namely response, which matters because the real API is only reachable inside a paying customer's
+  tenant.
+test_credentials:
+  published: false
+  test_key_prefix: null
+  live_key_prefix: null
+  note: >-
+    Namely publishes no test-mode/live-mode key distinction. Both credential types (OAuth client
+    and Personal Access Token) are minted inside a real tenant by an administrator and operate on
+    real employee data. There is no key that is safe by construction.
+sandbox_tenants:
+  supported: true
+  pattern: https://{company}-sandbox.namely.com
+  evidence:
+    - value: acme-sandbox.namely.com
+      source: https://developers.namely.com/docs/getting-started/authentication.md
+      note: Used in the OAuth authorize/token worked examples.
+    - value: reed-sandbox
+      source: https://developers.namely.com/docs/okta/okta-overview.md
+      note: >-
+        "For the current steps, I will use my own sandbox as an example with reed-sandbox" - a
+        Namely author demonstrating SCIM provisioning against a sandbox subdomain.
+  provisioning: >-
+    Not self-serve. No public path to request a sandbox tenant is documented; the pattern is
+    visible only because Namely's own documentation authors use one. Treat as customer/partner
+    provisioned.
+mock_server:
+  published: true
+  url: https://stoplight.io/mocks/namely/namely-api/182542
+  engine: Stoplight Prism
+  derived_from: openapi/namely-api-openapi.json
+  discovery: >-
+    links.mock_url on the Namely API http_service node in Namely's own public Stoplight project
+    (workspace `namely`, project `namely-api`, branch v1).
+  auth: >-
+    Any non-empty Authorization header. Prism enforces the contract's `Authorization` apiKey
+    securityDefinition but does not validate the value.
+  probes:
+    - path: /companies/info
+      status: 200
+      auth_sent: none
+      body: '{"name":"string","permalink":"string","background_url":"string","logo_url":"string","authentications":[{"type":"email_password","init_url":"string"}]}'
+    - path: /countries
+      status: 401
+      auth_sent: none
+      note: Prism UNAUTHORIZED - the operation requires the Authorization header.
+    - path: /countries
+      status: 200
+      auth_sent: 'Authorization: Bearer <any value>'
+      body: '{"countries":[{"id":"string","name":"string","subdivision_type":"string"}]}'
+    - path: /profiles
+      status: 401
+      auth_sent: none
+    - path: /groups
+      status: 401
+      auth_sent: none
+  limitations:
+    - >-
+      Responses are schema-shaped placeholders ("string"), not realistic fixtures - the underlying
+      contract carries no examples.
+    - >-
+      Because the contract declares no 4xx/5xx responses, Prism cannot mock any error path. It
+      substitutes its own UNAUTHORIZED envelope and says so in the body.
+    - Hosted by Stoplight, not by Namely; availability is not covered by status.namely.com.
+  value: >-
+    Namely's real API is unreachable without a paying tenant. This mock is the only surface that
+    lets an integrator or agent see a Namely response shape before contracting.
+test_data:
+  magic_identifiers: none published
+  test_cards: not applicable
+  time_simulation: none published
+  fixture_tooling: none published
+recommended_testing_tool:
+  name: Postman
+  source: https://developers.namely.com/docs/getting-started/introduction.md
+  quote: >-
+    "In order to test the Namely API, we recommend using Postman along with a Bearer token for
+    authentication."
+  note: >-
+    Namely recommends Postman but publishes no public Postman collection or workspace of its own -
+    none was found in this pass, so no Postman pointer is emitted.

@@ -1,0 +1,115 @@
+generated: '2026-08-26'
+method: searched
+source: https://developers.namely.com/docs/getting-started/authentication.md
+docs: https://developers.namely.com/docs/getting-started/authentication.md
+spec: openapi/namely-api-openapi.json
+name: Namely API authentication
+description: >-
+  The Namely API supports two authentication models, both documented on the provider's own
+  developer portal: a 3-legged OAuth 2.0 authorization code grant for partner integrations, and
+  Personal Access Tokens (bearer tokens) for a client's own internal integrations. All requests
+  must be made over HTTPS; plaintext HTTP is refused. Credentials are minted inside the customer's
+  own Namely HRIS tenant under the API menu item, which requires an administrator to grant access.
+transport:
+  https_required: true
+  http_refused: true
+  source: https://developers.namely.com/docs/getting-started/authentication.md
+schemes:
+  - id: Authorization
+    type: apiKey
+    in: header
+    name: Authorization
+    from_spec: true
+    spec_location: securityDefinitions.Authorization
+    note: >-
+      The only securityDefinition the published Swagger 2.0 document declares. It is a header
+      credential named Authorization, carrying either an OAuth 2.0 access token or a Personal
+      Access Token as a Bearer value. The spec declares no top-level or per-operation `security`
+      block, so the scheme is defined but never applied inside the contract itself - the docs, not
+      the spec, are what tell an integrator to send it.
+  - id: oauth2_authorization_code
+    type: oauth2
+    flow: accessCode
+    from_spec: false
+    source: https://developers.namely.com/docs/getting-started/authentication.md
+    authorization_url: https://{company}.namely.com/api/v1/oauth2/authorize
+    token_url: https://{company}.namely.com/api/v1/oauth2/token
+    grant_types:
+      - authorization_code
+      - refresh_token
+    templated_host: true
+    templated_note: >-
+      Namely is multi-tenant on {company}.namely.com; the authorization and token endpoints live
+      inside each customer's own tenant, not on a shared authorization server.
+    parameters:
+      - response_type
+      - client_id
+      - redirect_uri
+      - client_secret
+      - code
+      - grant_type
+      - refresh_token
+    access_token_lifetime: 15 minutes
+    refresh_token_lifetime: >-
+      No stated expiration. The same refresh token is returned on each refresh; Namely's docs warn
+      that clients should always persist the returned refresh token because the lifespan is
+      subject to change.
+    scopes_documented: false
+    scopes_note: >-
+      Namely documents no OAuth scope vocabulary. Authorization is inherited from the Namely user
+      who approves the application, not requested per-scope, so scopes/ is not emitted.
+    registration: >-
+      Self-service inside the Namely HRIS tenant (API menu -> OAuth Applications). Requires name,
+      website and one or more comma-separated redirect URIs; returns a client identifier and
+      client secret.
+  - id: personal_access_token
+    type: http
+    scheme: bearer
+    from_spec: false
+    source: https://developers.namely.com/docs/getting-started/authentication.md
+    header: 'Authorization: Bearer <token>'
+    lifetime: 2 years
+    permission_model: >-
+      A PAT carries exactly the permissions of the Namely user who created it. Namely recommends
+      creating integration PATs under a dedicated administrator "Integrations User" profile that
+      persists through staff turnover.
+    failure_mode: >-
+      If the profile that created a PAT becomes inactive or is deleted, the API returns HTTP 403
+      to every request using that token and the integration breaks.
+    intended_for: A Namely client building their own custom integration.
+    not_intended_for: >-
+      Partner integrations. Namely's docs explicitly say partners should use an OAuth application
+      instead of a PAT.
+identity_federation:
+  saml:
+    supported: true
+    version: SAML 2.0
+    role: Service Provider only
+    source: https://developers.namely.com/docs/getting-started/sso.md
+    note: >-
+      Namely performs no credential authentication of its own for SSO. It verifies the assertion
+      from the customer's Identity Provider and matches the NameID email against an existing
+      Namely profile. Namely publishes a SAML metadata endpoint for IdP configuration. Named
+      supported IdPs are Okta, OneLogin and Microsoft Entra ID (Azure AD).
+    provisioning: >-
+      Namely does NOT provision accounts into the IdP. Inbound/outbound user provisioning is
+      handled separately through the SCIM 2.0 surface (see conformance/namely-conformance.yml).
+  scim:
+    supported: true
+    version: SCIM 2.0
+    endpoint: https://{company}.namely.com/api/scim/v2/Users.json
+    source: https://developers.namely.com/docs/okta/syncing-custom-fields.md
+    note: >-
+      Namely acts as the SCIM source of record for user profiles flowing into Okta. Custom
+      attributes are carried under the standard SCIM extension URN
+      urn:ietf:params:scim:schemas:extension:custom:2.0:User.
+gaps:
+  - >-
+    The published Swagger 2.0 document declares no `security` requirement on any of its 54
+    operations, so a generated client will not attach the Authorization header without the
+    integrator reading the prose docs.
+  - >-
+    The OAuth 2.0 flow is documented only in prose. It is absent from the machine-readable
+    contract, which declares apiKey only.
+  - No published OAuth scope vocabulary; consent is all-or-nothing at the user's permission level.
+  - No /.well-known/openid-configuration or /.well-known/oauth-authorization-server on any host.

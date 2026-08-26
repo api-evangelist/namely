@@ -1,0 +1,144 @@
+generated: '2026-08-26'
+method: searched
+source: https://developers.namely.com/docs/getting-started/changelog.md
+docs: https://developers.namely.com/docs/getting-started/changelog.md
+name: Namely developer changelog
+description: >-
+  Namely maintains a dated changelog on its developer portal covering both API behaviour changes
+  and integration (Namely Connect) releases. It is genuinely dated and genuinely useful, but it
+  stops at 2019-07-29 - seven years before this profile - while the underlying Stoplight docs
+  branch was last updated 2025-04-16. Entries below are the recent window plus the API-behaviour
+  entries that still bind an integrator today.
+scheme: dated
+date_format: MM/DD/YY
+current_version: v1
+entry_count_published: 16
+last_entry: '2019-07-29'
+first_entry: '2017-08-15'
+breaking_change_notice_period: not published
+entries:
+  - date: '2019-07-29'
+    breaking: false
+    area: integrations
+    highlights:
+      - >-
+        NetSuite General Ledger integration can post the journal-entry date as either the pay
+        cycle check date or the pay period end date (default: check date).
+      - >-
+        Jobvite integration settings gained a date selector so only candidate profiles with a
+        start date on or after the selected date sync into Namely.
+      - >-
+        Okta user provisioning now activates/deactivates Okta users from the Namely profile
+        `user_status` rather than `start_date`/`departure_date`, enabling pre-start activation and
+        same-day deactivation. Opt-in by request to avoid breaking existing workflows.
+  - date: '2019-07-21'
+    breaking: false
+    area: integrations
+    highlights:
+      - >-
+        NetSuite Profiles integration syncs an employee's `reports_to` manager as the NetSuite
+        supervisor standard field.
+  - date: '2019-06-18'
+    breaking: false
+    area: docs
+    highlights:
+      - Standardised setup-guide formats, section headers and URLs across integration articles.
+      - Added an "Integration Settings" section to every ATS integration overview.
+  - date: '2019-05-31'
+    breaking: false
+    area: docs
+    highlights:
+      - Updated the Introduction and Authentication sections.
+      - Moved the Changelog into its own section.
+  - date: '2019-04-30'
+    breaking: false
+    area: integrations
+    highlights:
+      - Added overview and setup guide for the Google Hire + Namely integration.
+  - date: '2019-04-15'
+    breaking: false
+    area: integrations
+    highlights:
+      - Updated the NetSuite Profiles setup guide.
+      - Added the NetSuite General Ledger + Namely integration (beta).
+  - date: '2019-01-15'
+    breaking: false
+    area: integrations
+    highlights:
+      - >-
+        Namely + Okta integration can now sync Namely groups into Okta, not only users, removing
+        the manual group/rule creation previously required in Okta.
+  - date: '2018-05-22'
+    breaking: true
+    area: api
+    breaking_note: >-
+      A response-value change, announced after the fact. Clients that had hardcoded the two-value
+      assumption would have started seeing a third value.
+    highlights:
+      - >-
+        The `user_status` field now returns all statuses shown in the Namely UI. Previously
+        `pending` users were reported as `inactive` through the API.
+  - date: '2018-05-18'
+    breaking: false
+    area: docs
+    highlights:
+      - Documentation updated to reflect the state of the SCIM API in the Okta integration.
+  - date: '2018-03-27'
+    breaking: false
+    area: docs
+    highlights:
+      - Broad documentation refresh; new and improved pages.
+  - date: '2017-10-18'
+    breaking: false
+    area: support
+    highlights:
+      - >-
+        integrations@namely.com and api@namely.com retired as support routes after 2017-10-20 in
+        favour of the Contact page triage process.
+  - date: '2017-09-20'
+    breaking: true
+    area: api
+    breaking_note: >-
+      A hard behavioural change to GET /profiles. Clients that retrieved all profiles in one call
+      had to adopt pagination.
+    highlights:
+      - >-
+        Unlimited profile retrieval in a single API call is no longer allowed; clients and partners
+        must paginate GET /profiles to avoid time-outs.
+  - date: '2017-08-31'
+    breaking: false
+    area: integrations
+    highlights:
+      - Namely Connect gained user removal (owner cannot be removed).
+      - >-
+        Greenhouse integration metrics page now defaults to Created At timestamp, most recent
+        first.
+  - date: '2017-08-24'
+    breaking: false
+    area: api
+    highlights:
+      - Retrieve /notifications by profile ID.
+      - Pagination on /notifications - per_page defaults to 30, maximum 50.
+  - date: '2017-08-22'
+    breaking: false
+    area: api
+    highlights:
+      - Fixed - `group_type` profile field value was not updating.
+  - date: '2017-08-15'
+    breaking: true
+    area: api
+    breaking_note: >-
+      The meaning of an existing field changed. `count` narrowed from "all results" to "results on
+      this page"; `total_count` was added to carry the old meaning.
+    highlights:
+      - >-
+        Fixed incorrect meta `count` which returned the full result count even on paginated calls.
+        Added `total_count` for all available values; `count` now reflects the current page only.
+staleness:
+  last_entry: '2019-07-29'
+  docs_branch_last_updated: '2025-04-16'
+  checked: '2026-08-26'
+  note: >-
+    The changelog has not been appended to in seven years even though the docs project is still
+    being edited. Three of the sixteen entries are breaking API changes announced without a notice
+    period, which is the pattern an integrator should plan around.

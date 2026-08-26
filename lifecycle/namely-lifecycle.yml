@@ -1,0 +1,89 @@
+generated: '2026-08-26'
+method: searched
+source: >-
+  developers.namely.com changelog + status.namely.com + namely.com legal pages, probed 2026-08-26.
+name: Namely API lifecycle
+description: >-
+  Namely runs a single versioned API path (/api/v1) whose Stoplight branch is literally named
+  "v1". The provider operates an Atlassian status page and publishes a dated changelog, but the
+  changelog's last entry is 2019-07-29 and no deprecation, sunset or version-support policy is
+  published anywhere. The docs project itself was last committed 2025-04-16.
+versioning:
+  scheme: uri-path
+  pattern: https://{company}.namely.com/api/v1
+  current_version: v1
+  version_in_spec: false
+  version_in_spec_note: >-
+    The published Swagger document's info.version is an empty string, so the contract itself does
+    not state which version it describes. The Stoplight branch name (v1) and the documented base
+    URL are the only version signals.
+  source: https://developers.namely.com/docs/getting-started/introduction.md
+  additional_surfaces:
+    - path: /api/scim/v2/
+      note: >-
+        The SCIM provisioning surface is separately versioned at v2 (SCIM 2.0) and is not covered
+        by the /api/v1 contract.
+deprecation_policy:
+  published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  note: >-
+    No deprecation policy, no notice period, no Sunset/Deprecation headers, and no deprecated
+    operations flagged in the contract (0 of 54 operations carry `deprecated: true`). No
+    Deprecation pointer is emitted.
+backwards_compatibility:
+  stated: true
+  policy: >-
+    Namely deliberately freezes API field keys against UI renames: "Changing a field name in the
+    Namely UI won't change the label of the key in the Namely API... this is to preserve backwards
+    compatibility for live integrations."
+  source: https://developers.namely.com/docs/getting-started/introduction.md
+  note: >-
+    This is a real, unusual and integrator-friendly stability commitment, but it is a data-contract
+    guarantee, not an API version-support policy.
+status_page:
+  url: https://status.namely.com/
+  provider: Atlassian Statuspage
+  status: 200
+  components:
+    - Namely Services
+  subscriptions:
+    - email
+    - slack
+    - atom
+    - rss
+  feeds:
+    atom: https://status.namely.com/history.atom
+    rss: https://status.namely.com/history.rss
+  note: >-
+    The page reported "All Systems Operational" when probed 2026-08-26. Also embedded on the
+    developer portal via a Statuspage iframe.
+sla:
+  published: false
+  note: >-
+    No uptime SLA is published on the developer portal or the public legal pages. Service
+    commitments, if any, are in the Subscription Services agreement at
+    https://namely.com/legal/subscription-services/.
+changelog:
+  url: https://developers.namely.com/docs/getting-started/changelog.md
+  artifact: changelog/namely-changelog.yml
+  last_entry: '2019-07-29'
+  staleness_note: >-
+    Seven years between the last dated changelog entry and this profile. The Stoplight project's
+    v1 branch was last updated 2025-04-16, so the docs are maintained even though the changelog
+    is not.
+corporate_lifecycle:
+  event: >-
+    Namely merged into the combined Vensure Employer Solutions / PrismHR entity on 2022-09-06.
+    Namely brought 1,100+ mid-market clients; the combined organisation reports ~3,600 employees.
+  source: https://namely.com/blog/namely-merges-vensure-prismhr/
+  api_impact: >-
+    No announced change to the Namely API surface. Recorded because it explains why the developer
+    portal changelog stops in 2019 and why namely.com/careers/ now redirects to vensure.com.
+first_party_sdk_decay:
+  package: rubygems.org/gems/namely
+  last_release: '2018-01-09'
+  note: >-
+    The only first-party SDK has not shipped a release in eight years. See
+    packages/namely-packages.yml.

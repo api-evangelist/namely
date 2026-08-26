@@ -1,0 +1,75 @@
+generated: '2026-08-26'
+method: searched
+source: https://namely.com/lp/pricing/
+docs: https://namely.com/lp/pricing/
+name: Namely plans and pricing
+description: >-
+  Namely publishes one entry-level list price and gates the rest behind a sales conversation.
+  Pricing is for the HCM platform as a whole - Namely does not meter, tier or separately price API
+  access, and the developer portal names no API plan, quota or overage. API access is a feature of
+  the platform subscription, enabled by an administrator inside the customer's own tenant.
+currency: USD
+plan_count: 4
+priced_plan_count: 1
+metering: per-employee-per-month
+contract_terms: >-
+  Month-to-month up to three years, per the pricing page.
+plans:
+  - name: NamelyNow
+    price: 9
+    currency: USD
+    billing_period: month
+    unit: per employee
+    price_published: true
+    includes:
+      - HR
+      - Payroll
+      - Onboarding
+    quota: null
+    overage: null
+    api_access: not stated
+    source: https://namely.com/lp/pricing/
+  - name: NamelyPlus
+    price: null
+    price_published: false
+    pricing_model: contact-sales
+    billing_period: month
+    unit: per employee
+    quota: null
+    overage: null
+    source: https://namely.com/lp/pricing/
+  - name: NamelyPlus People
+    price: null
+    price_published: false
+    pricing_model: contact-sales
+    billing_period: month
+    unit: per employee
+    quota: null
+    overage: null
+    source: https://namely.com/lp/pricing/
+  - name: NamelyComplete
+    price: null
+    price_published: false
+    pricing_model: contact-sales
+    billing_period: month
+    unit: per employee
+    quota: null
+    overage: null
+    source: https://namely.com/lp/pricing/
+add_ons:
+  - name: Managed Payroll
+    price_published: false
+    pricing_model: contact-sales
+  - name: Managed Benefits
+    price_published: false
+    pricing_model: contact-sales
+api_pricing:
+  metered: false
+  separate_plan: false
+  note: >-
+    No API-specific plan, quota, credit or overage is published anywhere on namely.com or
+    developers.namely.com. The API is available to platform subscribers whose administrator grants
+    API permissions; there is no self-serve developer signup and no free API tier.
+quote: >-
+  "Namely helps customers with a tailored diagnostic of their needs and will provide pricing based
+  on complexity, modules, and services required."

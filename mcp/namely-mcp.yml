@@ -1,0 +1,149 @@
+generated: '2026-08-26'
+method: derived
+source: openapi/namely-api-openapi.json
+name: Namely MCP tool candidate
+status: candidate
+description: >-
+  Namely ships NO MCP server. This file is a DERIVED candidate tool surface computed from the 54
+  operations in Namely's published Swagger 2.0 contract, so that the shape of an agent-native
+  Namely is on record. Nothing here is reachable. No endpoint is asserted, because none exists -
+  and a guessed MCP URL that happened to answer would read as a verified agent surface, which
+  would be worse than recording the absence.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: derived
+search_evidence:
+  - surface: developers.namely.com
+    finding: >-
+      The full Stoplight table of contents for project `namely-api` (branch v1, 187 nodes) names no
+      MCP server, agent surface or tool manifest.
+  - surface: github.com/namely
+    finding: >-
+      33 public repositories, none MCP-related. The Go/Scala repos are internal platform tooling
+      (chief-of-state, k8s-pipeliner, mjolnir, docker-protoc).
+  - surface: npm / PyPI
+    finding: No @namely or namely-mcp package published.
+  - surface: web search
+    finding: >-
+      No Namely-operated MCP server found. The only MCP access to Namely data is through
+      third-party HRIS aggregators, which are not a Namely deliverable and are not recorded here.
+  - surface: /.well-known probes
+    finding: >-
+      No oauth-protected-resource or oauth-authorization-server on any host - see
+      well-known/namely-well-known.yml.
+candidate_tools:
+  note: >-
+    Names and descriptions are derived from real operationIds in the contract. Each tool would
+    inherit that operation's parameters and request body as its inputSchema. Consequence ratings
+    are ours, not Namely's.
+  read:
+    - tool: namely_get_company_info
+      rest: [GET_companies-info]
+      consequence: none
+    - tool: namely_list_profiles
+      rest: [GET_profiles]
+      consequence: none
+      caution: >-
+        Returns employee PII including SSN and date of birth. Rate limited to 100 req/min;
+        pagination is mandatory.
+    - tool: namely_get_profile
+      rest: [GET_profiles-id]
+      consequence: none
+      caution: Returns SSN, DOB, ethnicity, gender, compensation.
+    - tool: namely_get_my_profile
+      rest: [GET_profiles-me]
+      consequence: none
+    - tool: namely_list_profile_fields
+      rest: [GET_profiles-fields, GET_profiles-fields-id]
+      consequence: none
+    - tool: namely_list_profile_field_sections
+      rest: [GET_profiles-fields-sections, GET_profiles-fields-sections-id]
+      consequence: none
+    - tool: namely_list_groups
+      rest: [GET_groups, GET_groups-id, GET_group_types, GET_group_types-id, GET_group_types-id-groups]
+      consequence: none
+    - tool: namely_list_teams
+      rest: [GET_teams, GET_teams-id]
+      consequence: none
+    - tool: namely_list_job_titles
+      rest: [GET_job_titles, GET_job_titles-id]
+      consequence: none
+    - tool: namely_list_job_tiers
+      rest: [GET_job_tiers, GET_job_tiers-id]
+      consequence: none
+    - tool: namely_list_countries
+      rest: [GET_countries, GET_countries-id]
+      consequence: none
+    - tool: namely_list_notifications
+      rest: [GET_notifications, GET_notifications-id]
+      consequence: none
+    - tool: namely_get_report
+      rest: [GET_reports-id]
+      consequence: none
+    - tool: namely_list_company_resources
+      rest: [GET_folders, GET_resources, GET_resources-id, GET_folders-id-resources]
+      consequence: none
+    - tool: namely_list_home_feed
+      rest: [GET_events, GET_events-id, GET_events-id-comments, GET_likes-event-event_id-recent, GET_likes-event_comment-comment-id-recent]
+      consequence: none
+  write:
+    - tool: namely_create_profile
+      rest: [POST_profiles]
+      consequence: high
+      reversible: false
+      caution: No delete or archive operation exists for a profile.
+    - tool: namely_update_profile
+      rest: [PUT_profiles-id]
+      consequence: high
+      reversible: false
+      caution: No revision history or rollback. Overwrites employee data irrecoverably.
+    - tool: namely_create_profile_field
+      rest: [POST_profiles-fields]
+      consequence: high
+      reversible: false
+      caution: Alters the profile schema for every employee in the tenant; no delete operation.
+    - tool: namely_update_profile_field
+      rest: [PUT_profiles-fields-id, PUT_profiles-fields-sections-id]
+      consequence: medium
+      reversible: false
+    - tool: namely_manage_job_titles
+      rest: [POST_job_titles, PUT_job_titles-id]
+      consequence: medium
+      reversible: false
+    - tool: namely_manage_job_tiers
+      rest: [POST_job_tiers, PUT_job_tiers-id]
+      consequence: medium
+      reversible: false
+    - tool: namely_manage_folders
+      rest: [POST_folders, PUT_folders-id, DELETE_folders-id, DELETE_folders-id-resources]
+      consequence: medium
+      reversible: partial
+      caution: Delete exists but no restore.
+    - tool: namely_manage_home_feed
+      rest: [POST_events, DELETE_events-id, POST_events-id-comments, DELETE_events-eventID-comments-commentID]
+      consequence: low
+      reversible: true
+      caution: Inverse DELETE exists; no window is stated by Namely.
+    - tool: namely_manage_likes
+      rest: [POST_likes-event-id, DELETE_likes-event-id, POST_likes-event_comment-comment-id, DELETE_likes-event_comment-comment-id]
+      consequence: low
+      reversible: true
+agent_readiness_blockers:
+  - >-
+    No idempotency mechanism. A retried create tool duplicates the record, and there is no delete
+    for profiles, fields, job titles or job tiers to clean up after it.
+  - >-
+    No 4xx/5xx responses in the contract, so a tool wrapper has no typed failures to surface and
+    an agent cannot distinguish a permission error from a validation error without guessing.
+  - >-
+    Throttling returns 406 rather than 429 with no Retry-After, so standard agent retry logic will
+    misclassify it as a content-negotiation failure.
+  - >-
+    No dry-run. High-consequence schema writes (POST /profiles/fields) cannot be rehearsed.
+  - >-
+    No shared API host. Every deployment is tenant-scoped to {company}.namely.com, so a hosted MCP
+    server would have to be per-tenant or take the subdomain as configuration.

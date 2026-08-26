@@ -1,0 +1,137 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Namely API
+  version: 1.0.0
+  x-generated: '2026-08-26'
+  x-method: generated
+  x-source: >-
+    Derived from developers.namely.com prose documentation that the published contract omits.
+    Every action below writes back a fact Namely states somewhere in its own docs but did not put
+    in the machine-readable document.
+extends: ../openapi/namely-api-openapi.json
+x-target-format: Swagger 2.0
+x-note: >-
+  The target is a Swagger 2.0 document, so these actions use Swagger 2.0 keywords (host,
+  basePath, securityDefinitions) rather than OpenAPI 3.x ones. NOTHING here is invented: the base
+  URL, the auth requirement, the rate limit and the two documented error codes are all quoted
+  from Namely's own developer portal. The original contract in openapi/ is never mutated.
+actions:
+  - target: $
+    description: >-
+      Add the tenant-templated host and base path. Namely's Introduction states "The base URL for
+      all requests to the Namely API is https://{company}.namely.com/api/v1" but the published
+      document declares neither host nor basePath, so a generated client has no server to call.
+    update:
+      host: '{company}.namely.com'
+      basePath: /api/v1
+      x-server-variables:
+        company:
+          description: >-
+            The customer's Namely subdomain. Namely is multi-tenant; there is no shared API host.
+          example: acme
+  - target: $
+    description: >-
+      Populate info.version. The contract ships info.version as an empty string; the Stoplight
+      branch and the documented base path both say v1.
+    update:
+      info:
+        version: v1
+        x-version-source: >-
+          Stoplight branch name `v1` and the documented /api/v1 base path. Namely does not state a
+          version inside the document.
+  - target: $
+    description: >-
+      Apply the Authorization scheme globally. The contract DEFINES securityDefinitions.Authorization
+      but applies no `security` requirement to any of its 54 operations, so generated clients omit
+      the header. Namely's Authentication article states "API requests without valid authentication
+      will also be refused."
+    update:
+      security:
+        - Authorization: []
+  - target: $.securityDefinitions.Authorization
+    description: >-
+      Describe the credential the Authorization header actually carries, per Namely's
+      Authentication article.
+    update:
+      description: >-
+        Either an OAuth 2.0 access token (authorization code grant, 15-minute lifetime) or a
+        Personal Access Token (2-year lifetime), sent as `Bearer <token>`. Minted inside the
+        customer's own Namely HRIS tenant under the API menu.
+      x-token-types:
+        - oauth2-access-token
+        - personal-access-token
+      x-oauth2-authorization-url: https://{company}.namely.com/api/v1/oauth2/authorize
+      x-oauth2-token-url: https://{company}.namely.com/api/v1/oauth2/token
+      x-docs: https://developers.namely.com/docs/getting-started/authentication.md
+  - target: $.paths['/profiles'].get
+    description: >-
+      Record the one rate limit Namely publishes, and its non-standard exhaustion status. The
+      contract declares no 4xx responses at all.
+    update:
+      x-rate-limit:
+        limit: 100
+        window: 1 minute
+        scope: per-endpoint
+        status_on_exhaustion: 406
+        retry_after_header: false
+        source: https://developers.namely.com/docs/getting-started/introduction.md
+      x-pagination-required: true
+      x-pagination-note: >-
+        Since 2017-09-20 Namely no longer permits unlimited profile retrieval in one call.
+      responses:
+        '406':
+          description: >-
+            Not Acceptable - rate limit exceeded. Namely returns 406 (not 429) when GET /profiles
+            receives more than 100 requests per minute. No Retry-After header is sent.
+  - target: $
+    description: >-
+      Record the documented 403 failure mode for Personal Access Tokens whose owning profile has
+      been deactivated. This is a people event that silently breaks integrations and appears
+      nowhere in the contract.
+    update:
+      x-documented-failure-modes:
+        - status: 403
+          condition: >-
+            The Namely profile that created the Personal Access Token became inactive or was
+            deleted.
+          remediation: >-
+            Mint integration PATs under a dedicated administrator "Integrations User" profile.
+          source: https://developers.namely.com/docs/getting-started/authentication.md
+        - status: 406
+          condition: More than 100 requests per minute to GET /profiles.
+          source: https://developers.namely.com/docs/getting-started/introduction.md
+  - target: $
+    description: >-
+      Record the JSON API linked-object response envelope, which every list operation returns and
+      which the contract's response schemas describe only partially.
+    update:
+      x-response-envelope:
+        style: json-api-linked
+        root: pluralised resource key, always an array
+        type_map_key: links
+        sideload_key: linked
+        write_limitation: >-
+          Relationships are read-only; a POST or PUT cannot link objects together.
+        source: https://developers.namely.com/docs/getting-started/linked-objects.md
+  - target: $
+    description: >-
+      Record the field-key stability guarantee, which is a real backwards-compatibility commitment
+      an integrator can rely on but which appears nowhere in the contract.
+    update:
+      x-field-key-stability: >-
+        Profile field API keys are frozen at creation. Renaming a field in the Namely UI does not
+        change its API key, deliberately, to preserve backwards compatibility for live
+        integrations.
+      x-field-key-stability-source: https://developers.namely.com/docs/getting-started/introduction.md
+  - target: $
+    description: >-
+      Record the adjacent SCIM 2.0 provisioning surface, which is on the same tenant host but
+      outside this contract entirely.
+    update:
+      x-adjacent-surfaces:
+        - name: SCIM 2.0 user provisioning
+          endpoint: https://{company}.namely.com/api/scim/v2/Users.json
+          standard: SCIM 2.0
+          extension_urn: 'urn:ietf:params:scim:schemas:extension:custom:2.0:User'
+          described_by_this_contract: false
+          source: https://developers.namely.com/docs/okta/syncing-custom-fields.md

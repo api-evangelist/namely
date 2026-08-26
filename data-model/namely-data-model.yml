@@ -1,0 +1,315 @@
+generated: '2026-08-26'
+method: derived
+source: openapi/namely-api-openapi.json
+name: Namely API data model
+description: >-
+  Entity-relationship graph derived from the 95 `definitions` and the JSON API `links` blocks in
+  Namely's published Swagger 2.0 contract. Profile is the hub - every other entity in the API is
+  either an attribute of an employee, a grouping of employees, or a social artifact attached to
+  one. Relationships are expressed as id references inside a per-resource `links` hash and
+  resolved through the top-level `linked` sideload, so every edge below is a soft reference, not a
+  nested object.
+identifier_format: UUID v4
+identifier_prefixes: none
+entity_count: 22
+relationship_style: >-
+  JSON API linked ids. A resource carries `links: { <relationship>: <id | [ids]> }`; the top-level
+  `links` hash declares each relationship's TYPE; the top-level `linked` hash carries the
+  resolved objects. Relationships are READ-ONLY - Namely states a POST or PUT cannot link objects.
+entities:
+  - name: Profile
+    description: An employee record. The hub of the model and the API's largest schema.
+    id_field: id
+    operations:
+      - GET_profiles
+      - GET_profiles-id
+      - GET_profiles-me
+      - POST_profiles
+      - PUT_profiles-id
+    notable_fields:
+      - email
+      - first_name
+      - last_name
+      - user_status
+      - full_name
+      - employee_id
+      - start_date
+      - departure_date
+      - reports_to
+      - job_title
+      - employee_type
+      - access_role
+    sensitive_fields:
+      - ssn
+      - dob
+      - gender
+      - ethnicity
+      - marital_status
+      - personal_email
+      - home_phone
+      - mobile_phone
+      - terminated_reason
+    sensitivity_note: >-
+      Profile carries US SSN, date of birth, ethnicity, gender and marital status alongside
+      compensation and benefits sub-objects. This is the highest-consequence read surface in the
+      API and the reason PAT permission inheritance (see authentication/) matters so much: a token
+      minted by an administrator can read every employee's SSN.
+    extensible: true
+    extensible_note: >-
+      Every tenant-defined custom field appears as an additional top-level key, so the runtime
+      shape is a superset of the published schema.
+    relationships:
+      - has_one: JobTitle
+        via: links['profiles.job_title']
+      - has_one: Image
+        via: links['profiles.image']
+      - has_many: Group
+        via: links['profiles.groups']
+      - has_many: Team
+        via: links['profiles.teams']
+      - belongs_to: Profile
+        via: reports_to
+        note: Manager relationship - a self-referential edge that forms the org chart.
+      - has_one: Address
+        via: embedded
+      - has_one: Salary
+        via: embedded
+      - has_one: 'Compensation  Benefits'
+        via: embedded
+      - has_one: Office
+        via: embedded
+      - has_one: PayGroup
+        via: embedded
+      - has_one: PayrollCompany
+        via: embedded
+      - has_one: PayrollJob
+        via: embedded
+  - name: JobTitle
+    description: A named job title, optionally nested under a parent title, belonging to a tier.
+    id_field: id
+    operations: [GET_job_titles, GET_job_titles-id, POST_job_titles, PUT_job_titles-id]
+    relationships:
+      - belongs_to: JobTier
+        via: links['job_titles.job_tier']
+      - belongs_to: JobTitle
+        via: parent_id
+        note: Self-referential hierarchy.
+      - has_many: Profile
+        via: inverse of links['profiles.job_title']
+  - name: JobTier
+    description: A seniority/compensation band grouping job titles.
+    id_field: id
+    operations: [GET_job_tiers, GET_job_tiers-id, POST_job_tiers, PUT_job_tiers-id]
+    relationships:
+      - has_many: JobTitle
+        via: inverse of links['job_titles.job_tier']
+  - name: Group
+    description: >-
+      A generic organisational grouping - department, office location, team. `is_team` discriminates
+      a team from a plain group, and `type` points at a GroupType.
+    id_field: id
+    operations: [GET_groups, GET_groups-id, GET_group_types-id-groups]
+    relationships:
+      - belongs_to: GroupType
+        via: type
+      - has_many: Profile
+        via: inverse of links['profiles.groups']
+      - has_one: Address
+        via: address
+  - name: GroupType
+    description: The category a Group belongs to (e.g. Department, Office).
+    id_field: id
+    operations: [GET_group_types, GET_group_types-id]
+    relationships:
+      - has_many: Group
+        via: GET /group_types/{id}/groups
+  - name: Team
+    description: A team grouping, surfaced separately from Group though modelled on the same shape.
+    id_field: id
+    operations: [GET_teams, GET_teams-id]
+    relationships:
+      - has_many: Profile
+        via: inverse of links['profiles.teams']
+      - belongs_to: TeamCategory
+        via: team-category
+  - name: TeamCategory
+    description: Category grouping for teams.
+    id_field: id
+    operations: []
+    note: Present in `definitions` (team-category) but reachable only as a sideloaded object.
+  - name: Event
+    description: >-
+      A home-feed post. Carries content, HTML content, permission flags (can_comment, can_destroy,
+      can_like) and like/comment counts.
+    id_field: id
+    operations: [GET_events, GET_events-id, POST_events, DELETE_events-id]
+    relationships:
+      - has_many: Comment
+        via: GET /events/{event-id}/comments
+      - has_many: Like
+        via: GET /likes/event/{event-id}/recent
+      - belongs_to: Profile
+        via: links
+        note: The author of the event.
+  - name: Comment
+    description: A comment on a home-feed event.
+    id_field: id
+    operations:
+      - GET_events-id-comments
+      - POST_events-id-comments
+      - DELETE_events-eventID-comments-commentID
+    relationships:
+      - belongs_to: Event
+        via: path parameter event-id
+      - belongs_to: Profile
+        via: links
+      - has_many: Like
+        via: GET /likes/event_comment/{comment-id}/recent
+  - name: Like
+    description: A like on an event or an event comment. Two parallel sub-surfaces.
+    id_field: id
+    operations:
+      - POST_likes-event-id
+      - DELETE_likes-event-id
+      - POST_likes-event_comment-comment-id
+      - DELETE_likes-event_comment-comment-id
+    relationships:
+      - belongs_to: Event
+        via: path parameter event-id
+      - belongs_to: Comment
+        via: path parameter comment-id
+      - belongs_to: Profile
+        via: links
+  - name: Folder
+    description: A company-resource folder. Carries items_count and a display position.
+    id_field: id
+    operations: [GET_folders, POST_folders, PUT_folders-id, DELETE_folders-id]
+    relationships:
+      - has_many: Resource
+        via: GET /folders/{id}/resources
+  - name: Resource
+    description: >-
+      A company document or link. Carries file_name, file_format, file_size, file_url and
+      last_edited.
+    id_field: id
+    operations:
+      - GET_resources
+      - GET_resources-id
+      - GET_folders-id-resources
+      - DELETE_folders-id-resources
+    relationships:
+      - belongs_to: Folder
+        via: folder_id
+        note: >-
+          A direct foreign key on the resource, and the one place in this model where a
+          relationship is a plain field rather than a links entry. GET /resources returns
+          resources NOT in a folder.
+  - name: Field
+    description: >-
+      A profile field definition - the SCHEMA of an employee profile, as distinct from its
+      content. Carries type, default, deletable and valid_format_info.
+    id_field: id
+    operations:
+      - GET_profiles-fields
+      - GET_profiles-fields-id
+      - POST_profiles-fields
+      - PUT_profiles-fields-id
+    relationships:
+      - belongs_to: Section
+        via: links
+      - has_many: Profile
+        via: >-
+          Every field definition materialises as a key on every Profile object. Creating one
+          changes the shape of every employee record in the tenant.
+  - name: Section
+    description: A grouping of profile fields on the profile page, with block titles.
+    id_field: id
+    operations:
+      - GET_profiles-fields-sections
+      - GET_profiles-fields-sections-id
+      - PUT_profiles-fields-sections-id
+    relationships:
+      - has_many: Field
+        via: inverse of Field.links
+  - name: Country
+    description: >-
+      A Namely system-info country with its subdivision type. Read-only reference data, universal
+      across all Namely tenants.
+    id_field: id
+    operations: [GET_countries, GET_countries-id]
+    relationships:
+      - has_many: Subdivision
+        via: links
+  - name: Subdivision
+    description: A state/province/region within a Country.
+    id_field: id
+    operations: []
+    note: >-
+      Reachable only as a sideloaded object under Country. Both the country id and the subdivision
+      id are required to write a valid Address.
+  - name: Notification
+    description: >-
+      A user notification. Polymorphic - the contract carries `notification`,
+      `generic-notification` and `mention-notification` variants.
+    id_field: id
+    operations: [GET_notifications, GET_notifications-id]
+    relationships:
+      - belongs_to: Profile
+        via: path parameter id on /profiles/{id}/notifications
+  - name: Report
+    description: A saved report with typed columns and content rows.
+    id_field: id
+    operations: [GET_reports-id]
+    relationships:
+      - has_many: Column
+        via: columns
+      - has_many: Content
+        via: content
+    note: >-
+      Read-only and fetch-by-id only. There is no list operation, so a client must already know a
+      report id - the only entity in the model with no discovery path.
+  - name: Company
+    description: >-
+      Tenant-level metadata - name, permalink, background and logo URLs, and the authentication
+      methods enabled on the tenant.
+    id_field: null
+    operations: [GET_companies-info]
+    note: >-
+      The only operation in the whole contract that requires no Authorization header on the
+      published mock, and therefore the natural connectivity check.
+  - name: Image
+    description: A profile image with thumbnail variants.
+    id_field: id
+    operations: []
+    relationships:
+      - has_many: Thumb
+        via: embedded
+  - name: Address
+    description: A postal address, embedded on Profile and Group.
+    id_field: null
+    relationships:
+      - belongs_to: Country
+        via: country id
+      - belongs_to: Subdivision
+        via: subdivision id
+  - name: Salary
+    description: Compensation record embedded on Profile, with a Currency Type.
+    id_field: null
+    relationships:
+      - has_one: CurrencyType
+        via: embedded
+graph_notes:
+  - >-
+    Profile is the single hub. Fifteen of the twenty-two entities either reference it or are
+    referenced by it.
+  - >-
+    The model separates profile CONTENT (Profile) from profile SCHEMA (Field, Section) - an
+    unusually explicit split, and the reason POST /profiles/fields is a high-consequence write:
+    it changes the shape of every employee record in the tenant and has no delete operation.
+  - >-
+    Group and Team overlap. Group carries an `is_team` boolean AND there is a separate /teams
+    surface with its own Team Link shape, so the same real-world object can be reached two ways.
+  - >-
+    Reference data (Country, Subdivision) is universal across all Namely tenants and immutable,
+    which makes GET /countries the safest read in the API.
+render: none

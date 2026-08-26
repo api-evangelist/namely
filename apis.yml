@@ -1,23 +1,170 @@
 aid: namely
 name: Namely
-description: 'Namely is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Namely is a mid-market Human Capital Management (HCM) platform combining HR, payroll,
+  onboarding, benefits administration, time and attendance, performance management and applicant
+  tracking, delivered as a multi-tenant SaaS on customer subdomains. It publishes a public
+  developer portal on Stoplight carrying a Swagger 2.0 contract for its REST API v1 (39 paths, 54
+  operations, 95 schemas) covering employee profiles, the tenant-specific profile field schema,
+  groups and teams, job titles and tiers, company resources, the social home feed, notifications
+  and reports. Alongside the REST API, Namely runs a SCIM 2.0 provisioning surface acting as the
+  source of record for identity providers such as Okta, and supports SAML 2.0 single sign-on as a
+  service provider. Authentication is either a 3-legged OAuth 2.0 authorization code grant for
+  partner integrations or a Personal Access Token for a customer's own integrations, both minted
+  inside the customer's own tenant. Namely merged into the combined Vensure Employer Solutions /
+  PrismHR organisation in September 2022.
+image: https://namely.com/wp-content/uploads/2023/11/Namely.svg
 url: https://raw.githubusercontent.com/api-evangelist/namely/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-26'
 modified: '2026-08-26'
 tags:
-- Company
-apis: []
-maintainers:
-- FN: Kin Lane
-  email: kin@apievangelist.com
-- FN: APIs.json
-  email: info@apis.io
+  - HR
+  - Human Capital Management
+  - Payroll
+  - Employee Data
+  - Onboarding
+  - Benefits
+  - Applicant Tracking
+  - Performance Management
+  - SCIM
+  - Single Sign-On
+  - Identity Provisioning
+  - Workforce Management
+tags_raw:
+  - hr
+  - human-capital-management
+  - payroll
+  - employee-data
+  - onboarding
+  - benefits
+  - applicant-tracking
+  - performance-management
+  - scim
+  - single-sign-on
+  - identity-provisioning
+  - workforce-management
+apis:
+  - name: Namely API
+    description: >-
+      REST API v1 for a Namely HRIS tenant. Covers employee profiles (including the tenant's own
+      custom fields), the profile field and section schema, groups, group types and teams, job
+      titles and job tiers, company resource folders and documents, the social home feed with
+      events, comments and likes, notifications, saved reports and Namely system reference data
+      for countries and subdivisions. Authenticated with an OAuth 2.0 access token or a Personal
+      Access Token in the Authorization header. The base URL is tenant-templated - every customer
+      calls their own Namely subdomain, and there is no shared API host.
+    humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+    baseURL: https://{company}.namely.com/api/v1
+    tags:
+      - HR
+      - Human Capital Management
+      - Employee Data
+      - Payroll
+      - Onboarding
+      - Workforce Management
+    tags_raw:
+      - hr
+      - human-capital-management
+      - employee-data
+      - payroll
+      - onboarding
+      - workforce-management
+    properties:
+      - type: OpenAPI
+        url: openapi/namely-api-openapi.json
+      - type: Documentation
+        url: https://developers.namely.com/
+      - type: APIReference
+        url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+      - type: GettingStarted
+        url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
+      - type: Authentication
+        url: authentication/namely-authentication.yml
+      - type: Conventions
+        url: conventions/namely-conventions.yml
+      - type: DataModel
+        url: data-model/namely-data-model.yml
+      - type: ErrorCatalog
+        url: errors/namely-problem-types.yml
+      - type: RateLimits
+        url: rate-limits/namely-rate-limits.yml
+      - type: Overlay
+        url: overlays/namely-api-overlay.yaml
+      - type: Sandbox
+        url: sandbox/namely-sandbox.yml
 common:
-- type: Website
-  url: https://forgeglobal.com/namely_stock/
+  - type: DomainSecurity
+    url: security/namely-domain-security.yml
+  - type: Website
+    url: https://namely.com/
+  - type: DeveloperPortal
+    url: https://developers.namely.com/
+  - type: Documentation
+    url: https://developers.namely.com/
+  - type: APIReference
+    url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  - type: GettingStarted
+    url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
+  - type: Authentication
+    url: authentication/namely-authentication.yml
+  - type: Blog
+    url: https://namely.com/blog/
+  - type: Support
+    url: https://namely.com/employee-support/
+  - type: GitHubOrganization
+    url: https://github.com/namely
+  - type: Pricing
+    url: https://namely.com/lp/pricing/
+  - type: Login
+    url: https://namely.com/login/
+  - type: TermsOfService
+    url: https://namely.com/tos/
+  - type: PrivacyPolicy
+    url: https://namely.com/privacy/
+  - type: StatusPage
+    url: https://status.namely.com/
+  - type: ChangeLog
+    url: changelog/namely-changelog.yml
+  - type: Lifecycle
+    url: lifecycle/namely-lifecycle.yml
+  - type: Conventions
+    url: conventions/namely-conventions.yml
+  - type: Conformance
+    url: conformance/namely-conformance.yml
+  - type: DataModel
+    url: data-model/namely-data-model.yml
+  - type: ErrorCatalog
+    url: errors/namely-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/namely-rate-limits.yml
+  - type: Plans
+    url: plans/namely-plans-pricing.yml
+  - type: Packages
+    url: packages/namely-packages.yml
+  - type: SDKs
+    url: packages/namely-packages.yml
+  - type: Sandbox
+    url: sandbox/namely-sandbox.yml
+  - type: MCPServer
+    url: mcp/namely-mcp.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: Overlay
+    url: overlays/namely-api-overlay.yaml
+  - type: LLMsTxt
+    url: https://namely.com/llms.txt
+  - type: LLMsTxt
+    url: llms/namely-llms.txt
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
+  - FN: APIs.json
+    email: info@apis.io
+x-enrichment:
+  date: '2026-08-26'
+  status: enriched
+  artifacts_added: 21
+  pass: local-v1
