@@ -47,54 +47,539 @@ tags_raw:
   - identity-provisioning
   - workforce-management
 apis:
-  - name: Namely API
-    description: >-
-      REST API v1 for a Namely HRIS tenant. Covers employee profiles (including the tenant's own
-      custom fields), the profile field and section schema, groups, group types and teams, job
-      titles and job tiers, company resource folders and documents, the social home feed with
-      events, comments and likes, notifications, saved reports and Namely system reference data
-      for countries and subdivisions. Authenticated with an OAuth 2.0 access token or a Personal
-      Access Token in the Authorization header. The base URL is tenant-templated - every customer
-      calls their own Namely subdomain, and there is no shared API host.
-    humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
-    baseURL: https://{company}.namely.com/api/v1
-    tags:
-      - HR
-      - Human Capital Management
-      - Employee Data
-      - Payroll
-      - Onboarding
-      - Workforce Management
-    tags_raw:
-      - hr
-      - human-capital-management
-      - employee-data
-      - payroll
-      - onboarding
-      - workforce-management
-    properties:
-      - type: OpenAPI
-        url: openapi/namely-api-openapi.json
-      - type: Documentation
-        url: https://developers.namely.com/
-      - type: APIReference
-        url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
-      - type: GettingStarted
-        url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
-      - type: Authentication
-        url: authentication/namely-authentication.yml
-      - type: Conventions
-        url: conventions/namely-conventions.yml
-      - type: DataModel
-        url: data-model/namely-data-model.yml
-      - type: ErrorCatalog
-        url: errors/namely-problem-types.yml
-      - type: RateLimits
-        url: rate-limits/namely-rate-limits.yml
-      - type: Overlay
-        url: overlays/namely-api-overlay.yaml
-      - type: Sandbox
-        url: sandbox/namely-sandbox.yml
+- aid: namely:namely-comments-api
+  name: Namely Comments API
+  description: The Comments API from Namely — 3 operation(s) for comments.
+  humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  baseURL: https://{company}.namely.com/api/v1
+  tags:
+  - Comments
+  properties:
+  - type: OpenAPI
+    url: openapi/namely-comments-api-openapi.yml
+  - type: Documentation
+    url: https://developers.namely.com/
+  - type: APIReference
+    url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  - type: GettingStarted
+    url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
+  - type: Authentication
+    url: authentication/namely-authentication.yml
+  - type: Conventions
+    url: conventions/namely-conventions.yml
+  - type: DataModel
+    url: data-model/namely-data-model.yml
+  - type: ErrorCatalog
+    url: errors/namely-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/namely-rate-limits.yml
+  - type: Sandbox
+    url: sandbox/namely-sandbox.yml
+- aid: namely:namely-company-info-api
+  name: Namely Company Info API
+  description: The Company Info API from Namely — 1 operation(s) for company info.
+  humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  baseURL: https://{company}.namely.com/api/v1
+  tags:
+  - Company Info
+  properties:
+  - type: OpenAPI
+    url: openapi/namely-company-info-api-openapi.yml
+  - type: Documentation
+    url: https://developers.namely.com/
+  - type: APIReference
+    url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  - type: GettingStarted
+    url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
+  - type: Authentication
+    url: authentication/namely-authentication.yml
+  - type: Conventions
+    url: conventions/namely-conventions.yml
+  - type: DataModel
+    url: data-model/namely-data-model.yml
+  - type: ErrorCatalog
+    url: errors/namely-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/namely-rate-limits.yml
+  - type: Sandbox
+    url: sandbox/namely-sandbox.yml
+- aid: namely:namely-company-resources-api
+  name: Namely Company Resources API
+  description: The Company Resources API from Namely — 5 operation(s) for company resources.
+  humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  baseURL: https://{company}.namely.com/api/v1
+  tags:
+  - Company Resources
+  properties:
+  - type: OpenAPI
+    url: openapi/namely-company-resources-api-openapi.yml
+  - type: Documentation
+    url: https://developers.namely.com/
+  - type: APIReference
+    url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  - type: GettingStarted
+    url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
+  - type: Authentication
+    url: authentication/namely-authentication.yml
+  - type: Conventions
+    url: conventions/namely-conventions.yml
+  - type: DataModel
+    url: data-model/namely-data-model.yml
+  - type: ErrorCatalog
+    url: errors/namely-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/namely-rate-limits.yml
+  - type: Sandbox
+    url: sandbox/namely-sandbox.yml
+- aid: namely:namely-countries-api
+  name: Namely Countries API
+  description: The Countries API from Namely — 2 operation(s) for countries.
+  humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  baseURL: https://{company}.namely.com/api/v1
+  tags:
+  - Countries
+  properties:
+  - type: OpenAPI
+    url: openapi/namely-countries-api-openapi.yml
+  - type: Documentation
+    url: https://developers.namely.com/
+  - type: APIReference
+    url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  - type: GettingStarted
+    url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
+  - type: Authentication
+    url: authentication/namely-authentication.yml
+  - type: Conventions
+    url: conventions/namely-conventions.yml
+  - type: DataModel
+    url: data-model/namely-data-model.yml
+  - type: ErrorCatalog
+    url: errors/namely-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/namely-rate-limits.yml
+  - type: Sandbox
+    url: sandbox/namely-sandbox.yml
+- aid: namely:namely-events-api
+  name: Namely Events API
+  description: The Events API from Namely — 2 operation(s) for events.
+  humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  baseURL: https://{company}.namely.com/api/v1
+  tags:
+  - Events
+  properties:
+  - type: OpenAPI
+    url: openapi/namely-events-api-openapi.yml
+  - type: Documentation
+    url: https://developers.namely.com/
+  - type: APIReference
+    url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  - type: GettingStarted
+    url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
+  - type: Authentication
+    url: authentication/namely-authentication.yml
+  - type: Conventions
+    url: conventions/namely-conventions.yml
+  - type: DataModel
+    url: data-model/namely-data-model.yml
+  - type: ErrorCatalog
+    url: errors/namely-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/namely-rate-limits.yml
+  - type: Sandbox
+    url: sandbox/namely-sandbox.yml
+- aid: namely:namely-groups-api
+  name: Namely Groups API
+  description: The Groups API from Namely — 3 operation(s) for groups.
+  humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  baseURL: https://{company}.namely.com/api/v1
+  tags:
+  - Groups
+  properties:
+  - type: OpenAPI
+    url: openapi/namely-groups-api-openapi.yml
+  - type: Documentation
+    url: https://developers.namely.com/
+  - type: APIReference
+    url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  - type: GettingStarted
+    url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
+  - type: Authentication
+    url: authentication/namely-authentication.yml
+  - type: Conventions
+    url: conventions/namely-conventions.yml
+  - type: DataModel
+    url: data-model/namely-data-model.yml
+  - type: ErrorCatalog
+    url: errors/namely-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/namely-rate-limits.yml
+  - type: Sandbox
+    url: sandbox/namely-sandbox.yml
+- aid: namely:namely-groups-teams-api
+  name: Namely Groups & Teams API
+  description: The Groups & Teams API from Namely — 7 operation(s) for groups & teams.
+  humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  baseURL: https://{company}.namely.com/api/v1
+  tags:
+  - Groups & Teams
+  properties:
+  - type: OpenAPI
+    url: openapi/namely-groups-teams-api-openapi.yml
+  - type: Documentation
+    url: https://developers.namely.com/
+  - type: APIReference
+    url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  - type: GettingStarted
+    url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
+  - type: Authentication
+    url: authentication/namely-authentication.yml
+  - type: Conventions
+    url: conventions/namely-conventions.yml
+  - type: DataModel
+    url: data-model/namely-data-model.yml
+  - type: ErrorCatalog
+    url: errors/namely-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/namely-rate-limits.yml
+  - type: Sandbox
+    url: sandbox/namely-sandbox.yml
+- aid: namely:namely-home-feed-api
+  name: Namely Home Feed API
+  description: The Home Feed API from Namely — 10 operation(s) for home feed.
+  humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  baseURL: https://{company}.namely.com/api/v1
+  tags:
+  - Home Feed
+  properties:
+  - type: OpenAPI
+    url: openapi/namely-home-feed-api-openapi.yml
+  - type: Documentation
+    url: https://developers.namely.com/
+  - type: APIReference
+    url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  - type: GettingStarted
+    url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
+  - type: Authentication
+    url: authentication/namely-authentication.yml
+  - type: Conventions
+    url: conventions/namely-conventions.yml
+  - type: DataModel
+    url: data-model/namely-data-model.yml
+  - type: ErrorCatalog
+    url: errors/namely-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/namely-rate-limits.yml
+  - type: Sandbox
+    url: sandbox/namely-sandbox.yml
+- aid: namely:namely-job-tier-api
+  name: Namely Job Tier API
+  description: The Job Tier API from Namely — 2 operation(s) for job tier.
+  humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  baseURL: https://{company}.namely.com/api/v1
+  tags:
+  - Job Tier
+  properties:
+  - type: OpenAPI
+    url: openapi/namely-job-tier-api-openapi.yml
+  - type: Documentation
+    url: https://developers.namely.com/
+  - type: APIReference
+    url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  - type: GettingStarted
+    url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
+  - type: Authentication
+    url: authentication/namely-authentication.yml
+  - type: Conventions
+    url: conventions/namely-conventions.yml
+  - type: DataModel
+    url: data-model/namely-data-model.yml
+  - type: ErrorCatalog
+    url: errors/namely-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/namely-rate-limits.yml
+  - type: Sandbox
+    url: sandbox/namely-sandbox.yml
+- aid: namely:namely-job-title-api
+  name: Namely Job Title API
+  description: The Job Title API from Namely — 2 operation(s) for job title.
+  humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  baseURL: https://{company}.namely.com/api/v1
+  tags:
+  - Job Title
+  properties:
+  - type: OpenAPI
+    url: openapi/namely-job-title-api-openapi.yml
+  - type: Documentation
+    url: https://developers.namely.com/
+  - type: APIReference
+    url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  - type: GettingStarted
+    url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
+  - type: Authentication
+    url: authentication/namely-authentication.yml
+  - type: Conventions
+    url: conventions/namely-conventions.yml
+  - type: DataModel
+    url: data-model/namely-data-model.yml
+  - type: ErrorCatalog
+    url: errors/namely-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/namely-rate-limits.yml
+  - type: Sandbox
+    url: sandbox/namely-sandbox.yml
+- aid: namely:namely-jobs-info-api
+  name: Namely Jobs Info API
+  description: The Jobs Info API from Namely — 4 operation(s) for jobs info.
+  humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  baseURL: https://{company}.namely.com/api/v1
+  tags:
+  - Jobs Info
+  properties:
+  - type: OpenAPI
+    url: openapi/namely-jobs-info-api-openapi.yml
+  - type: Documentation
+    url: https://developers.namely.com/
+  - type: APIReference
+    url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  - type: GettingStarted
+    url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
+  - type: Authentication
+    url: authentication/namely-authentication.yml
+  - type: Conventions
+    url: conventions/namely-conventions.yml
+  - type: DataModel
+    url: data-model/namely-data-model.yml
+  - type: ErrorCatalog
+    url: errors/namely-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/namely-rate-limits.yml
+  - type: Sandbox
+    url: sandbox/namely-sandbox.yml
+- aid: namely:namely-likes-api
+  name: Namely Likes API
+  description: The Likes API from Namely — 1 operation(s) for likes.
+  humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  baseURL: https://{company}.namely.com/api/v1
+  tags:
+  - Likes
+  properties:
+  - type: OpenAPI
+    url: openapi/namely-likes-api-openapi.yml
+  - type: Documentation
+    url: https://developers.namely.com/
+  - type: APIReference
+    url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  - type: GettingStarted
+    url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
+  - type: Authentication
+    url: authentication/namely-authentication.yml
+  - type: Conventions
+    url: conventions/namely-conventions.yml
+  - type: DataModel
+    url: data-model/namely-data-model.yml
+  - type: ErrorCatalog
+    url: errors/namely-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/namely-rate-limits.yml
+  - type: Sandbox
+    url: sandbox/namely-sandbox.yml
+- aid: namely:namely-namely-system-info-api
+  name: Namely Namely System Info API
+  description: The Namely System Info API from Namely — 2 operation(s) for namely system info.
+  humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  baseURL: https://{company}.namely.com/api/v1
+  tags:
+  - Namely System Info
+  properties:
+  - type: OpenAPI
+    url: openapi/namely-namely-system-info-api-openapi.yml
+  - type: Documentation
+    url: https://developers.namely.com/
+  - type: APIReference
+    url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  - type: GettingStarted
+    url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
+  - type: Authentication
+    url: authentication/namely-authentication.yml
+  - type: Conventions
+    url: conventions/namely-conventions.yml
+  - type: DataModel
+    url: data-model/namely-data-model.yml
+  - type: ErrorCatalog
+    url: errors/namely-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/namely-rate-limits.yml
+  - type: Sandbox
+    url: sandbox/namely-sandbox.yml
+- aid: namely:namely-notifications-api
+  name: Namely Notifications API
+  description: The Notifications API from Namely — 2 operation(s) for notifications.
+  humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  baseURL: https://{company}.namely.com/api/v1
+  tags:
+  - Notifications
+  properties:
+  - type: OpenAPI
+    url: openapi/namely-notifications-api-openapi.yml
+  - type: Documentation
+    url: https://developers.namely.com/
+  - type: APIReference
+    url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  - type: GettingStarted
+    url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
+  - type: Authentication
+    url: authentication/namely-authentication.yml
+  - type: Conventions
+    url: conventions/namely-conventions.yml
+  - type: DataModel
+    url: data-model/namely-data-model.yml
+  - type: ErrorCatalog
+    url: errors/namely-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/namely-rate-limits.yml
+  - type: Sandbox
+    url: sandbox/namely-sandbox.yml
+- aid: namely:namely-profile-fields-api
+  name: Namely Profile Fields API
+  description: The Profile Fields API from Namely — 4 operation(s) for profile fields.
+  humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  baseURL: https://{company}.namely.com/api/v1
+  tags:
+  - Profile Fields
+  properties:
+  - type: OpenAPI
+    url: openapi/namely-profile-fields-api-openapi.yml
+  - type: Documentation
+    url: https://developers.namely.com/
+  - type: APIReference
+    url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  - type: GettingStarted
+    url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
+  - type: Authentication
+    url: authentication/namely-authentication.yml
+  - type: Conventions
+    url: conventions/namely-conventions.yml
+  - type: DataModel
+    url: data-model/namely-data-model.yml
+  - type: ErrorCatalog
+    url: errors/namely-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/namely-rate-limits.yml
+  - type: Sandbox
+    url: sandbox/namely-sandbox.yml
+- aid: namely:namely-profile-fields-sections-api
+  name: Namely Profile Fields Sections API
+  description: >-
+    The Profile Fields Sections API from Namely — 2 operation(s) for profile fields sections.
+  humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  baseURL: https://{company}.namely.com/api/v1
+  tags:
+  - Profile Fields Sections
+  properties:
+  - type: OpenAPI
+    url: openapi/namely-profile-fields-sections-api-openapi.yml
+  - type: Documentation
+    url: https://developers.namely.com/
+  - type: APIReference
+    url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  - type: GettingStarted
+    url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
+  - type: Authentication
+    url: authentication/namely-authentication.yml
+  - type: Conventions
+    url: conventions/namely-conventions.yml
+  - type: DataModel
+    url: data-model/namely-data-model.yml
+  - type: ErrorCatalog
+    url: errors/namely-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/namely-rate-limits.yml
+  - type: Sandbox
+    url: sandbox/namely-sandbox.yml
+- aid: namely:namely-profiles-api
+  name: Namely Profiles API
+  description: The Profiles API from Namely — 3 operation(s) for profiles.
+  humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  baseURL: https://{company}.namely.com/api/v1
+  tags:
+  - Profiles
+  properties:
+  - type: OpenAPI
+    url: openapi/namely-profiles-api-openapi.yml
+  - type: Documentation
+    url: https://developers.namely.com/
+  - type: APIReference
+    url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  - type: GettingStarted
+    url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
+  - type: Authentication
+    url: authentication/namely-authentication.yml
+  - type: Conventions
+    url: conventions/namely-conventions.yml
+  - type: DataModel
+    url: data-model/namely-data-model.yml
+  - type: ErrorCatalog
+    url: errors/namely-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/namely-rate-limits.yml
+  - type: Sandbox
+    url: sandbox/namely-sandbox.yml
+- aid: namely:namely-reports-api
+  name: Namely Reports API
+  description: The Reports API from Namely — 1 operation(s) for reports.
+  humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  baseURL: https://{company}.namely.com/api/v1
+  tags:
+  - Reports
+  properties:
+  - type: OpenAPI
+    url: openapi/namely-reports-api-openapi.yml
+  - type: Documentation
+    url: https://developers.namely.com/
+  - type: APIReference
+    url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  - type: GettingStarted
+    url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
+  - type: Authentication
+    url: authentication/namely-authentication.yml
+  - type: Conventions
+    url: conventions/namely-conventions.yml
+  - type: DataModel
+    url: data-model/namely-data-model.yml
+  - type: ErrorCatalog
+    url: errors/namely-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/namely-rate-limits.yml
+  - type: Sandbox
+    url: sandbox/namely-sandbox.yml
+- aid: namely:namely-teams-api
+  name: Namely Teams API
+  description: The Teams API from Namely — 1 operation(s) for teams.
+  humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  baseURL: https://{company}.namely.com/api/v1
+  tags:
+  - Teams
+  properties:
+  - type: OpenAPI
+    url: openapi/namely-teams-api-openapi.yml
+  - type: Documentation
+    url: https://developers.namely.com/
+  - type: APIReference
+    url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+  - type: GettingStarted
+    url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
+  - type: Authentication
+    url: authentication/namely-authentication.yml
+  - type: Conventions
+    url: conventions/namely-conventions.yml
+  - type: DataModel
+    url: data-model/namely-data-model.yml
+  - type: ErrorCatalog
+    url: errors/namely-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/namely-rate-limits.yml
+  - type: Sandbox
+    url: sandbox/namely-sandbox.yml
 common:
   - type: DomainSecurity
     url: security/namely-domain-security.yml
