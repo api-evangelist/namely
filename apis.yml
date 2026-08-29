@@ -13,6 +13,18 @@ description: >-
   partner integrations or a Personal Access Token for a customer's own integrations, both minted
   inside the customer's own tenant. Namely merged into the combined Vensure Employer Solutions /
   PrismHR organisation in September 2022.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://namely.com/wp-content/uploads/2023/11/Namely.svg
 url: https://raw.githubusercontent.com/api-evangelist/namely/refs/heads/main/apis.yml
 x-type: company
