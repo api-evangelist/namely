@@ -1,0 +1,285 @@
+openapi: 3.2.0
+info:
+  version: ''
+  title: Namely Job Tier API
+  description: Move your app forward with the Namely API Move your app forward with the Namely API
+tags:
+- name: Job Tier
+paths:
+  /job_tiers:
+    get:
+      operationId: GET_job_tiers
+      summary: Get all Job Tiers
+      tags:
+      - Job Tier
+      description: Returns an array of all job tiers. Each job tier can have zero to many linked job titles (while each job title must have one and only one linked job tier).
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_tiers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Job_Tier'
+                  meta:
+                    type: object
+                    $ref: '#/components/schemas/Meta'
+                  links:
+                    type: object
+                    properties:
+                      job_tiers.job_titles:
+                        type: object
+                        $ref: '#/components/schemas/Link'
+                  linked:
+                    type: object
+                    properties:
+                      job_titles:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Job_Title_Link'
+      security:
+      - Authorization: []
+    post:
+      operationId: POST_job_tiers
+      summary: Create a Job Tier
+      tags:
+      - Job Tier
+      description: Creates a job tier.
+      responses:
+        '201':
+          description: Create Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_tiers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Job_Tier'
+                  meta:
+                    type: object
+                    $ref: '#/components/schemas/Meta'
+                  links:
+                    type: object
+                    properties:
+                      job_tiers.job_titles:
+                        type: object
+                        $ref: '#/components/schemas/Link'
+                  linked:
+                    type: object
+                    properties:
+                      job_titles:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Job_Title'
+      security:
+      - Authorization: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Create_Job_Tier'
+  /job_tiers/{id}:
+    parameters:
+    - name: id
+      in: path
+      description: <code>id</code> of the job tier you want to view
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: GET_job_tiers-id
+      summary: Get a Job Tier
+      tags:
+      - Job Tier
+      description: Returns information about a single job tier.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_tiers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Job_Tier'
+                  meta:
+                    type: object
+                    $ref: '#/components/schemas/Meta'
+                  links:
+                    type: object
+                    properties:
+                      job_tiers.job_titles:
+                        type: object
+                        $ref: '#/components/schemas/Link'
+                  linked:
+                    type: object
+                    properties:
+                      job_titles:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Job_Title'
+      security:
+      - Authorization: []
+    put:
+      operationId: PUT_job_tiers-id
+      summary: Update a Job Tier
+      tags:
+      - Job Tier
+      description: 'Updates the label of a job tier.
+
+
+        Use the #endpoint:3iHo6fSyKNs2dsaSC endpoint to get a list of job tiers, whose <code>id</code> is used in the path parameters.'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_tiers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Job_Tier'
+                  meta:
+                    type: object
+                    $ref: '#/components/schemas/Meta'
+                  links:
+                    type: object
+                    properties:
+                      job_tiers.job_titles:
+                        type: object
+                        $ref: '#/components/schemas/Link'
+                  linked:
+                    type: object
+                    properties:
+                      job_titles:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Job_Title'
+      security:
+      - Authorization: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Update_Job_Tier'
+components:
+  schemas:
+    Create_Job_Tier:
+      title: Create Job Tier
+      required:
+      - job_tiers
+      type: object
+      properties:
+        job_tiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Create_Job_Tier_Payload'
+    Job_Tier:
+      title: Job Tier
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the job tier
+        numerical_id:
+          type: string
+        title:
+          type: string
+          default: ''
+          description: name/label of the job tier
+        links:
+          type: object
+          properties:
+            job_titles:
+              type: array
+              description: id of the job titles associated with the job tier
+              items:
+                type: string
+    Job_Title_Link:
+      title: Job Title Link
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the job title
+        title:
+          type: string
+          description: name/label of the job title
+    Create_Job_Tier_Payload:
+      title: Create Job Tier Payload
+      type: object
+      properties:
+        title:
+          type: string
+          description: name/label of the job tier you’re creating
+      required:
+      - title
+    Job_Title:
+      title: Job Title
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the job title
+        parent_id:
+          type: string
+          description: id of the job tier associated with the job title (when creating a job title, the key is "parent")
+        title:
+          type: string
+          description: name/label of the job title
+        links:
+          type: object
+          properties:
+            job_tier:
+              type: string
+              description: 'id of the job tier associated with the job title '
+    Meta:
+      title: Meta
+      type: object
+      properties:
+        count:
+          type: integer
+          description: number of total objects
+        status:
+          type: integer
+          description: HTTP response
+    Update_Job_Tier:
+      title: Update Job Tier
+      type: object
+      properties:
+        job_tiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Update_Job_Tier_Payload'
+      required:
+      - job_tiers
+    Update_Job_Tier_Payload:
+      title: Update Job Tier Payload
+      type: object
+      properties:
+        title:
+          type: string
+          description: '[new] name/label of job tier'
+      required:
+      - title
+    Link:
+      title: Link
+      type: object
+      properties:
+        type:
+          type: string
+  securitySchemes:
+    Authorization:
+      name: Authorization
+      type: apiKey
+      in: header

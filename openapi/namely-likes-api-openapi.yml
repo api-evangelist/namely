@@ -1,0 +1,68 @@
+openapi: 3.2.0
+info:
+  version: ''
+  title: Namely Likes API
+  description: Move your app forward with the Namely API Move your app forward with the Namely API
+tags:
+- name: Likes
+paths:
+  /likes/event/{event-id}/recent:
+    parameters:
+    - name: event-id
+      in: path
+      description: <code>id</code> of the event whose likes you want to view
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: GET_likes-event-event_id-recent
+      summary: Get an Event's Likes
+      tags:
+      - Likes
+      description: Returns a list of profiles that liked a particular event.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  likes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Like'
+      security:
+      - Authorization: []
+components:
+  schemas:
+    Like:
+      title: Like
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the like
+        href:
+          type: string
+          description: a link to the profile of "liker"
+        full_name:
+          type: string
+          description: full name of the "liker" per his/her profile
+        job_title:
+          type: string
+          description: label of the job title of the "liker" per his/her profile
+        links:
+          type: object
+          properties:
+            image:
+              type: string
+              description: unique identifier of the profile image of the "liker"
+            thumbs:
+              type: object
+              description: multiple resolutions of the profile image
+  securitySchemes:
+    Authorization:
+      name: Authorization
+      type: apiKey
+      in: header

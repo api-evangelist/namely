@@ -1,0 +1,109 @@
+openapi: 3.2.0
+info:
+  version: ''
+  title: Namely System Info API
+  description: Move your app forward with the Namely API Move your app forward with the Namely API
+tags:
+- name: Namely System Info
+paths:
+  /countries:
+    get:
+      operationId: GET_countries
+      summary: Get all Countries
+      tags:
+      - Namely System Info
+      description: Returns all valid countries in Namely. A country is universal and may not be modified.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  countries:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/countries'
+      security:
+      - Authorization: []
+  /countries/{id}:
+    parameters:
+    - name: id
+      in: path
+      description: id of the country (an abbreviation of the country's name) you want to view
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: GET_countries-id
+      summary: Get a Country
+      tags:
+      - Namely System Info
+      description: Returns one country, as well as a list of a country’s subdivisions (e.g. a list of its states or provinces).
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  countries:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Country'
+      security:
+      - Authorization: []
+components:
+  schemas:
+    Subdivision:
+      title: Subdivision
+      type: object
+      properties:
+        id:
+          type: string
+          description: 'unique identifier of the subdivision unit (e.g. NJ); abbreviation of the name; used in the #model:yq9tkBR24wuBhzizY model'
+        name:
+          type: string
+          description: name of the subdivision unit (e.g. New Jersey)
+    countries:
+      title: Countries
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the profile; 2-digit ISO code; used when passing home or office <code>address</code>
+        name:
+          type: string
+          description: name of the country
+        subdivision_type:
+          type: string
+          description: name of the country's subdivision (e.g. State, Province)
+    Country:
+      title: Country
+      type: object
+      properties:
+        id:
+          type: string
+          description: 'unique identifier of the profile; 2-digit ISO code; used when passing home or office #model:yq9tkBR24wuBhzizY'
+        name:
+          type: string
+          description: name of the country
+        subdivision_type:
+          type: string
+          description: name of the country's subdivision (e.g. State, Province)
+        links:
+          type: array
+          items:
+            type: object
+            properties:
+              subdivision:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Subdivision'
+  securitySchemes:
+    Authorization:
+      name: Authorization
+      type: apiKey
+      in: header

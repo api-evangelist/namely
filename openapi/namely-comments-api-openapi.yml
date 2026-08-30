@@ -1,0 +1,306 @@
+openapi: 3.2.0
+info:
+  version: ''
+  title: Namely Comments API
+  description: Move your app forward with the Namely API Move your app forward with the Namely API
+tags:
+- name: Comments
+paths:
+  /events/{event-id}/comments:
+    parameters:
+    - name: event-id
+      in: path
+      description: <code>id</code> of the event whose comments you want to view
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: GET_events-id-comments
+      summary: Get an Event's Comments
+      tags:
+      - Comments
+      description: Returns all comments associated with a particular event.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  events:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Comment'
+                  meta:
+                    type: object
+                    $ref: '#/components/schemas/Comment_Meta'
+                  links:
+                    type: object
+                    properties:
+                      comments.profile:
+                        $ref: '#/components/schemas/Link'
+                      profile.image:
+                        $ref: '#/components/schemas/Link'
+                  linked:
+                    type: object
+                    properties:
+                      profiles:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Linked_Profile'
+                      files:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/File'
+      security:
+      - Authorization: []
+  /events/{id}/comments:
+    parameters:
+    - name: id
+      in: path
+      description: id of event.
+      required: true
+      schema:
+        type: string
+    post:
+      operationId: POST_events-id-comments
+      summary: Create an Event's Comment
+      tags:
+      - Comments
+      description: Creates a comment on a particular event.
+      responses:
+        '201':
+          description: Created Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  events:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Comment'
+                  meta:
+                    type: object
+                    $ref: '#/components/schemas/Comment_Meta'
+                  links:
+                    type: object
+                    properties:
+                      comments.profile:
+                        $ref: '#/components/schemas/Link'
+                      profile.image:
+                        $ref: '#/components/schemas/Link'
+                  linked:
+                    type: object
+                    properties:
+                      profiles:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Linked_Profile'
+                      files:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/File'
+      security:
+      - Authorization: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Create_Comment'
+  /events/{event-id}/comments/{comment-id}:
+    parameters:
+    - name: event-id
+      in: path
+      description: <code>id</code> of the event to which the comment belongs
+      required: true
+      schema:
+        type: string
+    - name: comment-id
+      in: path
+      description: <code>id</code> of the comment you want to delete from the event
+      required: true
+      schema:
+        type: string
+    delete:
+      operationId: DELETE_events-eventID-comments-commentID
+      summary: Delete an Event's Comment
+      tags:
+      - Comments
+      description: Delete a particular comment on an event.
+      responses:
+        '200':
+          description: Succssful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    default: Success!
+      security:
+      - Authorization: []
+components:
+  schemas:
+    Create_Comment:
+      title: Create Comment
+      required:
+      - comments
+      type: object
+      properties:
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Create_Comment_Payload'
+    Create_Comment_Payload:
+      title: Create Comment Payload
+      type: object
+      properties:
+        content:
+          type: string
+          description: 'the content of the comment; formatted in markdown; to @mention a profile, use format: <code>[full_name](/people/{profile_id})</code> where {profile_id} is the <code>id</code> of the profile you want to mention'
+      required:
+      - content
+    Comment_Meta:
+      title: Comment Meta
+      type: object
+      properties:
+        status:
+          type: integer
+          description: HTTP response
+        page:
+          type: integer
+        use_at_mentions:
+          type: boolean
+          description: <code>true</code> if the company has mentioning enabled on the home feed
+    Image:
+      title: Image
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the image
+        filename:
+          type: string
+          description: image's file name
+        mime_type:
+          type: string
+          description: image type
+        original:
+          type: string
+          description: link of image with original resolution
+        thumbs:
+          $ref: '#/components/schemas/Thumb'
+    Linked_Profile:
+      title: Linked Profile
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        user_status:
+          type: string
+        updated_at:
+          type: integer
+        created_at:
+          type: integer
+        preferred_name:
+          type: string
+        image:
+          type: object
+          items:
+            $ref: '#/components/schemas/Image'
+        full_name:
+          type: string
+    Thumb:
+      title: Thumb
+      type: object
+      description: different resolutions of the image
+      properties:
+        75x75:
+          type: string
+        75x75c:
+          type: string
+        150x150:
+          type: string
+        150x150c:
+          type: string
+        300x300:
+          type: string
+        300x300c:
+          type: string
+        450x450:
+          type: string
+        550x450c:
+          type: string
+        800x800:
+          type: string
+        800x800c:
+          type: string
+    File:
+      title: File
+      type: object
+      properties:
+        id:
+          type: string
+        filename:
+          type: string
+        mime_type:
+          type: string
+        original:
+          type: string
+        thumbs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Thumb'
+    Comment:
+      title: Comment
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the comment
+        content:
+          type: string
+          description: content of the comment, displayed in markdown
+        html_content:
+          type: string
+          description: content of the comment, displayed in HTML
+        created_at:
+          type: integer
+          description: epoch time that the comment was created
+        can_destroy:
+          type: boolean
+          description: <code>true</code> if the token bearer has a role with permission to delete the comment; will always be <code>true</code> for one's own comment
+        links:
+          type: object
+          properties:
+            profile:
+              type: string
+        utc_offset:
+          type: integer
+          description: the hour difference between UTC and the main office of the company
+        likes_count:
+          type: integer
+          description: total number of likes on comment
+        liked_by_current_profile:
+          type: boolean
+          description: <code>true</code> if the token bearer has liked this comment
+    Link:
+      title: Link
+      type: object
+      properties:
+        type:
+          type: string
+  securitySchemes:
+    Authorization:
+      name: Authorization
+      type: apiKey
+      in: header

@@ -1,0 +1,103 @@
+openapi: 3.2.0
+info:
+  version: ''
+  title: Namely Reports API
+  description: Move your app forward with the Namely API Move your app forward with the Namely API
+tags:
+- name: Reports
+paths:
+  /reports/{id}:
+    parameters:
+    - name: id
+      in: path
+      description: <code>id</code> of the report from Namely; can be found at the end of the URL of the report on the web
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: GET_reports-id
+      summary: Get a Report
+      tags:
+      - Reports
+      description: 'This endpoint returns a JSON format version of a report created in Namely. These reports update instantly, so each new call to the API will provide the user with updated information.
+
+
+        After information about the report itself, there is an array of objects that are the columns within the report. The position of the columns is important.
+
+
+        After the columns is what is technically an array of arrays without any keys. Each "sub"-array represents a line in the report and is a list of values whose position on the list within each "sub"-array sequentially corresponds to the column. For example, if the second "column" is "last name", the second "value" in each "sub"-array is the value.
+
+
+        The reports API does not technically have a limit to how many lines can be pulled through the API at once. However, we would suggest limiting it to around 200 lines. A user could likely pull more than that without any problems, but they will eventually run into a timeout. There is no hard limit, however.
+
+
+        Do not have your integration rely on field ''labels'' as they are dynamic.  Please use the field ''name'' instead.'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reports:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Report'
+                  meta:
+                    type: object
+                  links:
+                    type: object
+                  linked:
+                    type: object
+      security:
+      - Authorization: []
+components:
+  schemas:
+    Content:
+      title: Content
+      type: array
+      description: this is technically an array of arrays without any keys "sub"-arrays; each "sub"-array represents a line in the report, and is a list of values, whose position on the list within "sub"-array sequentially corresponds to the column; for example, if the second "column" is "last name", the second "value" in each "sub"-array is the value
+      items:
+        type: array
+    Column:
+      title: Column
+      type: array
+      description: 'columns within the report; note: position of the columns is important'
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            description: immutable name of the report column
+          type:
+            type: string
+            description: data type of the report column
+          label:
+            type: string
+            description: name/label of the report column
+    Report:
+      title: Report
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the report; identical to the <code>id</code> in the path parameters
+        type:
+          type: string
+          description: describes the type of report (e.g. salary_history)
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/Column'
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Content'
+        links:
+          type: object
+  securitySchemes:
+    Authorization:
+      name: Authorization
+      type: apiKey
+      in: header

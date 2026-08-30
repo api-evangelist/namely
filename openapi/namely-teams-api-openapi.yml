@@ -1,0 +1,90 @@
+openapi: 3.2.0
+info:
+  version: ''
+  title: Namely Teams API
+  description: Move your app forward with the Namely API Move your app forward with the Namely API
+tags:
+- name: Teams
+paths:
+  /teams:
+    get:
+      operationId: GET_teams
+      summary: Get all Teams
+      tags:
+      - Teams
+      description: Returns an array of all teams as well as linked, a list of team categories. Every team can belong to zero to many team categories. Each team category can have zero to many associated teams. Although not present in this endpoint, each team can also have zero to many associated profiles (i.e. people within teams).
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  teams:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/team'
+                  links:
+                    type: object
+                    properties:
+                      teams.categories:
+                        type: object
+                        $ref: '#/components/schemas/Link'
+                  linked:
+                    type: object
+                    properties:
+                      categories:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/team-category'
+components:
+  schemas:
+    Link:
+      title: Link
+      type: object
+      properties:
+        type:
+          type: string
+    team-category:
+      title: Team Category
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the team category
+        title:
+          type: string
+          description: name/label of the team category
+    team:
+      title: Team
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the team
+        name:
+          type: string
+          description: name/label of the team
+        email:
+          type: string
+          description: email address (@namely.com) of the team; emails all members of the team
+        updated_at:
+          type: number
+          description: epoch time of when the team was updated
+        created_at:
+          type: number
+          description: epoch time of when the team was created
+        links:
+          type: object
+          properties:
+            team_categories:
+              type: array
+              description: <code>id</code> of any team categories to which the team belongs; 0 to many
+              items:
+                type: string
+  securitySchemes:
+    Authorization:
+      name: Authorization
+      type: apiKey
+      in: header

@@ -1,0 +1,652 @@
+openapi: 3.2.0
+info:
+  version: ''
+  title: Namely Groups API
+  description: Move your app forward with the Namely API Move your app forward with the Namely API
+tags:
+- name: Groups
+paths:
+  /groups:
+    get:
+      operationId: GET_groups
+      summary: Get all Groups
+      tags:
+      - Groups
+      description: 'Returns an array of all groups. Every group must belong to one and only one group type. Each group type can have zero to many associated groups. Although not present in this endpoint, each group can also have zero to many associated profiles (i.e. people within groups).
+
+
+        Office Locations and Departments are groups.'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  groups:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Group'
+                  meta:
+                    type: object
+                    $ref: '#/components/schemas/Meta_Group'
+                  links:
+                    type: object
+                    properties:
+                      groups.group_types:
+                        type: object
+                        $ref: '#/components/schemas/Link'
+                  linked:
+                    type: object
+                    properties:
+                      group_types:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Group_Type'
+      security:
+      - Authorization: []
+  /groups/{id}:
+    parameters:
+    - name: id
+      in: path
+      description: id of the group you want to view
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: GET_groups-id
+      summary: Get a Group
+      tags:
+      - Groups
+      description: 'Returns same information about the group as in the #endpoint:Z6r47eQWjcuNA9mq5 endpoint, as well as linked any profiles associated with that group (zero to many).'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  groups:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/group-singular'
+                  meta:
+                    type: object
+                    $ref: '#/components/schemas/Meta_Group'
+                  links:
+                    type: object
+                    properties:
+                      groups.group_types:
+                        type: object
+                        $ref: '#/components/schemas/Link'
+                  linked:
+                    type: object
+                    properties:
+                      group_types:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Group_Type'
+      security:
+      - Authorization: []
+  /group_types:
+    get:
+      operationId: GET_group_types
+      summary: Get all Group Types
+      tags:
+      - Groups
+      description: Returns an array of all group types. Although not present in this endpoint, every group must belong to one and only one group type. Each group type can have zero to many associated groups. Each group type can also have zero to many associated profiles (i.e. people within groups that belong to those group types).
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  group_types:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Group_Type'
+                  meta:
+                    type: object
+                    $ref: '#/components/schemas/Meta'
+                  links:
+                    type: object
+                    properties:
+                      group_type.group:
+                        type: object
+                        $ref: '#/components/schemas/Link'
+                  linked:
+                    type: object
+                    properties:
+                      group_types:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Group_Type'
+      security:
+      - Authorization: []
+components:
+  schemas:
+    Salary:
+      title: Salary
+      type: object
+      properties:
+        currency_type:
+          description: currency of the profile's <strong>current</strong> salary; <code>null</code> if never provided or no <strong>current</strong> salary; cannot be <code>null</code> if any other salary keys provided
+          type: string
+        date:
+          description: start date of the profile's <strong>current</strong> salary; <code>null</code> if never provided or no <strong>current</strong> salary; cannot be <code>null</code> if any other salary keys provided
+          type: string
+        guid:
+          description: unique identifier of the profile's <strong>current</strong> salary; <code>null</code> if never provided or no <strong>current</strong> salary; cannot be <code>null</code> if any other salary keys provided
+          type: string
+        pay_group_id:
+          description: unique identifier of the pay group associated with the profile's <strong>current</strong> salary; <code>null</code> if never provided or no <strong>current</strong> salary
+          type: integer
+        payroll_job_id:
+          description: unique identifier of the payroll job associated with the profile's <strong>current</strong> salary; <code>null</code> if never provided or no <strong>current</strong> salary
+          type: string
+        rate:
+          description: rate of the profile's <strong>current</strong> salary; valid values include <code>annually</code>, <code>weekly</code>, <code>biweekly</code>, <code>bimonthly</code>, <code>semimonthly</code>, <code>monthly</code>, <code>quarterly</code>, <code>semiannually</code>, and <code>thirteen_monthly</code>; <code>null</code> if never provided; blank if provided then deleted; cannot be <code>null</code> if any other salary keys provided
+          type: string
+        yearly_amount:
+          description: 'annualized amount ("amount_raw" * # of pay periods based on the "rate") of the profile''s <strong>current</strong> salary; all salaries are annualized; <code>null</code> if never provided; blank if provided then deleted; cannot be <code>null</code> if any other salary keys provided'
+          type: integer
+        hourly:
+          description: true if the salary is hourly, and false if yearly; cannot be <code>null</code> if any other salary keys provided. Known as is_hourly elsewhere in the app.
+          type: boolean
+        amount_raw:
+          description: returns the amount as it was inputted on the UI; if yearly, will be the amount per pay period; if hourly, will be the hourly rate; cannot be <code>null</code> if any other salary keys provided
+          type: string
+        payroll_company:
+          type: string
+          description: The Payroll Company associated with this salary. Required if multiple Payroll Companies. "Company name" defaults to first Payroll Company.
+        payroll_job:
+          type: string
+          description: Name of the Payroll Job for this Salary. Required if multiple Payroll Companies. Value of "Job name" will take first Payroll Job from specified Payroll Company.
+    Address:
+      title: Address
+      type: object
+      properties:
+        address1:
+          type: string
+        address2:
+          type: string
+        city:
+          type: string
+        state_id:
+          type: string
+        zip:
+          type: string
+        state:
+          type: string
+        country:
+          type: string
+        country_id:
+          type: string
+        phone:
+          type: string
+    Image:
+      title: Image
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the image
+        filename:
+          type: string
+          description: image's file name
+        mime_type:
+          type: string
+          description: image type
+        original:
+          type: string
+          description: link of image with original resolution
+        thumbs:
+          $ref: '#/components/schemas/Thumb'
+    Thumb:
+      title: Thumb
+      type: object
+      description: different resolutions of the image
+      properties:
+        75x75:
+          type: string
+        75x75c:
+          type: string
+        150x150:
+          type: string
+        150x150c:
+          type: string
+        300x300:
+          type: string
+        300x300c:
+          type: string
+        450x450:
+          type: string
+        550x450c:
+          type: string
+        800x800:
+          type: string
+        800x800c:
+          type: string
+    Group_Link:
+      title: Group Link
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the group
+        name:
+          type: string
+          description: name/label of the group
+    Home:
+      title: Home
+      type: object
+      description: fields represent the entire home address
+      properties:
+        address1:
+          type: string
+          description: address line 1 of the home address
+        address2:
+          type: string
+          description: address line 2 of the home address
+        city:
+          type: string
+          description: city of the home address
+        state_id:
+          type: string
+          description: 'state of the home address; for US, must be the 2-digit code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints'
+        country_id:
+          type: string
+          description: '"US" for the US; must be the ISO Alpha-2 code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints or just use the ISO Alpha-2 code'
+        zip:
+          type: string
+          description: zip or postal code of the home address
+    Team_Link:
+      title: Team Link
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the team
+        name:
+          type: string
+          description: name/label of the team
+    Healthcare:
+      title: Healthcare
+      type: object
+      properties:
+        beneficiary:
+          description: relationship of the profile's healthcare plan's beneficiary to the profile; valid values include <code>Employee Only</code>, <code>Employee/Child</code>, <code>Employee/Spouse</code>, <code>Family</code>, <code>Not Applicable</code>, and <code>Waive</code>; blank if never provided or provided then deleted; cannot be <code>null</code> if any other <code>healthcare</code> keys provided
+          type: string
+        amount:
+          description: amount of the profile's healthcare plan; numbers only; cannot be <code>null</code> if any other <code>healthcare</code> keys provided
+          type: string
+        currency_type:
+          description: currency type of the profile's healthcare plan amount; default <code>USD</code>
+          type: string
+    Meta_Group:
+      title: Meta Group
+      type: object
+      properties:
+        response:
+          type: integer
+          description: HTTP response
+        count:
+          type: integer
+          description: number of total groups
+        page_title:
+          type: string
+        page_copy:
+          type: string
+    Group:
+      title: Group
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the group
+        title:
+          type: string
+          description: name/label of the group
+        type:
+          type: string
+          description: name of the group type to which the group belongs
+        is_team:
+          type: boolean
+          description: true if the group is a team
+        address:
+          type: object
+          $ref: '#/components/schemas/Address'
+        count:
+          type: integer
+          description: number of profiles associated with this group
+        links:
+          type: object
+          properties:
+            group_type:
+              type: string
+              description: group type to which the group belongs
+    group-singular:
+      title: Group Singular
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the group
+        title:
+          type: string
+          description: name/label of the group
+        type:
+          type: string
+          description: <code>id</code> of the group type to which the group belongs
+        address:
+          type: object
+          $ref: '#/components/schemas/Address'
+        links:
+          type: object
+          properties:
+            group_type:
+              type: string
+              description: group type to which the group belongs
+            profiles:
+              type: array
+              description: array of profiles, identified by its <code>id</code>, that belong to the group
+              items:
+                type: string
+        linked:
+          type: array
+          items:
+            $ref: '#/components/schemas/Profile'
+    Job_Title_Link:
+      title: Job Title Link
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the job title
+        title:
+          type: string
+          description: name/label of the job title
+    Office:
+      title: Office
+      type: object
+      description: these fields represent the entire office address and are inherited from the "Office Location" group assigned to the profile
+      properties:
+        address1:
+          type: string
+          description: address line 1 of the office address
+        address2:
+          type: string
+          description: address line 2 of the office address
+        city:
+          type: string
+          description: city of the office address
+        state_id:
+          type: string
+          description: 'state of the office address; for US, must be the 2-digit code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints'
+        country_id:
+          type: string
+          description: '"US" for the US; must be the ISO Alpha-2 code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints or just use the ISO Alpha-2 code'
+        zip:
+          type: string
+          description: zip or postal code of the office address
+        phone:
+          type: string
+          description: phone number associated with the office location
+    Dental:
+      title: Dental
+      type: object
+      properties:
+        beneficiary:
+          description: relationship of the profile's dental plan's beneficiary to the profile; valid values include <code>Employee Only</code>, <code>Employee/Child</code>, <code>Employee/Spouse</code>, <code>Family</code>, <code>Not Applicable</code>, and <code>Waive</code>; blank if never provided or provided then deleted; cannot be <code>null</code> if any other <code>dental</code> keys provided
+          type: string
+        amount:
+          description: amount of the profile's dental plan; numbers only; cannot be <code>null</code> if any other <code>dental</code> keys provided
+          type: string
+        currency_type:
+          description: currency type of the profile's dental plan amount; default <code>USD</code>
+          type: string
+    Meta:
+      title: Meta
+      type: object
+      properties:
+        count:
+          type: integer
+          description: number of total objects
+        status:
+          type: integer
+          description: HTTP response
+    Group_Type:
+      title: Group Type
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the group type
+        field_name:
+          type: string
+          description: immutable, system generated field name for the group type
+        title:
+          type: string
+          description: name/label of the group type
+        deletable:
+          type: boolean
+          description: denotes whether or not the group can be deleted by someone with the appropriate permissions; <code>true</code> for all groups except Departments and Office Location.
+        type:
+          type: string
+          description: 'returns one of three group types: office location, department, or custom; location and department are system delivered groups (will also not be deletable)'
+        x_groups_as_teams:
+          type: boolean
+          description: <code>true</code> if the group type has been chosen to display on the "Teams" page in Namely, eligible for @mention (additional permissions apply)
+    Profile:
+      title: Profile
+      type: object
+      properties:
+        id:
+          description: unique identifier of the profile
+          type: string
+        email:
+          description: company email of the profile
+          type: string
+        first_name:
+          description: first name of the profile
+          type: string
+        last_name:
+          description: last name of the profile
+          type: string
+        user_status:
+          description: user status of the profile; valid values in the API are <code>active</code>, <code>pending</code>, and <code>inactive</code>
+          type: string
+        updated_at:
+          description: epoch time that the profile was updated; equal to <code>create_at</code> if never updated
+          type: integer
+        created_at:
+          description: epoch time that the profile was created
+          type: integer
+        preferred_name:
+          description: preferred name of the profile; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        image:
+          $ref: '#/components/schemas/Image'
+        full_name:
+          description: combination of <code>first_name</code> and <code>last_name</code>
+          type: string
+        job_title:
+          $ref: '#/components/schemas/Job_Title_Link'
+        reports_to:
+          description: information regarding the profile to whom the profile of this object reports
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                description: unique identifier of the profile to whom the profile of this object reports; <code>no_guid</code> if null; cannot be <code>null</code> if any other <code>reports_to</code> keys provided
+                type: string
+              first_name:
+                description: first name of the profile to whom the profile of this object reports; <code>Nobody</code> if null; cannot be <code>null</code> if any other <code>reports_to</code> keys provided
+                type: string
+              last_name:
+                description: last name of the profile to whom the profile of this object reports; <code>Nobody</code> if null; cannot be <code>null</code> if any other <code>reports_to</code> keys provided
+                type: string
+              email:
+                description: company email of the profile to whom the profile of this object reports; <code>None</code> if null; cannot be <code>null</code> if any other <code>reports_to</code> keys provided
+                type: string
+        employee_type:
+          description: employee type of the profile; valid values include <code>Full Time</code>, <code>Part Time</code>, <code>Intern</code>, <code>Contractor</code>, <code>Freelance</code>
+          type: object
+          properties:
+            title:
+              type: string
+        access_role:
+          description: returns the type of access_role assigned to the profile
+          type: string
+        ethnicity:
+          description: self described ethnicity of the profile; <code>null</code> if never provided
+          type:
+          - string
+          - 'null'
+        links:
+          type: object
+          properties:
+            job_title:
+              type: object
+              $ref: '#/components/schemas/Job_Title_Link'
+            groups:
+              type: array
+              items:
+                $ref: '#/components/schemas/Group_Link'
+            teams:
+              type: array
+              items:
+                $ref: '#/components/schemas/Team_Link'
+            ? ''
+            : type: string
+        middle_name:
+          description: middle name of the profile; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        gender:
+          description: gender of the profile; <code>null</code> if never provided; valid values include <code>Male</code> and <code>Female</code>
+          type: string
+        job_change_reason:
+          description: job change reason of the profile; <code>null</code> if never provided; valid values include <code>New Hire</code>, <code>Salary Change</code>, <code>Promotion</code>, and <code>Transfer</code>
+          type: string
+        terminated_reason:
+          description: terminated reason of the profile; <code>null</code> if never provided
+          type: string
+        start_date:
+          description: start date of the profile; format <code>YYYY-MM-DD</code>
+          type: string
+        departure_date:
+          description: departure date of the profile; format <code>YYYY-MM-DD</code>; blank if never provided or provided then deleted
+          type: string
+        employee_id:
+          description: employee id of the profile; blank if never provided or provided then deleted
+          type: string
+        personal_email:
+          description: employee id of the profile; blank if never provided or provided then deleted
+          type: string
+        dob:
+          description: date of birth of the profile; format <code>YYYY-MM-DD</code>; blank if never provided or provided then deleted
+          type: string
+        ssn:
+          description: ssn of the profile; blank if never provided or provided then deleted
+          type: string
+        marital_status:
+          description: marital status of the profile; <code>null</code> if never provided; valid values include <code>Single</code>, <code>Married</code>, <code>Civil Partnership</code>, <code>Separated</code>, and <code>Divorced</code>
+          type: string
+        bio:
+          description: bio of the profile; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        asset_management:
+          description: list of assets on the profile; blank if never provided or provided then deleted; valid values include <code>Laptop</code>, <code>Cell Phone</code>, <code>Building Keys</code>, <code>Corporate Card</code>, and <code>Air Card</code>
+          type: string
+        laptop_asset_number:
+          description: laptop asset number of the profile; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        corporate_card_member:
+          description: corporate card number of the profile; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        key_tag_number:
+          description: key tag number of the profile; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        linkedin_url:
+          description: linkedin_url of the profile; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        office_main_number:
+          description: office main number of the profile; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        office_direct_dial:
+          description: office direct dial number of the profile; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        office_phone:
+          description: office phone number of the profile; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        office_fax:
+          description: office fax number of the profile; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        office_company_mobile:
+          description: office company mobile phone number of the profile; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        home_phone:
+          description: home phone number of the profile; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        mobile_phone:
+          description: mobile phone number of the profile; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        home:
+          $ref: '#/components/schemas/Home'
+        office:
+          $ref: '#/components/schemas/Office'
+        emergency_contact:
+          description: name of the profile's emergency contact; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        emergency_contact_phone:
+          description: phone number of the profile's emergency contact; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        resume:
+          description: resume of the profile; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        current_job_description:
+          description: current job description of of the profile; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        job_description:
+          description: current job description of of the profile; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        salary:
+          $ref: '#/components/schemas/Salary'
+        healthcare:
+          $ref: '#/components/schemas/Healthcare'
+        healthcare_info:
+          description: description of the profile's healthcare plan; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        dental:
+          $ref: '#/components/schemas/Dental'
+        dental_info:
+          description: description of the profile's dental plan; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        vision_plan_info:
+          description: description of the profile's vision plan; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        life_insurance_info:
+          description: description of the profile's life insurance plan; <code>null</code> if never provided; blank if provided then deleted
+          type: string
+        namely_time_employee_role:
+          description: only applies to companies using Namely Time
+          type: string
+        namely_time_manager_role:
+          description: only applies to companies using Namely Time
+          type: string
+    Link:
+      title: Link
+      type: object
+      properties:
+        type:
+          type: string
+  securitySchemes:
+    Authorization:
+      name: Authorization
+      type: apiKey
+      in: header

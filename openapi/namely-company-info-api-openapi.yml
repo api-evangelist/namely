@@ -1,0 +1,58 @@
+openapi: 3.2.0
+info:
+  version: ''
+  title: Namely Company Info API
+  description: Move your app forward with the Namely API Move your app forward with the Namely API
+tags:
+- name: Company Info
+paths:
+  /companies/info:
+    get:
+      operationId: GET_companies-info
+      summary: Company Info
+      tags:
+      - Company Info
+      description: 'Get company related information. This includes authentication methods, name, permalink, and background image.
+
+
+        Note: Authentication is **not** required for this endpoint because the data (company name, background image, etc.) are required for displaying the public home page of a Namely company.'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Compay name
+                  permalink:
+                    type: string
+                    description: Company permalink, the subdomain before namely.com
+                  background_url:
+                    type: string
+                    description: Background image on the login page.
+                  logo_url:
+                    type: string
+                    description: Logo image on the home page.
+                  authentications:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - email_password
+                          - google_oauth2
+                          - saml
+                        init_url:
+                          type: string
+                          required: false
+components:
+  securitySchemes:
+    Authorization:
+      name: Authorization
+      type: apiKey
+      in: header

@@ -1,0 +1,429 @@
+openapi: 3.2.0
+info:
+  version: ''
+  title: Namely Profile Fields API
+  description: Move your app forward with the Namely API Move your app forward with the Namely API
+tags:
+- name: Profile Fields
+paths:
+  /profiles/fields:
+    get:
+      operationId: GET_profiles-fields
+      summary: Get all Profile Fields
+      tags:
+      - Profile Fields
+      description: 'Returns all profiles fields as configured at your company with instructions on valid format for passing through the API. This includes custom fields, but exceptions can be found on the #endpoint:K6iFb2x6z2yTM9jev page.'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fields:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Field'
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  links:
+                    type: object
+                    properties:
+                      fields.sections:
+                        type: string
+                  linked:
+                    type: object
+                    properties:
+                      sections:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Section'
+      security:
+      - Authorization: []
+    post:
+      operationId: POST_profiles-fields
+      summary: Create a Profile Field
+      tags:
+      - Profile Fields
+      description: Creates a profile field within a profile field section.
+      responses:
+        '201':
+          description: Created Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fields:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Field'
+                  meta:
+                    type: object
+                    $ref: '#/components/schemas/Meta'
+                  links:
+                    type: object
+                    properties:
+                      fields.sections:
+                        type: string
+                  linked:
+                    type: object
+                    properties:
+                      sections:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Section'
+      security:
+      - Authorization: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Create_Profile_Field'
+  /profiles/fields/{id}:
+    parameters:
+    - name: id
+      in: path
+      description: id of the profile field you want to view
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: GET_profiles-fields-id
+      summary: Get a Profile Field
+      tags:
+      - Profile Fields
+      description: Returns information about a single Profile Field.
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fields:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Field'
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  links:
+                    type: object
+                    properties:
+                      fields.sections:
+                        type: string
+                  linked:
+                    type: object
+                    properties:
+                      sections:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Section'
+      security:
+      - Authorization: []
+    put:
+      operationId: PUT_profiles-fields-id
+      summary: Update a Profile Field
+      tags:
+      - Profile Fields
+      description: Updates a profile field within a profile field section. Supports changing the label and the profile field section in which it sits.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fields:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Field'
+                  meta:
+                    type: object
+                    properties:
+                      count:
+                        type: integer
+                      status:
+                        type: integer
+                  links:
+                    type: object
+                    properties:
+                      fields.sections:
+                        type: string
+                  linked:
+                    type: object
+                    properties:
+                      sections:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Section'
+      security:
+      - Authorization: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Update_Profile_Field'
+  /profiles/fields/sections:
+    get:
+      operationId: GET_profiles-fields-sections
+      summary: Get all Profile Field Sections
+      tags:
+      - Profile Fields
+      description: 'Returns all profiles field sections as configured at your company. Linked to this endpoint is a list of profile fields, including additional fields not necessarily included in the #endpoint:2PMjgBj4iCTtp4tJe endpoint, as not all are API transferrable.'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sections:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Section'
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  links:
+                    type: object
+                    properties:
+                      sections.fields:
+                        type: string
+                  linked:
+                    type: object
+                    properties:
+                      fields:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Field'
+      security:
+      - Authorization: []
+  /profiles/fields/sections/{id}:
+    parameters:
+    - name: id
+      in: path
+      description: id of the profile field section you want to view
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: GET_profiles-fields-sections-id
+      summary: Get a Profile Field Section
+      tags:
+      - Profile Fields
+      description: Returns information about a single Profile Field Section.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sections:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Section'
+                  meta:
+                    type: object
+                    $ref: '#/components/schemas/Meta'
+                  links:
+                    type: object
+                    properties:
+                      sections.fields:
+                        type: string
+                  linked:
+                    type: object
+                    properties:
+                      fields:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Field'
+      security:
+      - Authorization: []
+    put:
+      operationId: PUT_profiles-fields-sections-id
+      summary: Update a Profile Field Section
+      tags:
+      - Profile Fields
+      description: Updates the name/label of a profile field section.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  sections:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Section'
+                  meta:
+                    type: object
+                    $ref: '#/components/schemas/Meta'
+                  links:
+                    type: object
+                    properties:
+                      sections.fields:
+                        type: string
+                  linked:
+                    type: object
+                    properties:
+                      fields:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Field'
+      security:
+      - Authorization: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Update_Section'
+components:
+  schemas:
+    Section:
+      title: Section
+      type: object
+      properties:
+        id:
+          description: unique identifier of the profile field section
+          type: string
+        title:
+          description: 'label of the profile field section; only editable on through the API via the #endpoint:eoL989Gmn6vnfSPbE</a> endpoint'
+          type: string
+        block_titles:
+          description: list of the "block" subsections within the section; can be empty
+          type: array
+          items:
+            type: string
+        links:
+          type: object
+          properties:
+            fields:
+              type: array
+              description: 'list of unique identifiers of each #endpoint:kxzfwAD7zrZ9CByGA located within the profile field section'
+              items:
+                type: string
+    Field:
+      title: Field
+      type: object
+      properties:
+        id:
+          description: unique identifier of the profile field
+          type: string
+        name:
+          description: immutable name of the profile field; auto created based on label if using UI to create profile field
+          type: string
+        label:
+          description: label of the profile field; editable on UI and through API
+          type: string
+        type:
+          description: immutable data type of the profile field; valid values include <code>text</code>, <code>image</code>, <code>referencehistory</code> (<code>job_title</code> only), <code>select</code>, <code>date</code>, <code>email</code>, <code>longtext</code>, <code>checkboxes</code>, <code>address</code>, <code>address</code>, <code>file</code>, <code>referenceselect</code> (<code>user_status</code> only), <code>salary</code>, <code>number</code>, <code>address</code>
+          type: string
+        default:
+          description: N/A - no longer supported
+          type: boolean
+        deletable:
+          description: <code>true</code> if the profile field is able to be deleted
+          type: boolean
+        valid_format_info:
+          description: valid format information for passing data through the API for the profile field
+          type: string
+        block_index:
+          description: refers to the profile field "block" in which the profile field is located (included in "linked"); sequentially corresponds based the position of the block title; top position is 0
+          type: integer
+        links:
+          type: object
+          properties:
+            section:
+              type: string
+              description: 'unique identifier of the #endpoint:66aqLXinWcyrR2aY2 in which the profile field is located'
+    Create_Profile_Field_Payload:
+      title: Create Profile Field Payload
+      type: object
+      properties:
+        label:
+          type: string
+          description: label of the profile field; cannot contain special characters; cannot contain word "id"; must be unique; immutable <code>name</code> will be auto-generated based on label
+        section:
+          description: id of the profile field section in which you want the place the field
+          type: string
+        type:
+          description: field type; valid values are <code>text</code>, <code>long_text</code>, <code>date</code>, <code>file</code>, and <code>number</code>
+          type: string
+      required:
+      - label
+      - section
+      - type
+    Update_Profile_Field:
+      title: Update Profile Field
+      required:
+      - fields
+      type: object
+      properties:
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/Update_Profile_Field_Payload'
+    Update_Section_Payload:
+      title: Update Section Payload
+      type: object
+      properties:
+        title:
+          type: string
+          description: new name/label of the profile field section
+      required:
+      - title
+    Create_Profile_Field:
+      title: Create Profile Field
+      required:
+      - fields
+      type: object
+      properties:
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/Create_Profile_Field_Payload'
+    Meta:
+      title: Meta
+      type: object
+      properties:
+        count:
+          type: integer
+          description: number of total objects
+        status:
+          type: integer
+          description: HTTP response
+    Update_Section:
+      title: Update Section
+      required:
+      - sections
+      type: object
+      properties:
+        sections:
+          type: array
+          items:
+            $ref: '#/components/schemas/Update_Section_Payload'
+    Update_Profile_Field_Payload:
+      title: Update Profile Field Payload
+      type: object
+      properties:
+        label:
+          description: '[new] label of the profile field; cannot contain special characters; cannot contain word "id"; must be unique; immutable <code>name</code> will be auto-generated based on label'
+          type: string
+        section:
+          description: id of the [new] profile field section in which you want the place the field
+          type: string
+  securitySchemes:
+    Authorization:
+      name: Authorization
+      type: apiKey
+      in: header

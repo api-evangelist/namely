@@ -1,0 +1,286 @@
+openapi: 3.2.0
+info:
+  version: ''
+  title: Namely Company Resources API
+  description: Move your app forward with the Namely API Move your app forward with the Namely API
+tags:
+- name: Company Resources
+paths:
+  /folders:
+    get:
+      operationId: GET_folders
+      summary: Get all Folders
+      tags:
+      - Company Resources
+      description: This endpoint returns a list of folders and their information.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resources:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Folder'
+      security:
+      - Authorization: []
+    post:
+      operationId: POST_folders
+      summary: Create Folder
+      tags:
+      - Company Resources
+      description: To create a folder, a title is required. An array of folders will be returned upon success, similar to folders index endpoint.
+      responses:
+        '201':
+          description: Created Reponse
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resources:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Folder'
+      security:
+      - Authorization: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Create_Folder'
+  /resources/{id}:
+    parameters:
+    - name: id
+      in: path
+      description: The resource's id.
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: GET_resources-id
+      summary: Get a Resource
+      tags:
+      - Company Resources
+      description: Specify the id of the resource to get a complete description. Please see "Download Resource" documentation to actually download a specific resource.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  groups:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Resource'
+      security:
+      - Authorization: []
+  /folders/{id}/resources:
+    parameters:
+    - name: id
+      in: path
+      description: Use the folder id to pull the resources you want to see.
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: GET_folders-id-resources
+      summary: Get Resources in a Folder
+      tags:
+      - Company Resources
+      description: This method returns an array of resources, whose format and content will be the same as the show resource endpoint.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resources:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Resource'
+                  meta:
+                    type: object
+                    properties:
+                      is_super_admin:
+                        type: boolean
+                      accepted_file_extensions:
+                        type: string
+      security:
+      - Authorization: []
+    delete:
+      operationId: DELETE_folders-id-resources
+      summary: Delete Resource
+      tags:
+      - Company Resources
+      description: This endpoint deletes a specified resource.
+      responses:
+        '200':
+          description: Successful Response
+      security:
+      - Authorization: []
+  /resources:
+    get:
+      operationId: GET_resources
+      summary: Get Resources not in a Folder
+      tags:
+      - Company Resources
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resources:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Resource'
+                  meta:
+                    type: object
+                    properties:
+                      is_super_admin:
+                        type: boolean
+                      accepted_file_extensions:
+                        type: string
+  /folders/{id}:
+    parameters:
+    - name: id
+      in: path
+      description: <code>id</code> of the folder you want to update
+      required: true
+      schema:
+        type: string
+    put:
+      operationId: PUT_folders-id
+      summary: Update Folder
+      tags:
+      - Company Resources
+      description: Updates the name of a folder.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resources:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Folder'
+      security:
+      - Authorization: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Update_Folder'
+    delete:
+      operationId: DELETE_folders-id
+      summary: Delete Folder
+      tags:
+      - Company Resources
+      description: You must pass in the folder id to delete a specific folder.
+      responses:
+        '200':
+          description: Successful Response
+      security:
+      - Authorization: []
+components:
+  schemas:
+    Folder:
+      title: Folder
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the folder
+        title:
+          type: string
+          description: name/label of the folder
+        type:
+          type: string
+          default: Folders::DocumentFolder
+          description: ''
+        items_count:
+          type: integer
+          description: number of files within the folder
+        position:
+          type: integer
+          description: position of the folder on the UI; 0 is the top position
+    Create_Folder:
+      title: Create Folder
+      required:
+      - folders
+      type: object
+      properties:
+        folders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Create_Folder_Payload'
+    Resource:
+      title: Resource
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the resource file
+        title:
+          type: string
+          description: name/label of the resource file
+        link:
+          type: string
+        file_name:
+          type: string
+          description: file name of the resource file
+        file_format:
+          type: string
+        file_size:
+          type: string
+        file_url:
+          type: string
+        last_edited:
+          type: string
+        folder_id:
+          type: integer
+          description: <code>id</code> of the folder in which the resource file sits; <code>null</code> if not in a folder
+    Update_Folder:
+      title: Update Folder
+      required:
+      - folders
+      type: object
+      properties:
+        folders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Update_Folder_Payload'
+    Create_Folder_Payload:
+      title: Create Folder Payload
+      required:
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+    Update_Folder_Payload:
+      title: Update Folder Payload
+      required:
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+  securitySchemes:
+    Authorization:
+      name: Authorization
+      type: apiKey
+      in: header
