@@ -33,18 +33,18 @@ specificationVersion: '0.20'
 created: '2026-08-26'
 modified: '2026-08-26'
 tags:
-  - HR
-  - Human Capital Management
-  - Payroll
-  - Employee Data
+  - hr
+  - human-capital-management
+  - payroll
+  - employee-data
   - Onboarding
   - Benefits
-  - Applicant Tracking
-  - Performance Management
+  - applicant-tracking
+  - performance-management
   - SCIM
-  - Single Sign-On
-  - Identity Provisioning
-  - Workforce Management
+  - single-sign-on
+  - identity-provisioning
+  - workforce-management
 tags_raw:
   - hr
   - human-capital-management
@@ -177,6 +177,8 @@ apis:
   humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
   baseURL: https://{company}.namely.com/api/v1
   tags:
+  - Event
+  tags_raw:
   - Events
   properties:
   - type: OpenAPI
@@ -205,6 +207,8 @@ apis:
   humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
   baseURL: https://{company}.namely.com/api/v1
   tags:
+  - Group
+  tags_raw:
   - Groups
   properties:
   - type: OpenAPI
@@ -317,6 +321,8 @@ apis:
   humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
   baseURL: https://{company}.namely.com/api/v1
   tags:
+  - JobTitle
+  tags_raw:
   - Job Title
   properties:
   - type: OpenAPI
@@ -429,6 +435,8 @@ apis:
   humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
   baseURL: https://{company}.namely.com/api/v1
   tags:
+  - Notification
+  tags_raw:
   - Notifications
   properties:
   - type: OpenAPI
@@ -570,6 +578,8 @@ apis:
   humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
   baseURL: https://{company}.namely.com/api/v1
   tags:
+  - Team
+  tags_raw:
   - Teams
   properties:
   - type: OpenAPI
