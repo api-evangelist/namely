@@ -33,18 +33,18 @@ specificationVersion: '0.20'
 created: '2026-08-26'
 modified: '2026-08-26'
 tags:
-  - hr
-  - human-capital-management
-  - payroll
-  - employee-data
+  - HR
+  - HCM
+  - Payroll
+  - Employee Data
   - Onboarding
   - Benefits
-  - applicant-tracking
-  - performance-management
+  - Applicant Tracking
+  - Performance Management
   - SCIM
-  - single-sign-on
-  - identity-provisioning
-  - workforce-management
+  - Single Sign-On
+  - Identity Provisioning
+  - Workforce Management
 tags_raw:
   - hr
   - human-capital-management
