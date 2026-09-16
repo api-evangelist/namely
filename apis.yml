@@ -59,6 +59,7 @@ tags:
 - Single Sign-On
 - Identity Provisioning
 - Workforce Management
+- Identity Federation
 tags_raw:
 - hr
 - human-capital-management
@@ -72,6 +73,7 @@ tags_raw:
 - single-sign-on
 - identity-provisioning
 - workforce-management
+- Identity Federation
 apis:
 - aid: namely:namely-comments-api
   name: Namely Comments API
