@@ -1,18 +1,16 @@
 aid: namely
 name: Namely
-description: >-
-  Namely is a mid-market Human Capital Management (HCM) platform combining HR, payroll,
-  onboarding, benefits administration, time and attendance, performance management and applicant
-  tracking, delivered as a multi-tenant SaaS on customer subdomains. It publishes a public
-  developer portal on Stoplight carrying a Swagger 2.0 contract for its REST API v1 (39 paths, 54
-  operations, 95 schemas) covering employee profiles, the tenant-specific profile field schema,
-  groups and teams, job titles and tiers, company resources, the social home feed, notifications
-  and reports. Alongside the REST API, Namely runs a SCIM 2.0 provisioning surface acting as the
-  source of record for identity providers such as Okta, and supports SAML 2.0 single sign-on as a
-  service provider. Authentication is either a 3-legged OAuth 2.0 authorization code grant for
-  partner integrations or a Personal Access Token for a customer's own integrations, both minted
-  inside the customer's own tenant. Namely merged into the combined Vensure Employer Solutions /
-  PrismHR organisation in September 2022.
+description: Namely is a mid-market Human Capital Management (HCM) platform combining HR, payroll, onboarding,
+  benefits administration, time and attendance, performance management and applicant tracking, delivered
+  as a multi-tenant SaaS on customer subdomains. It publishes a public developer portal on Stoplight carrying
+  a Swagger 2.0 contract for its REST API v1 (39 paths, 54 operations, 95 schemas) covering employee profiles,
+  the tenant-specific profile field schema, groups and teams, job titles and tiers, company resources,
+  the social home feed, notifications and reports. Alongside the REST API, Namely runs a SCIM 2.0 provisioning
+  surface acting as the source of record for identity providers such as Okta, and supports SAML 2.0 single
+  sign-on as a service provider. Authentication is either a 3-legged OAuth 2.0 authorization code grant
+  for partner integrations or a Personal Access Token for a customer's own integrations, both minted inside
+  the customer's own tenant. Namely merged into the combined Vensure Employer Solutions / PrismHR organisation
+  in September 2022.
 deliveryModel:
   model: saas
   open_source: false
@@ -47,33 +45,33 @@ x-type: company
 x-source: harvest:secondary-market
 specificationVersion: '0.20'
 created: '2026-08-26'
-modified: '2026-08-26'
+modified: '2026-09-16'
 tags:
-  - HR
-  - HCM
-  - Payroll
-  - Employee Data
-  - Onboarding
-  - Benefits
-  - Applicant Tracking
-  - Performance Management
-  - SCIM
-  - Single Sign-On
-  - Identity Provisioning
-  - Workforce Management
+- HR
+- HCM
+- Payroll
+- Employee Data
+- Onboarding
+- Benefits
+- Applicant Tracking
+- Performance Management
+- SCIM
+- Single Sign-On
+- Identity Provisioning
+- Workforce Management
 tags_raw:
-  - hr
-  - human-capital-management
-  - payroll
-  - employee-data
-  - onboarding
-  - benefits
-  - applicant-tracking
-  - performance-management
-  - scim
-  - single-sign-on
-  - identity-provisioning
-  - workforce-management
+- hr
+- human-capital-management
+- payroll
+- employee-data
+- onboarding
+- benefits
+- applicant-tracking
+- performance-management
+- scim
+- single-sign-on
+- identity-provisioning
+- workforce-management
 apis:
 - aid: namely:namely-comments-api
   name: Namely Comments API
@@ -418,7 +416,7 @@ apis:
   - type: Sandbox
     url: sandbox/namely-sandbox.yml
 - aid: namely:namely-namely-system-info-api
-  name: Namely Namely System Info API
+  name: Namely System Info API
   description: The Namely System Info API from Namely — 2 operation(s) for namely system info.
   humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
   baseURL: https://{company}.namely.com/api/v1
@@ -505,8 +503,7 @@ apis:
     url: sandbox/namely-sandbox.yml
 - aid: namely:namely-profile-fields-sections-api
   name: Namely Profile Fields Sections API
-  description: >-
-    The Profile Fields Sections API from Namely — 2 operation(s) for profile fields sections.
+  description: The Profile Fields Sections API from Namely — 2 operation(s) for profile fields sections.
   humanURL: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
   baseURL: https://{company}.namely.com/api/v1
   tags:
@@ -619,74 +616,77 @@ apis:
   - type: Sandbox
     url: sandbox/namely-sandbox.yml
 common:
-  - type: DomainSecurity
-    url: security/namely-domain-security.yml
-  - type: Website
-    url: https://namely.com/
-  - type: DeveloperPortal
-    url: https://developers.namely.com/
-  - type: Documentation
-    url: https://developers.namely.com/
-  - type: APIReference
-    url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
-  - type: GettingStarted
-    url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
-  - type: Authentication
-    url: authentication/namely-authentication.yml
-  - type: Blog
-    url: https://namely.com/blog/
-  - type: Support
-    url: https://namely.com/employee-support/
-  - type: GitHubOrganization
-    url: https://github.com/namely
-  - type: Pricing
-    url: https://namely.com/lp/pricing/
-  - type: Login
-    url: https://namely.com/login/
-  - type: TermsOfService
-    url: https://namely.com/tos/
-  - type: PrivacyPolicy
-    url: https://namely.com/privacy/
-  - type: StatusPage
-    url: https://status.namely.com/
-  - type: ChangeLog
-    url: changelog/namely-changelog.yml
-  - type: Lifecycle
-    url: lifecycle/namely-lifecycle.yml
-  - type: Conventions
-    url: conventions/namely-conventions.yml
-  - type: Conformance
-    url: conformance/namely-conformance.yml
-  - type: DataModel
-    url: data-model/namely-data-model.yml
-  - type: ErrorCatalog
-    url: errors/namely-problem-types.yml
-  - type: RateLimits
-    url: rate-limits/namely-rate-limits.yml
-  - type: Plans
-    url: plans/namely-plans-pricing.yml
-  - type: Packages
-    url: packages/namely-packages.yml
-  - type: SDKs
-    url: packages/namely-packages.yml
-  - type: Sandbox
-    url: sandbox/namely-sandbox.yml
-  - type: X-MCPServerCandidate
-    url: mcp/namely-mcp.yml
-    note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
-  - type: AgentSkill
-    url: skills/_index.yml
-  - type: Overlay
-    url: overlays/namely-api-overlay.yaml
-  - type: LLMsTxt
-    url: https://namely.com/llms.txt
-  - type: LLMsTxt
-    url: llms/namely-llms.txt
+- type: DomainSecurity
+  url: security/namely-domain-security.yml
+- type: Website
+  url: https://namely.com/
+- type: DeveloperPortal
+  url: https://developers.namely.com/
+- type: Documentation
+  url: https://developers.namely.com/
+- type: APIReference
+  url: https://developers.namely.com/docs/namely-api/12dab89109ded-namely-api
+- type: GettingStarted
+  url: https://developers.namely.com/docs/namely-api/72f9086e4f0e7-introduction
+- type: Authentication
+  url: authentication/namely-authentication.yml
+- type: Blog
+  url: https://namely.com/blog/
+- type: Support
+  url: https://namely.com/employee-support/
+- type: GitHubOrganization
+  url: https://github.com/namely
+- type: Pricing
+  url: https://namely.com/lp/pricing/
+- type: Login
+  url: https://namely.com/login/
+- type: TermsOfService
+  url: https://namely.com/tos/
+- type: PrivacyPolicy
+  url: https://namely.com/privacy/
+- type: StatusPage
+  url: https://status.namely.com/
+- type: ChangeLog
+  url: changelog/namely-changelog.yml
+- type: Lifecycle
+  url: lifecycle/namely-lifecycle.yml
+- type: Conventions
+  url: conventions/namely-conventions.yml
+- type: Conformance
+  url: conformance/namely-conformance.yml
+- type: DataModel
+  url: data-model/namely-data-model.yml
+- type: ErrorCatalog
+  url: errors/namely-problem-types.yml
+- type: RateLimits
+  url: rate-limits/namely-rate-limits.yml
+- type: Plans
+  url: plans/namely-plans-pricing.yml
+- type: Packages
+  url: packages/namely-packages.yml
+- type: SDKs
+  url: packages/namely-packages.yml
+- type: Sandbox
+  url: sandbox/namely-sandbox.yml
+- type: X-MCPServerCandidate
+  url: mcp/namely-mcp.yml
+  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate
+    — a tool list derived from the published API contracts, not an existing server. The scorer already
+    read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type
+    surfaces with a server that does not exist.'
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Overlay
+  url: overlays/namely-api-overlay.yaml
+- type: LLMsTxt
+  url: https://namely.com/llms.txt
+- type: LLMsTxt
+  url: llms/namely-llms.txt
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
-  - FN: APIs.json
-    email: info@apis.io
+- FN: Kin Lane
+  email: kin@apievangelist.com
+- FN: APIs.json
+  email: info@apis.io
 x-enrichment:
   date: '2026-08-26'
   status: enriched
