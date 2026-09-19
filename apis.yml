@@ -47,7 +47,7 @@ specificationVersion: '0.20'
 created: '2026-08-26'
 modified: '2026-09-16'
 tags:
-- HR
+- Human Resources
 - HCM
 - Payroll
 - Employee Data
@@ -56,7 +56,7 @@ tags:
 - Applicant Tracking
 - Performance Management
 - SCIM
-- Single Sign-On
+- SSO
 - Identity Provisioning
 - Workforce Management
 - Identity Federation
