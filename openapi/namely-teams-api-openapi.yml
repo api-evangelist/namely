@@ -40,12 +40,6 @@ paths:
                           $ref: '#/components/schemas/team-category'
 components:
   schemas:
-    Link:
-      title: Link
-      type: object
-      properties:
-        type:
-          type: string
     team-category:
       title: Team Category
       type: object
@@ -83,6 +77,12 @@ components:
               description: <code>id</code> of any team categories to which the team belongs; 0 to many
               items:
                 type: string
+    Link:
+      title: Link
+      type: object
+      properties:
+        type:
+          type: string
   securitySchemes:
     Authorization:
       name: Authorization

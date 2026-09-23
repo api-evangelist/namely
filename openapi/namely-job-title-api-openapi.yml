@@ -15,7 +15,7 @@ paths:
       description: 'Returns all job titles. Each job title must have one and only one linked job tier (and each job tier can have zero to many linked job titles).
 
 
-        When using the #endpoint:K6iFb2x6z2yTM9jev endpoint, the API user must either use the <code>title</code> or <code>id</code> of a <code>job_title</code>.'
+        When using the #endpoint:K6iFb2x6z2yTM9jev endpoint, the API user must either use the title or id of a job_title.'
       responses:
         '200':
           description: Successful Response
@@ -55,7 +55,7 @@ paths:
       description: 'Creates a job title.
 
 
-        Use the #endpoint:xfyRRDnWE32d5PNBZ endpoint to get a list of job tiers, whose <code>id</code> is used to populate the value for the <code>parent</code> (job tier) key in the request body.'
+        Use the #endpoint:xfyRRDnWE32d5PNBZ endpoint to get a list of job tiers, whose id is used to populate the value for the parent (job tier) key in the request body.'
       responses:
         '201':
           description: Create Response
@@ -107,7 +107,7 @@ paths:
       description: 'Returns information about a single Job Title..
 
 
-        When using the #endpoint:K6iFb2x6z2yTM9jev endpoint, the API user must either use the <code>title</code> or <code>id</code> of a <code>job_title</code>.'
+        When using the #endpoint:K6iFb2x6z2yTM9jev endpoint, the API user must either use the title or id of a job_title.'
       responses:
         '200':
           description: Successful Response
@@ -143,7 +143,13 @@ paths:
       summary: Update a Job Title
       tags:
       - Job Title
-      description: "Updates the label and/or parent (job tier) of a job title.\n\nUse the #endpoint:xfyRRDnWE32d5PNBZ endpoint to get a list of job tiers, whose <code>id</code> is used to populate the value for the <code>parent</code> (job tier) key in the request body. \n\nIf not updating the <code>parent</code>, use the <code>id</code> of the current <code>parent</code> value; if not updating the <code>title</code>, use the current job title <code>title</code>."
+      description: 'Updates the label and/or parent (job tier) of a job title.
+
+
+        Use the #endpoint:xfyRRDnWE32d5PNBZ endpoint to get a list of job tiers, whose id is used to populate the value for the parent (job tier) key in the request body.
+
+
+        If not updating the parent, use the id of the current parent value; if not updating the title, use the current job title title.'
       responses:
         '200':
           description: Successful Response
@@ -181,26 +187,32 @@ paths:
               $ref: '#/components/schemas/Update_Job_Title'
 components:
   schemas:
-    Create_Job_Title:
-      title: Create Job Title
+    Create_Job_Title_Payload:
+      title: Create Job Title Payload
       type: object
       properties:
-        job_titles:
-          type: array
-          items:
-            $ref: '#/components/schemas/Create_Job_Title_Payload'
+        title:
+          type: string
+          description: name/label of the job title you’re creating
+        parent:
+          type: string
+          description: id of the job tier with which you want to associate the job title
       required:
-      - job_titles
-    Update_Job_Title:
-      title: Update Job Title
+      - title
+      - parent
+    update-job-title-payload:
+      title: Update Job Title Payload
       type: object
       properties:
-        job_titles:
-          type: array
-          items:
-            $ref: '#/components/schemas/update-job-title-payload'
+        title:
+          type: string
+          description: '[new] name/label of the job title you’re updating'
+        parent:
+          type: string
+          description: id of the [new] job tier with which you want to associate the job title
       required:
-      - job_titles
+      - title
+      - parent
     Job_Tier:
       title: Job Tier
       type: object
@@ -222,6 +234,32 @@ components:
               description: id of the job titles associated with the job tier
               items:
                 type: string
+    Link:
+      title: Link
+      type: object
+      properties:
+        type:
+          type: string
+    Update_Job_Title:
+      title: Update Job Title
+      type: object
+      properties:
+        job_titles:
+          type: array
+          items:
+            $ref: '#/components/schemas/update-job-title-payload'
+      required:
+      - job_titles
+    Create_Job_Title:
+      title: Create Job Title
+      type: object
+      properties:
+        job_titles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Create_Job_Title_Payload'
+      required:
+      - job_titles
     Job_Title:
       title: Job Title
       type: object
@@ -241,19 +279,6 @@ components:
             job_tier:
               type: string
               description: 'id of the job tier associated with the job title '
-    update-job-title-payload:
-      title: Update Job Title Payload
-      type: object
-      properties:
-        title:
-          type: string
-          description: '[new] name/label of the job title you’re updating'
-        parent:
-          type: string
-          description: id of the [new] job tier with which you want to associate the job title
-      required:
-      - title
-      - parent
     Meta:
       title: Meta
       type: object
@@ -264,25 +289,6 @@ components:
         status:
           type: integer
           description: HTTP response
-    Create_Job_Title_Payload:
-      title: Create Job Title Payload
-      type: object
-      properties:
-        title:
-          type: string
-          description: name/label of the job title you’re creating
-        parent:
-          type: string
-          description: id of the job tier with which you want to associate the job title
-      required:
-      - title
-      - parent
-    Link:
-      title: Link
-      type: object
-      properties:
-        type:
-          type: string
   securitySchemes:
     Authorization:
       name: Authorization

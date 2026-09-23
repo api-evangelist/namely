@@ -144,25 +144,6 @@ paths:
       - Authorization: []
 components:
   schemas:
-    Create_Comment:
-      title: Create Comment
-      required:
-      - comments
-      type: object
-      properties:
-        comments:
-          type: array
-          items:
-            $ref: '#/components/schemas/Create_Comment_Payload'
-    Create_Comment_Payload:
-      title: Create Comment Payload
-      type: object
-      properties:
-        content:
-          type: string
-          description: 'the content of the comment; formatted in markdown; to @mention a profile, use format: <code>[full_name](/people/{profile_id})</code> where {profile_id} is the <code>id</code> of the profile you want to mention'
-      required:
-      - content
     Comment_Meta:
       title: Comment Meta
       type: object
@@ -175,6 +156,95 @@ components:
         use_at_mentions:
           type: boolean
           description: <code>true</code> if the company has mentioning enabled on the home feed
+    Comment:
+      title: Comment
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the comment
+        content:
+          type: string
+          description: content of the comment, displayed in markdown
+        html_content:
+          type: string
+          description: content of the comment, displayed in HTML
+        created_at:
+          type: integer
+          description: epoch time that the comment was created
+        can_destroy:
+          type: boolean
+          description: <code>true</code> if the token bearer has a role with permission to delete the comment; will always be <code>true</code> for one's own comment
+        links:
+          type: object
+          properties:
+            profile:
+              type: string
+        utc_offset:
+          type: integer
+          description: the hour difference between UTC and the main office of the company
+        likes_count:
+          type: integer
+          description: total number of likes on comment
+        liked_by_current_profile:
+          type: boolean
+          description: <code>true</code> if the token bearer has liked this comment
+    Thumb:
+      title: Thumb
+      type: object
+      description: different resolutions of the image
+      properties:
+        75x75:
+          type: string
+        75x75c:
+          type: string
+        150x150:
+          type: string
+        150x150c:
+          type: string
+        300x300:
+          type: string
+        300x300c:
+          type: string
+        450x450:
+          type: string
+        550x450c:
+          type: string
+        800x800:
+          type: string
+        800x800c:
+          type: string
+    Create_Comment_Payload:
+      title: Create Comment Payload
+      type: object
+      properties:
+        content:
+          type: string
+          description: 'the content of the comment; formatted in markdown; to @mention a profile, use format: <code>[full_name](/people/{profile_id})</code> where {profile_id} is the <code>id</code> of the profile you want to mention'
+      required:
+      - content
+    Link:
+      title: Link
+      type: object
+      properties:
+        type:
+          type: string
+    File:
+      title: File
+      type: object
+      properties:
+        id:
+          type: string
+        filename:
+          type: string
+        mime_type:
+          type: string
+        original:
+          type: string
+        thumbs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Thumb'
     Image:
       title: Image
       type: object
@@ -219,86 +289,16 @@ components:
             $ref: '#/components/schemas/Image'
         full_name:
           type: string
-    Thumb:
-      title: Thumb
-      type: object
-      description: different resolutions of the image
-      properties:
-        75x75:
-          type: string
-        75x75c:
-          type: string
-        150x150:
-          type: string
-        150x150c:
-          type: string
-        300x300:
-          type: string
-        300x300c:
-          type: string
-        450x450:
-          type: string
-        550x450c:
-          type: string
-        800x800:
-          type: string
-        800x800c:
-          type: string
-    File:
-      title: File
+    Create_Comment:
+      title: Create Comment
+      required:
+      - comments
       type: object
       properties:
-        id:
-          type: string
-        filename:
-          type: string
-        mime_type:
-          type: string
-        original:
-          type: string
-        thumbs:
+        comments:
           type: array
           items:
-            $ref: '#/components/schemas/Thumb'
-    Comment:
-      title: Comment
-      type: object
-      properties:
-        id:
-          type: string
-          description: unique identifier of the comment
-        content:
-          type: string
-          description: content of the comment, displayed in markdown
-        html_content:
-          type: string
-          description: content of the comment, displayed in HTML
-        created_at:
-          type: integer
-          description: epoch time that the comment was created
-        can_destroy:
-          type: boolean
-          description: <code>true</code> if the token bearer has a role with permission to delete the comment; will always be <code>true</code> for one's own comment
-        links:
-          type: object
-          properties:
-            profile:
-              type: string
-        utc_offset:
-          type: integer
-          description: the hour difference between UTC and the main office of the company
-        likes_count:
-          type: integer
-          description: total number of likes on comment
-        liked_by_current_profile:
-          type: boolean
-          description: <code>true</code> if the token bearer has liked this comment
-    Link:
-      title: Link
-      type: object
-      properties:
-        type:
-          type: string
+            $ref: '#/components/schemas/Create_Comment_Payload'
   securitySchemes:
     Authorization:
       name: Authorization

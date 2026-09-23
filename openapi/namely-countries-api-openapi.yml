@@ -57,29 +57,6 @@ paths:
       - Authorization: []
 components:
   schemas:
-    Subdivision:
-      title: Subdivision
-      type: object
-      properties:
-        id:
-          type: string
-          description: 'unique identifier of the subdivision unit (e.g. NJ); abbreviation of the name; used in the #model:yq9tkBR24wuBhzizY model'
-        name:
-          type: string
-          description: name of the subdivision unit (e.g. New Jersey)
-    countries:
-      title: Countries
-      type: object
-      properties:
-        id:
-          type: string
-          description: unique identifier of the profile; 2-digit ISO code; used when passing home or office <code>address</code>
-        name:
-          type: string
-          description: name of the country
-        subdivision_type:
-          type: string
-          description: name of the country's subdivision (e.g. State, Province)
     Country:
       title: Country
       type: object
@@ -102,6 +79,29 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/Subdivision'
+    countries:
+      title: Countries
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the profile; 2-digit ISO code; used when passing home or office <code>address</code>
+        name:
+          type: string
+          description: name of the country
+        subdivision_type:
+          type: string
+          description: name of the country's subdivision (e.g. State, Province)
+    Subdivision:
+      title: Subdivision
+      type: object
+      properties:
+        id:
+          type: string
+          description: 'unique identifier of the subdivision unit (e.g. NJ); abbreviation of the name; used in the #model:yq9tkBR24wuBhzizY model'
+        name:
+          type: string
+          description: name of the subdivision unit (e.g. New Jersey)
   securitySchemes:
     Authorization:
       name: Authorization

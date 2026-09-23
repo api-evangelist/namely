@@ -1,0 +1,60 @@
+{
+  "provider": "namely",
+  "sources": [
+    "_original/namely-api-openapi.json"
+  ],
+  "outputs": [
+    "namely-comments-api-openapi.yml",
+    "namely-company-info-api-openapi.yml",
+    "namely-company-resources-api-openapi.yml",
+    "namely-countries-api-openapi.yml",
+    "namely-events-api-openapi.yml",
+    "namely-groups-api-openapi.yml",
+    "namely-groups-teams-api-openapi.yml",
+    "namely-home-feed-api-openapi.yml",
+    "namely-job-tier-api-openapi.yml",
+    "namely-job-title-api-openapi.yml",
+    "namely-jobs-info-api-openapi.yml",
+    "namely-likes-api-openapi.yml",
+    "namely-namely-system-info-api-openapi.yml",
+    "namely-notifications-api-openapi.yml",
+    "namely-profile-fields-api-openapi.yml",
+    "namely-profile-fields-sections-api-openapi.yml",
+    "namely-profiles-api-openapi.yml",
+    "namely-reports-api-openapi.yml",
+    "namely-teams-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [
+    "namely-api-openapi.json: dangling $ref: #/definitions/Team"
+  ],
+  "warnings": [
+    "namely-api-openapi.json: info.version missing"
+  ],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "namely-api-openapi.json: upgraded swagger 2.0 -> OpenAPI 3.2.0; renamed 60 component key(s) illegal in 3.x (e.g. Comment Meta)",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "namely-comments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "namely-company-info-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "namely-company-resources-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "namely-countries-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "namely-events-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "namely-groups-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "namely-groups-teams-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "namely-home-feed-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "namely-job-tier-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "namely-job-title-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "namely-jobs-info-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "namely-likes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "namely-namely-system-info-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "namely-notifications-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "namely-profile-fields-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "namely-profile-fields-sections-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "namely-profiles-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "namely-reports-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "namely-teams-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

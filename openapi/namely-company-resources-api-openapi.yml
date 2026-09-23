@@ -197,26 +197,24 @@ paths:
       - Authorization: []
 components:
   schemas:
-    Folder:
-      title: Folder
+    Create_Folder_Payload:
+      title: Create Folder Payload
+      required:
+      - title
       type: object
       properties:
-        id:
-          type: string
-          description: unique identifier of the folder
         title:
           type: string
-          description: name/label of the folder
-        type:
-          type: string
-          default: Folders::DocumentFolder
-          description: ''
-        items_count:
-          type: integer
-          description: number of files within the folder
-        position:
-          type: integer
-          description: position of the folder on the UI; 0 is the top position
+    Update_Folder:
+      title: Update Folder
+      required:
+      - folders
+      type: object
+      properties:
+        folders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Update_Folder_Payload'
     Create_Folder:
       title: Create Folder
       required:
@@ -253,24 +251,6 @@ components:
         folder_id:
           type: integer
           description: <code>id</code> of the folder in which the resource file sits; <code>null</code> if not in a folder
-    Update_Folder:
-      title: Update Folder
-      required:
-      - folders
-      type: object
-      properties:
-        folders:
-          type: array
-          items:
-            $ref: '#/components/schemas/Update_Folder_Payload'
-    Create_Folder_Payload:
-      title: Create Folder Payload
-      required:
-      - title
-      type: object
-      properties:
-        title:
-          type: string
     Update_Folder_Payload:
       title: Update Folder Payload
       required:
@@ -279,6 +259,26 @@ components:
       properties:
         title:
           type: string
+    Folder:
+      title: Folder
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the folder
+        title:
+          type: string
+          description: name/label of the folder
+        type:
+          type: string
+          default: Folders::DocumentFolder
+          description: ''
+        items_count:
+          type: integer
+          description: number of files within the folder
+        position:
+          type: integer
+          description: position of the folder on the UI; 0 is the top position
   securitySchemes:
     Authorization:
       name: Authorization

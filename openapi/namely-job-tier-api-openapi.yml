@@ -136,7 +136,7 @@ paths:
       description: 'Updates the label of a job tier.
 
 
-        Use the #endpoint:3iHo6fSyKNs2dsaSC endpoint to get a list of job tiers, whose <code>id</code> is used in the path parameters.'
+        Use the #endpoint:3iHo6fSyKNs2dsaSC endpoint to get a list of job tiers, whose id is used in the path parameters.'
       responses:
         '200':
           description: Successful Response
@@ -174,6 +174,34 @@ paths:
               $ref: '#/components/schemas/Update_Job_Tier'
 components:
   schemas:
+    Update_Job_Tier_Payload:
+      title: Update Job Tier Payload
+      type: object
+      properties:
+        title:
+          type: string
+          description: '[new] name/label of job tier'
+      required:
+      - title
+    Create_Job_Tier_Payload:
+      title: Create Job Tier Payload
+      type: object
+      properties:
+        title:
+          type: string
+          description: name/label of the job tier you’re creating
+      required:
+      - title
+    Update_Job_Tier:
+      title: Update Job Tier
+      type: object
+      properties:
+        job_tiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Update_Job_Tier_Payload'
+      required:
+      - job_tiers
     Create_Job_Tier:
       title: Create Job Tier
       required:
@@ -184,6 +212,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Create_Job_Tier_Payload'
+    Job_Title_Link:
+      title: Job Title Link
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the job title
+        title:
+          type: string
+          description: name/label of the job title
     Job_Tier:
       title: Job Tier
       type: object
@@ -205,25 +243,12 @@ components:
               description: id of the job titles associated with the job tier
               items:
                 type: string
-    Job_Title_Link:
-      title: Job Title Link
+    Link:
+      title: Link
       type: object
       properties:
-        id:
+        type:
           type: string
-          description: unique identifier of the job title
-        title:
-          type: string
-          description: name/label of the job title
-    Create_Job_Tier_Payload:
-      title: Create Job Tier Payload
-      type: object
-      properties:
-        title:
-          type: string
-          description: name/label of the job tier you’re creating
-      required:
-      - title
     Job_Title:
       title: Job Title
       type: object
@@ -253,31 +278,6 @@ components:
         status:
           type: integer
           description: HTTP response
-    Update_Job_Tier:
-      title: Update Job Tier
-      type: object
-      properties:
-        job_tiers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Update_Job_Tier_Payload'
-      required:
-      - job_tiers
-    Update_Job_Tier_Payload:
-      title: Update Job Tier Payload
-      type: object
-      properties:
-        title:
-          type: string
-          description: '[new] name/label of job tier'
-      required:
-      - title
-    Link:
-      title: Link
-      type: object
-      properties:
-        type:
-          type: string
   securitySchemes:
     Authorization:
       name: Authorization

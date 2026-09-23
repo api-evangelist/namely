@@ -31,7 +31,7 @@ paths:
         The reports API does not technically have a limit to how many lines can be pulled through the API at once. However, we would suggest limiting it to around 200 lines. A user could likely pull more than that without any problems, but they will eventually run into a timeout. There is no hard limit, however.
 
 
-        Do not have your integration rely on field ''labels'' as they are dynamic.  Please use the field ''name'' instead.'
+        Do not have your integration rely on field ''labels'' as they are dynamic. Please use the field ''name'' instead.'
       responses:
         '200':
           description: Successful Response
@@ -54,12 +54,6 @@ paths:
       - Authorization: []
 components:
   schemas:
-    Content:
-      title: Content
-      type: array
-      description: this is technically an array of arrays without any keys "sub"-arrays; each "sub"-array represents a line in the report, and is a list of values, whose position on the list within "sub"-array sequentially corresponds to the column; for example, if the second "column" is "last name", the second "value" in each "sub"-array is the value
-      items:
-        type: array
     Column:
       title: Column
       type: array
@@ -76,6 +70,12 @@ components:
           label:
             type: string
             description: name/label of the report column
+    Content:
+      title: Content
+      type: array
+      description: this is technically an array of arrays without any keys "sub"-arrays; each "sub"-array represents a line in the report, and is a list of values, whose position on the list within "sub"-array sequentially corresponds to the column; for example, if the second "column" is "last name", the second "value" in each "sub"-array is the value
+      items:
+        type: array
     Report:
       title: Report
       type: object

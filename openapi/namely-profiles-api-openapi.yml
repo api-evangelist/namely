@@ -42,7 +42,6 @@ paths:
         10. job_title
 
 
-
         These will NOT be exposed to the user in the UI if their permissions are set correctly.
 
 
@@ -175,7 +174,198 @@ paths:
       summary: Create a Profile
       tags:
       - Profiles
-      description: "**Create a profile as a draft Onboarding session**\n\n1. Ensure that the Onboarding feature has been enabled for your company.\n2. In the body of the POST /profiles request, use \"pending\" as the value of the user_status field along with the other required fields found in the Request Body section below.\n\n*Sample Request:*\n```json\n{\n    \"profiles\": [\n        {\n            \"first_name\": \"John\",\n            \"last_name\": \"Smith\",\n            \"user_status\": \"pending\",\n            \"start_date\": \"2019-01-01\",\n            \"personal_email\": \"personal@email.com\",\n            \"email\": \"work@email.com\"\n        }\n    ]\n}\n```\n\n**Create a profile with a job title set**\n\n1. Retrieve the title or id of a  by making a GET request to the /job_titles or /job_titles/{id} endpoint (see the  section).\n2. In the body of the POST /profiles request, include the job_title field in addition to the other required fields found in the Request Body section below.\n3. The value of the job_title field should be set to an object containing the title (string) or id (guid) of an existing job title. Passing both values is also valid.\n\n*Sample Request:*\n```json\n{\n    \"profiles\": [\n        {\n            \"first_name\": \"John\",\n            \"last_name\": \"Smith\",\n            \"user_status\": \"active\",\n            \"start_date\": \"2019-01-01\",\n            \"personal_email\": \"personal@email.com\",\n            \"email\": \"work@email.com\",\n            \"job_title\": {\n            \t\"id\": \"a4d5783d-a447-4269-8724-b710d0267aa4\"\n            }\n        }\n    ]\n}\n```\n\n**Create a profile with an address set**\n\n1. Retrieve the country_id of an  by making a GET request to the /countries endpoint (see the  section).\n2. The state_id is the 2-letter abbreviation for a state in the United States.\n3. In the body of the POST /profiles request, include the home field and set its value equal to an object containing a valid street address as well as the country_id and state_id.\n4. Note that every field in the home object (address1, address2, city, state_id, country_id, or zip) is validated against an actual address. If any field in the address object is invalid, a 422 Unprocessable Entity error will be returned.\n\n*Sample Request:*\n```json\n{\n    \"profiles\": [\n        {\n            \"first_name\": \"John\",\n            \"last_name\": \"Smith\",\n            \"user_status\": \"active\",\n            \"start_date\": \"2019-01-01\",\n            \"personal_email\": \"personal@email.com\",\n            \"email\": \"work@email.com\",\n            \"home\": {\n                \"address1\": \"195 Broadway\",\n                \"address2\": \"\",\n                \"city\": \"New York\",\n                \"state_id\": \"NY\",\n                \"country_id\": \"US\",\n                \"zip\": \"10007\"\n            }\n        }\n    ]\n}\n```\n\n**Create a profile with a salary set**\n\n1. In the body of the POST /profiles request, include the salary field and set its value equal to an object containing a currency_type, a date representing the start date of the salary, and a yearly_amount.\n2. \"USD\" is currently the only valid value for currency_type.\n\n*Sample Request:*\n```json\n{\n    \"profiles\": [\n        {\n            \"first_name\": \"John\",\n            \"last_name\": \"Smith\",\n            \"user_status\": \"active\",\n            \"start_date\": \"2019-01-01\",\n            \"personal_email\": \"personal@email.com\",\n            \"email\": \"work@email.com\",\n            \"salary\": {\n                \"currency_type\": \"USD\",\n                \"date\": \"2019-01-10\",\n                \"yearly_amount\": 100000\n            }\n        }\n    ]\n}\n```"
+      description: '**Create a profile as a draft Onboarding session**
+
+
+        1. Ensure that the Onboarding feature has been enabled for your company.
+
+        2. In the body of the POST /profiles request, use "pending" as the value of the user_status field along with the other required fields found in the Request Body section below.
+
+
+        *Sample Request:*
+
+        ```json
+
+        {
+
+        "profiles": [
+
+        {
+
+        "first_name": "John",
+
+        "last_name": "Smith",
+
+        "user_status": "pending",
+
+        "start_date": "2019-01-01",
+
+        "personal_email": "personal@email.com",
+
+        "email": "work@email.com"
+
+        }
+
+        ]
+
+        }
+
+        ```
+
+
+        **Create a profile with a job title set**
+
+
+        1. Retrieve the title or id of a by making a GET request to the /job_titles or /job_titles/{id} endpoint (see the section).
+
+        2. In the body of the POST /profiles request, include the job_title field in addition to the other required fields found in the Request Body section below.
+
+        3. The value of the job_title field should be set to an object containing the title (string) or id (guid) of an existing job title. Passing both values is also valid.
+
+
+        *Sample Request:*
+
+        ```json
+
+        {
+
+        "profiles": [
+
+        {
+
+        "first_name": "John",
+
+        "last_name": "Smith",
+
+        "user_status": "active",
+
+        "start_date": "2019-01-01",
+
+        "personal_email": "personal@email.com",
+
+        "email": "work@email.com",
+
+        "job_title": {
+
+        "id": "a4d5783d-a447-4269-8724-b710d0267aa4"
+
+        }
+
+        }
+
+        ]
+
+        }
+
+        ```
+
+
+        **Create a profile with an address set**
+
+
+        1. Retrieve the country_id of an by making a GET request to the /countries endpoint (see the section).
+
+        2. The state_id is the 2-letter abbreviation for a state in the United States.
+
+        3. In the body of the POST /profiles request, include the home field and set its value equal to an object containing a valid street address as well as the country_id and state_id.
+
+        4. Note that every field in the home object (address1, address2, city, state_id, country_id, or zip) is validated against an actual address. If any field in the address object is invalid, a 422 Unprocessable Entity error will be returned.
+
+
+        *Sample Request:*
+
+        ```json
+
+        {
+
+        "profiles": [
+
+        {
+
+        "first_name": "John",
+
+        "last_name": "Smith",
+
+        "user_status": "active",
+
+        "start_date": "2019-01-01",
+
+        "personal_email": "personal@email.com",
+
+        "email": "work@email.com",
+
+        "home": {
+
+        "address1": "195 Broadway",
+
+        "address2": "",
+
+        "city": "New York",
+
+        "state_id": "NY",
+
+        "country_id": "US",
+
+        "zip": "10007"
+
+        }
+
+        }
+
+        ]
+
+        }
+
+        ```
+
+
+        **Create a profile with a salary set**
+
+
+        1. In the body of the POST /profiles request, include the salary field and set its value equal to an object containing a currency_type, a date representing the start date of the salary, and a yearly_amount.
+
+        2. "USD" is currently the only valid value for currency_type.
+
+
+        *Sample Request:*
+
+        ```json
+
+        {
+
+        "profiles": [
+
+        {
+
+        "first_name": "John",
+
+        "last_name": "Smith",
+
+        "user_status": "active",
+
+        "start_date": "2019-01-01",
+
+        "personal_email": "personal@email.com",
+
+        "email": "work@email.com",
+
+        "salary": {
+
+        "currency_type": "USD",
+
+        "date": "2019-01-10",
+
+        "yearly_amount": 100000
+
+        }
+
+        }
+
+        ]
+
+        }
+
+        ```'
       responses:
         '201':
           description: Created Response
@@ -261,7 +451,6 @@ paths:
         10. job_title
 
 
-
         These will NOT be exposed to the user in the UI if their permissions are set correctly.'
       responses:
         '200':
@@ -305,7 +494,128 @@ paths:
       summary: Update a Profile
       tags:
       - Profiles
-      description: "Note: the only fields that need to be included in a PUT /profiles/{id} request are the ones that should be updated.\n\n**Update a profile with a new job title**\n\n1. Retrieve the `title` or `id` of a  #model:JcAXAf5CGXH22bS6Z by making a GET request to the /job_titles or /job_titles/{id} endpoint (see the #docTextSection:FwRLDxsBbevBbo8uz section).\n2. In the body of the PUT /profiles/{id} request, include the `job_title` field.\n3. The value of the `job_title` field should be set to an object containing the `title` (string) or `id` (guid) of an existing job title. Passing both values is also valid.\n\n_Sample Request:_\n```json\n{\n    \"profiles\": [\n        {\n            \"job_title\": {\n            \t\"id\": \"a4d5783d-a447-4269-8724-b710d0267aa4\"\n            }\n        }\n    ]\n}\n```\n\n**Update a profile with a new address**\n\n1. Retrieve the `country_id` of an #model:yq9tkBR24wuBhzizY by making a GET request to the /countries endpoint (see the #endpoint:ECuAqAqRDoaFMn9ZH section).\n2. The `state_id` is the 2-letter abbreviation for a state in the United States.\n3. In the body of the PUT /profiles/{id} request, include the `home` field and set its value equal to an object containing a valid street address as well as the `country_id` and `state_id`.\n4. Note that every field in the `home` object (`address1`, `address2`, `city`, `state_id`, `country_id`, or `zip`) is validated against an actual address. If any field in the address object is invalid, a 422 Unprocessable Entity error will be returned.\n\n_Sample Request:_\n```json\n{\n    \"profiles\": [\n        {\n            \"home\": {\n                \"address1\": \"195 Broadway\",\n                \"address2\": \"\",\n                \"city\": \"New York\",\n                \"state_id\": \"NY\",\n                \"country_id\": \"US\",\n                \"zip\": \"10007\"\n            }\n        }\n    ]\n}\n```\n\n**Update a profile with a new salary**\n\n1. In the body of the PUT /profiles/{id} request, include the `salary` field and set its value equal to an object containing a `currency_type`, a `date` representing the start date of the salary, and a `yearly_amount`.\n2. \"USD\" is currently the only valid value for `currency_type`.\n3. Note that the `date` is the start date of the new salary. When updating an employee's salary, the `date` value that's passed in must be at least 2 days after the `date` value of the preceding salary. This is because with each new salary, the previous salary is automatically end-dated with a date that must be at least 1 day after the start date of the previous salary. If a passed-in date is invalid, a 422 Unprocessable Entity error will be returned.\n\n_Sample Request:_\n```json\n{\n    \"profiles\": [\n        {\n            \"salary\": {\n                \"currency_type\": \"USD\",\n                \"date\": \"2019-01-10\",\n                \"yearly_amount\": 100000\n            }\n        }\n    ]\n}\n```"
+      description: 'Note: the only fields that need to be included in a PUT /profiles/{id} request are the ones that should be updated.
+
+
+        **Update a profile with a new job title**
+
+
+        1. Retrieve the `title` or `id` of a #model:JcAXAf5CGXH22bS6Z by making a GET request to the /job_titles or /job_titles/{id} endpoint (see the #docTextSection:FwRLDxsBbevBbo8uz section).
+
+        2. In the body of the PUT /profiles/{id} request, include the `job_title` field.
+
+        3. The value of the `job_title` field should be set to an object containing the `title` (string) or `id` (guid) of an existing job title. Passing both values is also valid.
+
+
+        _Sample Request:_
+
+        ```json
+
+        {
+
+        "profiles": [
+
+        {
+
+        "job_title": {
+
+        "id": "a4d5783d-a447-4269-8724-b710d0267aa4"
+
+        }
+
+        }
+
+        ]
+
+        }
+
+        ```
+
+
+        **Update a profile with a new address**
+
+
+        1. Retrieve the `country_id` of an #model:yq9tkBR24wuBhzizY by making a GET request to the /countries endpoint (see the #endpoint:ECuAqAqRDoaFMn9ZH section).
+
+        2. The `state_id` is the 2-letter abbreviation for a state in the United States.
+
+        3. In the body of the PUT /profiles/{id} request, include the `home` field and set its value equal to an object containing a valid street address as well as the `country_id` and `state_id`.
+
+        4. Note that every field in the `home` object (`address1`, `address2`, `city`, `state_id`, `country_id`, or `zip`) is validated against an actual address. If any field in the address object is invalid, a 422 Unprocessable Entity error will be returned.
+
+
+        _Sample Request:_
+
+        ```json
+
+        {
+
+        "profiles": [
+
+        {
+
+        "home": {
+
+        "address1": "195 Broadway",
+
+        "address2": "",
+
+        "city": "New York",
+
+        "state_id": "NY",
+
+        "country_id": "US",
+
+        "zip": "10007"
+
+        }
+
+        }
+
+        ]
+
+        }
+
+        ```
+
+
+        **Update a profile with a new salary**
+
+
+        1. In the body of the PUT /profiles/{id} request, include the `salary` field and set its value equal to an object containing a `currency_type`, a `date` representing the start date of the salary, and a `yearly_amount`.
+
+        2. "USD" is currently the only valid value for `currency_type`.
+
+        3. Note that the `date` is the start date of the new salary. When updating an employee''s salary, the `date` value that''s passed in must be at least 2 days after the `date` value of the preceding salary. This is because with each new salary, the previous salary is automatically end-dated with a date that must be at least 1 day after the start date of the previous salary. If a passed-in date is invalid, a 422 Unprocessable Entity error will be returned.
+
+
+        _Sample Request:_
+
+        ```json
+
+        {
+
+        "profiles": [
+
+        {
+
+        "salary": {
+
+        "currency_type": "USD",
+
+        "date": "2019-01-10",
+
+        "yearly_amount": 100000
+
+        }
+
+        }
+
+        ]
+
+        }
+
+        ```'
       responses:
         '200':
           description: Successful Response
@@ -404,6 +714,106 @@ paths:
       - Authorization: []
 components:
   schemas:
+    Profile_Links:
+      title: Profile Links
+      type: object
+      properties:
+        profiles.job_title:
+          $ref: '#/components/schemas/Link'
+        profiles.image:
+          $ref: '#/components/schemas/Link'
+        profiles.groups:
+          $ref: '#/components/schemas/Link'
+        profiles.teams:
+          $ref: '#/components/schemas/Link'
+    Team_Link:
+      title: Team Link
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the team
+        name:
+          type: string
+          description: name/label of the team
+    Update_Profile_Payload:
+      title: Update Profile Payload
+      type: object
+      description: ''
+      properties:
+        email:
+          type: string
+          description: company email of the profile
+        first_name:
+          type: string
+        last_name:
+          type: string
+        user_status:
+          type: string
+          description: valid values are <code>active</code> or <code>pending</code>
+        start_date:
+          type: string
+          description: valid format is YYYY-MM-DD
+        personal_email:
+          type: string
+          description: REQUIRED if <code>user_status</code> = <code>pending</code>
+        reports_to:
+          type: string
+          description: <code>id</code>of the profile you'd like to assign as the manager of the profile you're creating
+        job_title:
+          type: string
+          description: in addition to passing the <code>id</code> of the <code>job title</code>, you can also pass the <code>title</code>, however, it is case-sensitive
+    Create_Profile:
+      title: Create Profile
+      required:
+      - profiles
+      type: object
+      properties:
+        profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Create_Profile_Payload'
+    Address:
+      title: Address
+      type: object
+      properties:
+        address1:
+          type: string
+        address2:
+          type: string
+        city:
+          type: string
+        state_id:
+          type: string
+        zip:
+          type: string
+        state:
+          type: string
+        country:
+          type: string
+        country_id:
+          type: string
+        phone:
+          type: string
+    Profile_Meta:
+      title: Profile Meta
+      type: object
+      properties:
+        count:
+          type: integer
+          description: number of profiles on the current page
+        total_count:
+          type: integer
+          description: number of total profiles for the company
+        status:
+          type: integer
+          description: HTTP response
+    Link:
+      title: Link
+      type: object
+      properties:
+        type:
+          type: string
     Salary:
       title: Salary
       type: object
@@ -441,70 +851,70 @@ components:
         payroll_job:
           type: string
           description: Name of the Payroll Job for this Salary. Required if multiple Payroll Companies. Value of "Job name" will take first Payroll Job from specified Payroll Company.
-    Healthcare:
-      title: Healthcare
+    Dental:
+      title: Dental
       type: object
       properties:
         beneficiary:
-          description: relationship of the profile's healthcare plan's beneficiary to the profile; valid values include <code>Employee Only</code>, <code>Employee/Child</code>, <code>Employee/Spouse</code>, <code>Family</code>, <code>Not Applicable</code>, and <code>Waive</code>; blank if never provided or provided then deleted; cannot be <code>null</code> if any other <code>healthcare</code> keys provided
+          description: relationship of the profile's dental plan's beneficiary to the profile; valid values include <code>Employee Only</code>, <code>Employee/Child</code>, <code>Employee/Spouse</code>, <code>Family</code>, <code>Not Applicable</code>, and <code>Waive</code>; blank if never provided or provided then deleted; cannot be <code>null</code> if any other <code>dental</code> keys provided
           type: string
         amount:
-          description: amount of the profile's healthcare plan; numbers only; cannot be <code>null</code> if any other <code>healthcare</code> keys provided
+          description: amount of the profile's dental plan; numbers only; cannot be <code>null</code> if any other <code>dental</code> keys provided
           type: string
         currency_type:
-          description: currency type of the profile's healthcare plan amount; default <code>USD</code>
+          description: currency type of the profile's dental plan amount; default <code>USD</code>
           type: string
-    Create_Profile:
-      title: Create Profile
-      required:
-      - profiles
+    Office:
+      title: Office
       type: object
+      description: these fields represent the entire office address and are inherited from the "Office Location" group assigned to the profile
       properties:
-        profiles:
-          type: array
-          items:
-            $ref: '#/components/schemas/Create_Profile_Payload'
-    Image:
-      title: Image
+        address1:
+          type: string
+          description: address line 1 of the office address
+        address2:
+          type: string
+          description: address line 2 of the office address
+        city:
+          type: string
+          description: city of the office address
+        state_id:
+          type: string
+          description: 'state of the office address; for US, must be the 2-digit code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints'
+        country_id:
+          type: string
+          description: '"US" for the US; must be the ISO Alpha-2 code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints or just use the ISO Alpha-2 code'
+        zip:
+          type: string
+          description: zip or postal code of the office address
+        phone:
+          type: string
+          description: phone number associated with the office location
+    Thumb:
+      title: Thumb
       type: object
+      description: different resolutions of the image
       properties:
-        id:
+        75x75:
           type: string
-          description: unique identifier of the image
-        filename:
+        75x75c:
           type: string
-          description: image's file name
-        mime_type:
+        150x150:
           type: string
-          description: image type
-        original:
+        150x150c:
           type: string
-          description: link of image with original resolution
-        thumbs:
-          $ref: '#/components/schemas/Thumb'
-    Update_Profile:
-      title: Update Profile
-      required:
-      - profiles
-      type: object
-      properties:
-        profiles:
-          type: array
-          items:
-            $ref: '#/components/schemas/Update_Profile_Payload'
-    Profile_Meta:
-      title: Profile Meta
-      type: object
-      properties:
-        count:
-          type: integer
-          description: number of profiles on the current page
-        total_count:
-          type: integer
-          description: number of total profiles for the company
-        status:
-          type: integer
-          description: HTTP response
+        300x300:
+          type: string
+        300x300c:
+          type: string
+        450x450:
+          type: string
+        550x450c:
+          type: string
+        800x800:
+          type: string
+        800x800c:
+          type: string
     Group:
       title: Group
       type: object
@@ -533,119 +943,24 @@ components:
             group_type:
               type: string
               description: group type to which the group belongs
-    File:
-      title: File
+    Image:
+      title: Image
       type: object
       properties:
         id:
           type: string
+          description: unique identifier of the image
         filename:
           type: string
+          description: image's file name
         mime_type:
           type: string
+          description: image type
         original:
           type: string
+          description: link of image with original resolution
         thumbs:
-          type: array
-          items:
-            $ref: '#/components/schemas/Thumb'
-    Dental:
-      title: Dental
-      type: object
-      properties:
-        beneficiary:
-          description: relationship of the profile's dental plan's beneficiary to the profile; valid values include <code>Employee Only</code>, <code>Employee/Child</code>, <code>Employee/Spouse</code>, <code>Family</code>, <code>Not Applicable</code>, and <code>Waive</code>; blank if never provided or provided then deleted; cannot be <code>null</code> if any other <code>dental</code> keys provided
-          type: string
-        amount:
-          description: amount of the profile's dental plan; numbers only; cannot be <code>null</code> if any other <code>dental</code> keys provided
-          type: string
-        currency_type:
-          description: currency type of the profile's dental plan amount; default <code>USD</code>
-          type: string
-    Update_Profile_Payload:
-      title: Update Profile Payload
-      type: object
-      description: ''
-      properties:
-        email:
-          type: string
-          description: company email of the profile
-        first_name:
-          type: string
-        last_name:
-          type: string
-        user_status:
-          type: string
-          description: valid values are <code>active</code> or <code>pending</code>
-        start_date:
-          type: string
-          description: valid format is YYYY-MM-DD
-        personal_email:
-          type: string
-          description: REQUIRED if <code>user_status</code> = <code>pending</code>
-        reports_to:
-          type: string
-          description: <code>id</code>of the profile you'd like to assign as the manager of the profile you're creating
-        job_title:
-          type: string
-          description: in addition to passing the <code>id</code> of the <code>job title</code>, you can also pass the <code>title</code>, however, it is case-sensitive
-    Address:
-      title: Address
-      type: object
-      properties:
-        address1:
-          type: string
-        address2:
-          type: string
-        city:
-          type: string
-        state_id:
-          type: string
-        zip:
-          type: string
-        state:
-          type: string
-        country:
-          type: string
-        country_id:
-          type: string
-        phone:
-          type: string
-    Thumb:
-      title: Thumb
-      type: object
-      description: different resolutions of the image
-      properties:
-        75x75:
-          type: string
-        75x75c:
-          type: string
-        150x150:
-          type: string
-        150x150c:
-          type: string
-        300x300:
-          type: string
-        300x300c:
-          type: string
-        450x450:
-          type: string
-        550x450c:
-          type: string
-        800x800:
-          type: string
-        800x800c:
-          type: string
-    Group_Link:
-      title: Group Link
-      type: object
-      properties:
-        id:
-          type: string
-          description: unique identifier of the group
-        name:
-          type: string
-          description: name/label of the group
+          $ref: '#/components/schemas/Thumb'
     Home:
       title: Home
       type: object
@@ -669,54 +984,89 @@ components:
         zip:
           type: string
           description: zip or postal code of the home address
-    Team_Link:
-      title: Team Link
+    Job_Title_Link:
+      title: Job Title Link
       type: object
       properties:
         id:
           type: string
-          description: unique identifier of the team
-        name:
+          description: unique identifier of the job title
+        title:
           type: string
-          description: name/label of the team
-    Office:
-      title: Office
+          description: name/label of the job title
+    Create_Profile_Payload:
+      title: Create Profile Payload
       type: object
-      description: these fields represent the entire office address and are inherited from the "Office Location" group assigned to the profile
+      description: ''
       properties:
-        address1:
+        first_name:
           type: string
-          description: address line 1 of the office address
-        address2:
+        last_name:
           type: string
-          description: address line 2 of the office address
-        city:
+        user_status:
           type: string
-          description: city of the office address
-        state_id:
+          description: Possible values are <code>active</code>, <code>inactive</code>, or <code>pending</code>
+        start_date:
           type: string
-          description: 'state of the office address; for US, must be the 2-digit code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints'
-        country_id:
+          description: Format is YYYY-MM-DD
+        email:
           type: string
-          description: '"US" for the US; must be the ISO Alpha-2 code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints or just use the ISO Alpha-2 code'
-        zip:
+          description: Company email address
+        personal_email:
           type: string
-          description: zip or postal code of the office address
-        phone:
-          type: string
-          description: phone number associated with the office location
-    Profile_Links:
-      title: Profile Links
+          description: Personal email address; REQUIRED if <code>user_status</code> = <code>'pending'</code>
+      required:
+      - first_name
+      - last_name
+      - user_status
+      - start_date
+      - email
+      - personal_email
+    Update_Profile:
+      title: Update Profile
+      required:
+      - profiles
       type: object
       properties:
-        profiles.job_title:
-          $ref: '#/components/schemas/Link'
-        profiles.image:
-          $ref: '#/components/schemas/Link'
-        profiles.groups:
-          $ref: '#/components/schemas/Link'
-        profiles.teams:
-          $ref: '#/components/schemas/Link'
+        profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Update_Profile_Payload'
+    File:
+      title: File
+      type: object
+      properties:
+        id:
+          type: string
+        filename:
+          type: string
+        mime_type:
+          type: string
+        original:
+          type: string
+        thumbs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Thumb'
+    Job_Title:
+      title: Job Title
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the job title
+        parent_id:
+          type: string
+          description: id of the job tier associated with the job title (when creating a job title, the key is "parent")
+        title:
+          type: string
+          description: name/label of the job title
+        links:
+          type: object
+          properties:
+            job_tier:
+              type: string
+              description: 'id of the job tier associated with the job title '
     Profile:
       title: Profile
       type: object
@@ -915,69 +1265,29 @@ components:
         namely_time_manager_role:
           description: only applies to companies using Namely Time
           type: string
-    Link:
-      title: Link
+    Healthcare:
+      title: Healthcare
       type: object
       properties:
-        type:
+        beneficiary:
+          description: relationship of the profile's healthcare plan's beneficiary to the profile; valid values include <code>Employee Only</code>, <code>Employee/Child</code>, <code>Employee/Spouse</code>, <code>Family</code>, <code>Not Applicable</code>, and <code>Waive</code>; blank if never provided or provided then deleted; cannot be <code>null</code> if any other <code>healthcare</code> keys provided
           type: string
-    Create_Profile_Payload:
-      title: Create Profile Payload
-      type: object
-      description: ''
-      properties:
-        first_name:
+        amount:
+          description: amount of the profile's healthcare plan; numbers only; cannot be <code>null</code> if any other <code>healthcare</code> keys provided
           type: string
-        last_name:
+        currency_type:
+          description: currency type of the profile's healthcare plan amount; default <code>USD</code>
           type: string
-        user_status:
-          type: string
-          description: Possible values are <code>active</code>, <code>inactive</code>, or <code>pending</code>
-        start_date:
-          type: string
-          description: Format is YYYY-MM-DD
-        email:
-          type: string
-          description: Company email address
-        personal_email:
-          type: string
-          description: Personal email address; REQUIRED if <code>user_status</code> = <code>'pending'</code>
-      required:
-      - first_name
-      - last_name
-      - user_status
-      - start_date
-      - email
-      - personal_email
-    Job_Title_Link:
-      title: Job Title Link
+    Group_Link:
+      title: Group Link
       type: object
       properties:
         id:
           type: string
-          description: unique identifier of the job title
-        title:
+          description: unique identifier of the group
+        name:
           type: string
-          description: name/label of the job title
-    Job_Title:
-      title: Job Title
-      type: object
-      properties:
-        id:
-          type: string
-          description: unique identifier of the job title
-        parent_id:
-          type: string
-          description: id of the job tier associated with the job title (when creating a job title, the key is "parent")
-        title:
-          type: string
-          description: name/label of the job title
-        links:
-          type: object
-          properties:
-            job_tier:
-              type: string
-              description: 'id of the job tier associated with the job title '
+          description: name/label of the group
   securitySchemes:
     Authorization:
       name: Authorization
