@@ -174,75 +174,6 @@ paths:
               $ref: '#/components/schemas/Update_Job_Tier'
 components:
   schemas:
-    Update_Job_Tier_Payload:
-      title: Update Job Tier Payload
-      type: object
-      properties:
-        title:
-          type: string
-          description: '[new] name/label of job tier'
-      required:
-      - title
-    Create_Job_Tier_Payload:
-      title: Create Job Tier Payload
-      type: object
-      properties:
-        title:
-          type: string
-          description: name/label of the job tier you’re creating
-      required:
-      - title
-    Update_Job_Tier:
-      title: Update Job Tier
-      type: object
-      properties:
-        job_tiers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Update_Job_Tier_Payload'
-      required:
-      - job_tiers
-    Create_Job_Tier:
-      title: Create Job Tier
-      required:
-      - job_tiers
-      type: object
-      properties:
-        job_tiers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Create_Job_Tier_Payload'
-    Job_Title_Link:
-      title: Job Title Link
-      type: object
-      properties:
-        id:
-          type: string
-          description: unique identifier of the job title
-        title:
-          type: string
-          description: name/label of the job title
-    Job_Tier:
-      title: Job Tier
-      type: object
-      properties:
-        id:
-          type: string
-          description: unique identifier of the job tier
-        numerical_id:
-          type: string
-        title:
-          type: string
-          default: ''
-          description: name/label of the job tier
-        links:
-          type: object
-          properties:
-            job_titles:
-              type: array
-              description: id of the job titles associated with the job tier
-              items:
-                type: string
     Link:
       title: Link
       type: object
@@ -268,6 +199,16 @@ components:
             job_tier:
               type: string
               description: 'id of the job tier associated with the job title '
+    Job_Title_Link:
+      title: Job Title Link
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the job title
+        title:
+          type: string
+          description: name/label of the job title
     Meta:
       title: Meta
       type: object
@@ -278,6 +219,65 @@ components:
         status:
           type: integer
           description: HTTP response
+    Create_Job_Tier_Payload:
+      title: Create Job Tier Payload
+      type: object
+      properties:
+        title:
+          type: string
+          description: name/label of the job tier you’re creating
+      required:
+      - title
+    Update_Job_Tier:
+      title: Update Job Tier
+      type: object
+      properties:
+        job_tiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Update_Job_Tier_Payload'
+      required:
+      - job_tiers
+    Update_Job_Tier_Payload:
+      title: Update Job Tier Payload
+      type: object
+      properties:
+        title:
+          type: string
+          description: '[new] name/label of job tier'
+      required:
+      - title
+    Job_Tier:
+      title: Job Tier
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the job tier
+        numerical_id:
+          type: string
+        title:
+          type: string
+          default: ''
+          description: name/label of the job tier
+        links:
+          type: object
+          properties:
+            job_titles:
+              type: array
+              description: id of the job titles associated with the job tier
+              items:
+                type: string
+    Create_Job_Tier:
+      title: Create Job Tier
+      required:
+      - job_tiers
+      type: object
+      properties:
+        job_tiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Create_Job_Tier_Payload'
   securitySchemes:
     Authorization:
       name: Authorization

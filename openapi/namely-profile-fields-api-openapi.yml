@@ -289,6 +289,23 @@ paths:
               $ref: '#/components/schemas/Update_Section'
 components:
   schemas:
+    Create_Profile_Field_Payload:
+      title: Create Profile Field Payload
+      type: object
+      properties:
+        label:
+          type: string
+          description: label of the profile field; cannot contain special characters; cannot contain word "id"; must be unique; immutable <code>name</code> will be auto-generated based on label
+        section:
+          description: id of the profile field section in which you want the place the field
+          type: string
+        type:
+          description: field type; valid values are <code>text</code>, <code>long_text</code>, <code>date</code>, <code>file</code>, and <code>number</code>
+          type: string
+      required:
+      - label
+      - section
+      - type
     Update_Section_Payload:
       title: Update Section Payload
       type: object
@@ -308,66 +325,16 @@ components:
         section:
           description: id of the [new] profile field section in which you want the place the field
           type: string
-    Create_Profile_Field_Payload:
-      title: Create Profile Field Payload
+    Meta:
+      title: Meta
       type: object
       properties:
-        label:
-          type: string
-          description: label of the profile field; cannot contain special characters; cannot contain word "id"; must be unique; immutable <code>name</code> will be auto-generated based on label
-        section:
-          description: id of the profile field section in which you want the place the field
-          type: string
-        type:
-          description: field type; valid values are <code>text</code>, <code>long_text</code>, <code>date</code>, <code>file</code>, and <code>number</code>
-          type: string
-      required:
-      - label
-      - section
-      - type
-    Update_Section:
-      title: Update Section
-      required:
-      - sections
-      type: object
-      properties:
-        sections:
-          type: array
-          items:
-            $ref: '#/components/schemas/Update_Section_Payload'
-    Create_Profile_Field:
-      title: Create Profile Field
-      required:
-      - fields
-      type: object
-      properties:
-        fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/Create_Profile_Field_Payload'
-    Section:
-      title: Section
-      type: object
-      properties:
-        id:
-          description: unique identifier of the profile field section
-          type: string
-        title:
-          description: 'label of the profile field section; only editable on through the API via the #endpoint:eoL989Gmn6vnfSPbE</a> endpoint'
-          type: string
-        block_titles:
-          description: list of the "block" subsections within the section; can be empty
-          type: array
-          items:
-            type: string
-        links:
-          type: object
-          properties:
-            fields:
-              type: array
-              description: 'list of unique identifiers of each #endpoint:kxzfwAD7zrZ9CByGA located within the profile field section'
-              items:
-                type: string
+        count:
+          type: integer
+          description: number of total objects
+        status:
+          type: integer
+          description: HTTP response
     Field:
       title: Field
       type: object
@@ -412,16 +379,49 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Update_Profile_Field_Payload'
-    Meta:
-      title: Meta
+    Update_Section:
+      title: Update Section
+      required:
+      - sections
       type: object
       properties:
-        count:
-          type: integer
-          description: number of total objects
-        status:
-          type: integer
-          description: HTTP response
+        sections:
+          type: array
+          items:
+            $ref: '#/components/schemas/Update_Section_Payload'
+    Section:
+      title: Section
+      type: object
+      properties:
+        id:
+          description: unique identifier of the profile field section
+          type: string
+        title:
+          description: 'label of the profile field section; only editable on through the API via the #endpoint:eoL989Gmn6vnfSPbE</a> endpoint'
+          type: string
+        block_titles:
+          description: list of the "block" subsections within the section; can be empty
+          type: array
+          items:
+            type: string
+        links:
+          type: object
+          properties:
+            fields:
+              type: array
+              description: 'list of unique identifiers of each #endpoint:kxzfwAD7zrZ9CByGA located within the profile field section'
+              items:
+                type: string
+    Create_Profile_Field:
+      title: Create Profile Field
+      required:
+      - fields
+      type: object
+      properties:
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/Create_Profile_Field_Payload'
   securitySchemes:
     Authorization:
       name: Authorization

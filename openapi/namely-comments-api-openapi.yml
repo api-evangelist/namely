@@ -144,18 +144,28 @@ paths:
       - Authorization: []
 components:
   schemas:
-    Comment_Meta:
-      title: Comment Meta
+    File:
+      title: File
       type: object
       properties:
-        status:
-          type: integer
-          description: HTTP response
-        page:
-          type: integer
-        use_at_mentions:
-          type: boolean
-          description: <code>true</code> if the company has mentioning enabled on the home feed
+        id:
+          type: string
+        filename:
+          type: string
+        mime_type:
+          type: string
+        original:
+          type: string
+        thumbs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Thumb'
+    Link:
+      title: Link
+      type: object
+      properties:
+        type:
+          type: string
     Comment:
       title: Comment
       type: object
@@ -189,80 +199,16 @@ components:
         liked_by_current_profile:
           type: boolean
           description: <code>true</code> if the token bearer has liked this comment
-    Thumb:
-      title: Thumb
-      type: object
-      description: different resolutions of the image
-      properties:
-        75x75:
-          type: string
-        75x75c:
-          type: string
-        150x150:
-          type: string
-        150x150c:
-          type: string
-        300x300:
-          type: string
-        300x300c:
-          type: string
-        450x450:
-          type: string
-        550x450c:
-          type: string
-        800x800:
-          type: string
-        800x800c:
-          type: string
-    Create_Comment_Payload:
-      title: Create Comment Payload
-      type: object
-      properties:
-        content:
-          type: string
-          description: 'the content of the comment; formatted in markdown; to @mention a profile, use format: <code>[full_name](/people/{profile_id})</code> where {profile_id} is the <code>id</code> of the profile you want to mention'
+    Create_Comment:
+      title: Create Comment
       required:
-      - content
-    Link:
-      title: Link
+      - comments
       type: object
       properties:
-        type:
-          type: string
-    File:
-      title: File
-      type: object
-      properties:
-        id:
-          type: string
-        filename:
-          type: string
-        mime_type:
-          type: string
-        original:
-          type: string
-        thumbs:
+        comments:
           type: array
           items:
-            $ref: '#/components/schemas/Thumb'
-    Image:
-      title: Image
-      type: object
-      properties:
-        id:
-          type: string
-          description: unique identifier of the image
-        filename:
-          type: string
-          description: image's file name
-        mime_type:
-          type: string
-          description: image type
-        original:
-          type: string
-          description: link of image with original resolution
-        thumbs:
-          $ref: '#/components/schemas/Thumb'
+            $ref: '#/components/schemas/Create_Comment_Payload'
     Linked_Profile:
       title: Linked Profile
       type: object
@@ -289,16 +235,70 @@ components:
             $ref: '#/components/schemas/Image'
         full_name:
           type: string
-    Create_Comment:
-      title: Create Comment
-      required:
-      - comments
+    Create_Comment_Payload:
+      title: Create Comment Payload
       type: object
       properties:
-        comments:
-          type: array
-          items:
-            $ref: '#/components/schemas/Create_Comment_Payload'
+        content:
+          type: string
+          description: 'the content of the comment; formatted in markdown; to @mention a profile, use format: <code>[full_name](/people/{profile_id})</code> where {profile_id} is the <code>id</code> of the profile you want to mention'
+      required:
+      - content
+    Thumb:
+      title: Thumb
+      type: object
+      description: different resolutions of the image
+      properties:
+        75x75:
+          type: string
+        75x75c:
+          type: string
+        150x150:
+          type: string
+        150x150c:
+          type: string
+        300x300:
+          type: string
+        300x300c:
+          type: string
+        450x450:
+          type: string
+        550x450c:
+          type: string
+        800x800:
+          type: string
+        800x800c:
+          type: string
+    Comment_Meta:
+      title: Comment Meta
+      type: object
+      properties:
+        status:
+          type: integer
+          description: HTTP response
+        page:
+          type: integer
+        use_at_mentions:
+          type: boolean
+          description: <code>true</code> if the company has mentioning enabled on the home feed
+    Image:
+      title: Image
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the image
+        filename:
+          type: string
+          description: image's file name
+        mime_type:
+          type: string
+          description: image type
+        original:
+          type: string
+          description: link of image with original resolution
+        thumbs:
+          $ref: '#/components/schemas/Thumb'
   securitySchemes:
     Authorization:
       name: Authorization

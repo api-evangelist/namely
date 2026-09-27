@@ -137,39 +137,16 @@ components:
           description: new name/label of the profile field section
       required:
       - title
-    Update_Section:
-      title: Update Section
-      required:
-      - sections
+    Meta:
+      title: Meta
       type: object
       properties:
-        sections:
-          type: array
-          items:
-            $ref: '#/components/schemas/Update_Section_Payload'
-    Section:
-      title: Section
-      type: object
-      properties:
-        id:
-          description: unique identifier of the profile field section
-          type: string
-        title:
-          description: 'label of the profile field section; only editable on through the API via the #endpoint:eoL989Gmn6vnfSPbE</a> endpoint'
-          type: string
-        block_titles:
-          description: list of the "block" subsections within the section; can be empty
-          type: array
-          items:
-            type: string
-        links:
-          type: object
-          properties:
-            fields:
-              type: array
-              description: 'list of unique identifiers of each #endpoint:kxzfwAD7zrZ9CByGA located within the profile field section'
-              items:
-                type: string
+        count:
+          type: integer
+          description: number of total objects
+        status:
+          type: integer
+          description: HTTP response
     Field:
       title: Field
       type: object
@@ -204,16 +181,39 @@ components:
             section:
               type: string
               description: 'unique identifier of the #endpoint:66aqLXinWcyrR2aY2 in which the profile field is located'
-    Meta:
-      title: Meta
+    Update_Section:
+      title: Update Section
+      required:
+      - sections
       type: object
       properties:
-        count:
-          type: integer
-          description: number of total objects
-        status:
-          type: integer
-          description: HTTP response
+        sections:
+          type: array
+          items:
+            $ref: '#/components/schemas/Update_Section_Payload'
+    Section:
+      title: Section
+      type: object
+      properties:
+        id:
+          description: unique identifier of the profile field section
+          type: string
+        title:
+          description: 'label of the profile field section; only editable on through the API via the #endpoint:eoL989Gmn6vnfSPbE</a> endpoint'
+          type: string
+        block_titles:
+          description: list of the "block" subsections within the section; can be empty
+          type: array
+          items:
+            type: string
+        links:
+          type: object
+          properties:
+            fields:
+              type: array
+              description: 'list of unique identifiers of each #endpoint:kxzfwAD7zrZ9CByGA located within the profile field section'
+              items:
+                type: string
   securitySchemes:
     Authorization:
       name: Authorization

@@ -60,6 +60,7 @@ tags:
 - Identity Provisioning
 - Workforce Management
 - Identity Federation
+- Employee Benefits
 tags_raw:
 - hr
 - human-capital-management
@@ -74,6 +75,7 @@ tags_raw:
 - identity-provisioning
 - workforce-management
 - Identity Federation
+- Employee Benefits
 apis:
 - aid: namely:namely-comments-api
   name: Namely Comments API

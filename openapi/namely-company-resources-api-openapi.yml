@@ -197,24 +197,6 @@ paths:
       - Authorization: []
 components:
   schemas:
-    Create_Folder_Payload:
-      title: Create Folder Payload
-      required:
-      - title
-      type: object
-      properties:
-        title:
-          type: string
-    Update_Folder:
-      title: Update Folder
-      required:
-      - folders
-      type: object
-      properties:
-        folders:
-          type: array
-          items:
-            $ref: '#/components/schemas/Update_Folder_Payload'
     Create_Folder:
       title: Create Folder
       required:
@@ -225,34 +207,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Create_Folder_Payload'
-    Resource:
-      title: Resource
-      type: object
-      properties:
-        id:
-          type: string
-          description: unique identifier of the resource file
-        title:
-          type: string
-          description: name/label of the resource file
-        link:
-          type: string
-        file_name:
-          type: string
-          description: file name of the resource file
-        file_format:
-          type: string
-        file_size:
-          type: string
-        file_url:
-          type: string
-        last_edited:
-          type: string
-        folder_id:
-          type: integer
-          description: <code>id</code> of the folder in which the resource file sits; <code>null</code> if not in a folder
-    Update_Folder_Payload:
-      title: Update Folder Payload
+    Create_Folder_Payload:
+      title: Create Folder Payload
       required:
       - title
       type: object
@@ -279,6 +235,50 @@ components:
         position:
           type: integer
           description: position of the folder on the UI; 0 is the top position
+    Update_Folder_Payload:
+      title: Update Folder Payload
+      required:
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+    Update_Folder:
+      title: Update Folder
+      required:
+      - folders
+      type: object
+      properties:
+        folders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Update_Folder_Payload'
+    Resource:
+      title: Resource
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the resource file
+        title:
+          type: string
+          description: name/label of the resource file
+        link:
+          type: string
+        file_name:
+          type: string
+          description: file name of the resource file
+        file_format:
+          type: string
+        file_size:
+          type: string
+        file_url:
+          type: string
+        last_edited:
+          type: string
+        folder_id:
+          type: integer
+          description: <code>id</code> of the folder in which the resource file sits; <code>null</code> if not in a folder
   securitySchemes:
     Authorization:
       name: Authorization
