@@ -519,22 +519,53 @@ paths:
               $ref: '#/components/schemas/Delete_Like'
 components:
   schemas:
-    File:
-      title: File
+    Job_Title_Link:
+      title: Job Title Link
       type: object
       properties:
         id:
           type: string
-        filename:
+          description: unique identifier of the job title
+        title:
           type: string
-        mime_type:
+          description: name/label of the job title
+    Salary:
+      title: Salary
+      type: object
+      properties:
+        currency_type:
+          description: currency of the profile's <strong>current</strong> salary; <code>null</code> if never provided or no <strong>current</strong> salary; cannot be <code>null</code> if any other salary keys provided
           type: string
-        original:
+        date:
+          description: start date of the profile's <strong>current</strong> salary; <code>null</code> if never provided or no <strong>current</strong> salary; cannot be <code>null</code> if any other salary keys provided
           type: string
-        thumbs:
-          type: array
-          items:
-            $ref: '#/components/schemas/Thumb'
+        guid:
+          description: unique identifier of the profile's <strong>current</strong> salary; <code>null</code> if never provided or no <strong>current</strong> salary; cannot be <code>null</code> if any other salary keys provided
+          type: string
+        pay_group_id:
+          description: unique identifier of the pay group associated with the profile's <strong>current</strong> salary; <code>null</code> if never provided or no <strong>current</strong> salary
+          type: integer
+        payroll_job_id:
+          description: unique identifier of the payroll job associated with the profile's <strong>current</strong> salary; <code>null</code> if never provided or no <strong>current</strong> salary
+          type: string
+        rate:
+          description: rate of the profile's <strong>current</strong> salary; valid values include <code>annually</code>, <code>weekly</code>, <code>biweekly</code>, <code>bimonthly</code>, <code>semimonthly</code>, <code>monthly</code>, <code>quarterly</code>, <code>semiannually</code>, and <code>thirteen_monthly</code>; <code>null</code> if never provided; blank if provided then deleted; cannot be <code>null</code> if any other salary keys provided
+          type: string
+        yearly_amount:
+          description: 'annualized amount ("amount_raw" * # of pay periods based on the "rate") of the profile''s <strong>current</strong> salary; all salaries are annualized; <code>null</code> if never provided; blank if provided then deleted; cannot be <code>null</code> if any other salary keys provided'
+          type: integer
+        hourly:
+          description: true if the salary is hourly, and false if yearly; cannot be <code>null</code> if any other salary keys provided. Known as is_hourly elsewhere in the app.
+          type: boolean
+        amount_raw:
+          description: returns the amount as it was inputted on the UI; if yearly, will be the amount per pay period; if hourly, will be the hourly rate; cannot be <code>null</code> if any other salary keys provided
+          type: string
+        payroll_company:
+          type: string
+          description: The Payroll Company associated with this salary. Required if multiple Payroll Companies. "Company name" defaults to first Payroll Company.
+        payroll_job:
+          type: string
+          description: Name of the Payroll Job for this Salary. Required if multiple Payroll Companies. Value of "Job name" will take first Payroll Job from specified Payroll Company.
     Create_Event_Payload:
       title: Create Event Payload
       type: object
@@ -552,6 +583,189 @@ components:
           type: boolean
           description: if <code>true</code>, will send an email to all active profiles per their company email address; will only be successful is token bearer has the corresponding permissions
           default: 'false'
+      required:
+      - content
+    Like:
+      title: Like
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the like
+        href:
+          type: string
+          description: a link to the profile of "liker"
+        full_name:
+          type: string
+          description: full name of the "liker" per his/her profile
+        job_title:
+          type: string
+          description: label of the job title of the "liker" per his/her profile
+        links:
+          type: object
+          properties:
+            image:
+              type: string
+              description: unique identifier of the profile image of the "liker"
+            thumbs:
+              type: object
+              description: multiple resolutions of the profile image
+    Events_Meta:
+      title: Events Meta
+      type: object
+      properties:
+        response:
+          description: HTTP response
+          type: integer
+        use_comments:
+          description: <code>true</code> if the company has commenting enabled on the home feed; same on the <code>event</code> object
+          type: boolean
+        use_updates:
+          description: <code>true</code> if the token bearer has a role with permission to post announcements on the home feed
+          type: boolean
+        use_mentions:
+          description: <code>true</code> if the company has mentioning enabled on the home feed
+          type: boolean
+        use_appreciations:
+          description: <code>true</code> if the company has appreciations enabled on the home feed
+          type: boolean
+        use_likes:
+          description: <code>true</code> if the company has likes enabled on the home feed
+          type: boolean
+        count:
+          description: number of events returned on the page
+          type: integer
+    File:
+      title: File
+      type: object
+      properties:
+        id:
+          type: string
+        filename:
+          type: string
+        mime_type:
+          type: string
+        original:
+          type: string
+        thumbs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Thumb'
+    Team_Link:
+      title: Team Link
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the team
+        name:
+          type: string
+          description: name/label of the team
+    Group_Link:
+      title: Group Link
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the group
+        name:
+          type: string
+          description: name/label of the group
+    Delete_Like:
+      title: Delete Like
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: array
+          items:
+            $ref: '#/components/schemas/Delete_Like_Payload'
+    Create_Comment:
+      title: Create Comment
+      required:
+      - comments
+      type: object
+      properties:
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Create_Comment_Payload'
+    Dental:
+      title: Dental
+      type: object
+      properties:
+        beneficiary:
+          description: relationship of the profile's dental plan's beneficiary to the profile; valid values include <code>Employee Only</code>, <code>Employee/Child</code>, <code>Employee/Spouse</code>, <code>Family</code>, <code>Not Applicable</code>, and <code>Waive</code>; blank if never provided or provided then deleted; cannot be <code>null</code> if any other <code>dental</code> keys provided
+          type: string
+        amount:
+          description: amount of the profile's dental plan; numbers only; cannot be <code>null</code> if any other <code>dental</code> keys provided
+          type: string
+        currency_type:
+          description: currency type of the profile's dental plan amount; default <code>USD</code>
+          type: string
+    Home:
+      title: Home
+      type: object
+      description: fields represent the entire home address
+      properties:
+        address1:
+          type: string
+          description: address line 1 of the home address
+        address2:
+          type: string
+          description: address line 2 of the home address
+        city:
+          type: string
+          description: city of the home address
+        state_id:
+          type: string
+          description: 'state of the home address; for US, must be the 2-digit code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints'
+        country_id:
+          type: string
+          description: '"US" for the US; must be the ISO Alpha-2 code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints or just use the ISO Alpha-2 code'
+        zip:
+          type: string
+          description: zip or postal code of the home address
+    Link:
+      title: Link
+      type: object
+      properties:
+        type:
+          type: string
+    Linked_Profile:
+      title: Linked Profile
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        user_status:
+          type: string
+        updated_at:
+          type: integer
+        created_at:
+          type: integer
+        preferred_name:
+          type: string
+        image:
+          type: object
+          items:
+            $ref: '#/components/schemas/Image'
+        full_name:
+          type: string
+    Create_Comment_Payload:
+      title: Create Comment Payload
+      type: object
+      properties:
+        content:
+          type: string
+          description: 'the content of the comment; formatted in markdown; to @mention a profile, use format: <code>[full_name](/people/{profile_id})</code> where {profile_id} is the <code>id</code> of the profile you want to mention'
       required:
       - content
     Event:
@@ -621,38 +835,6 @@ components:
         liked_by_current_profile:
           type: boolean
           description: <code>true</code> if the token bearer has liked this event
-    Create_Comment:
-      title: Create Comment
-      required:
-      - comments
-      type: object
-      properties:
-        comments:
-          type: array
-          items:
-            $ref: '#/components/schemas/Create_Comment_Payload'
-    Delete_Like:
-      title: Delete Like
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          type: array
-          items:
-            $ref: '#/components/schemas/Delete_Like_Payload'
-    Comment_Meta:
-      title: Comment Meta
-      type: object
-      properties:
-        status:
-          type: integer
-          description: HTTP response
-        page:
-          type: integer
-        use_at_mentions:
-          type: boolean
-          description: <code>true</code> if the company has mentioning enabled on the home feed
     Thumb:
       title: Thumb
       type: object
@@ -677,19 +859,6 @@ components:
         800x800:
           type: string
         800x800c:
-          type: string
-    Healthcare:
-      title: Healthcare
-      type: object
-      properties:
-        beneficiary:
-          description: relationship of the profile's healthcare plan's beneficiary to the profile; valid values include <code>Employee Only</code>, <code>Employee/Child</code>, <code>Employee/Spouse</code>, <code>Family</code>, <code>Not Applicable</code>, and <code>Waive</code>; blank if never provided or provided then deleted; cannot be <code>null</code> if any other <code>healthcare</code> keys provided
-          type: string
-        amount:
-          description: amount of the profile's healthcare plan; numbers only; cannot be <code>null</code> if any other <code>healthcare</code> keys provided
-          type: string
-        currency_type:
-          description: currency type of the profile's healthcare plan amount; default <code>USD</code>
           type: string
     Comment:
       title: Comment
@@ -724,88 +893,6 @@ components:
         liked_by_current_profile:
           type: boolean
           description: <code>true</code> if the token bearer has liked this comment
-    Dental:
-      title: Dental
-      type: object
-      properties:
-        beneficiary:
-          description: relationship of the profile's dental plan's beneficiary to the profile; valid values include <code>Employee Only</code>, <code>Employee/Child</code>, <code>Employee/Spouse</code>, <code>Family</code>, <code>Not Applicable</code>, and <code>Waive</code>; blank if never provided or provided then deleted; cannot be <code>null</code> if any other <code>dental</code> keys provided
-          type: string
-        amount:
-          description: amount of the profile's dental plan; numbers only; cannot be <code>null</code> if any other <code>dental</code> keys provided
-          type: string
-        currency_type:
-          description: currency type of the profile's dental plan amount; default <code>USD</code>
-          type: string
-    Create_Comment_Payload:
-      title: Create Comment Payload
-      type: object
-      properties:
-        content:
-          type: string
-          description: 'the content of the comment; formatted in markdown; to @mention a profile, use format: <code>[full_name](/people/{profile_id})</code> where {profile_id} is the <code>id</code> of the profile you want to mention'
-      required:
-      - content
-    Home:
-      title: Home
-      type: object
-      description: fields represent the entire home address
-      properties:
-        address1:
-          type: string
-          description: address line 1 of the home address
-        address2:
-          type: string
-          description: address line 2 of the home address
-        city:
-          type: string
-          description: city of the home address
-        state_id:
-          type: string
-          description: 'state of the home address; for US, must be the 2-digit code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints'
-        country_id:
-          type: string
-          description: '"US" for the US; must be the ISO Alpha-2 code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints or just use the ISO Alpha-2 code'
-        zip:
-          type: string
-          description: zip or postal code of the home address
-    Salary:
-      title: Salary
-      type: object
-      properties:
-        currency_type:
-          description: currency of the profile's <strong>current</strong> salary; <code>null</code> if never provided or no <strong>current</strong> salary; cannot be <code>null</code> if any other salary keys provided
-          type: string
-        date:
-          description: start date of the profile's <strong>current</strong> salary; <code>null</code> if never provided or no <strong>current</strong> salary; cannot be <code>null</code> if any other salary keys provided
-          type: string
-        guid:
-          description: unique identifier of the profile's <strong>current</strong> salary; <code>null</code> if never provided or no <strong>current</strong> salary; cannot be <code>null</code> if any other salary keys provided
-          type: string
-        pay_group_id:
-          description: unique identifier of the pay group associated with the profile's <strong>current</strong> salary; <code>null</code> if never provided or no <strong>current</strong> salary
-          type: integer
-        payroll_job_id:
-          description: unique identifier of the payroll job associated with the profile's <strong>current</strong> salary; <code>null</code> if never provided or no <strong>current</strong> salary
-          type: string
-        rate:
-          description: rate of the profile's <strong>current</strong> salary; valid values include <code>annually</code>, <code>weekly</code>, <code>biweekly</code>, <code>bimonthly</code>, <code>semimonthly</code>, <code>monthly</code>, <code>quarterly</code>, <code>semiannually</code>, and <code>thirteen_monthly</code>; <code>null</code> if never provided; blank if provided then deleted; cannot be <code>null</code> if any other salary keys provided
-          type: string
-        yearly_amount:
-          description: 'annualized amount ("amount_raw" * # of pay periods based on the "rate") of the profile''s <strong>current</strong> salary; all salaries are annualized; <code>null</code> if never provided; blank if provided then deleted; cannot be <code>null</code> if any other salary keys provided'
-          type: integer
-        hourly:
-          description: true if the salary is hourly, and false if yearly; cannot be <code>null</code> if any other salary keys provided. Known as is_hourly elsewhere in the app.
-          type: boolean
-        amount_raw:
-          description: returns the amount as it was inputted on the UI; if yearly, will be the amount per pay period; if hourly, will be the hourly rate; cannot be <code>null</code> if any other salary keys provided
-          type: string
-        payroll_company:
-          type: string
-          description: The Payroll Company associated with this salary. Required if multiple Payroll Companies. "Company name" defaults to first Payroll Company.
-        payroll_job:
-          type: string
-          description: Name of the Payroll Job for this Salary. Required if multiple Payroll Companies. Value of "Job name" will take first Payroll Job from specified Payroll Company.
     Delete_Like_Payload:
       title: Delete Like Payload
       required:
@@ -816,162 +903,6 @@ components:
         liked_by_current_profile:
           type: boolean
         likes_count:
-          type: integer
-    Office:
-      title: Office
-      type: object
-      description: these fields represent the entire office address and are inherited from the "Office Location" group assigned to the profile
-      properties:
-        address1:
-          type: string
-          description: address line 1 of the office address
-        address2:
-          type: string
-          description: address line 2 of the office address
-        city:
-          type: string
-          description: city of the office address
-        state_id:
-          type: string
-          description: 'state of the office address; for US, must be the 2-digit code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints'
-        country_id:
-          type: string
-          description: '"US" for the US; must be the ISO Alpha-2 code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints or just use the ISO Alpha-2 code'
-        zip:
-          type: string
-          description: zip or postal code of the office address
-        phone:
-          type: string
-          description: phone number associated with the office location
-    Job_Title_Link:
-      title: Job Title Link
-      type: object
-      properties:
-        id:
-          type: string
-          description: unique identifier of the job title
-        title:
-          type: string
-          description: name/label of the job title
-    Create_Event:
-      title: Create Event
-      required:
-      - events
-      type: object
-      properties:
-        events:
-          type: array
-          items:
-            $ref: '#/components/schemas/Create_Event_Payload'
-    Team_Link:
-      title: Team Link
-      type: object
-      properties:
-        id:
-          type: string
-          description: unique identifier of the team
-        name:
-          type: string
-          description: name/label of the team
-    Linked_Profile:
-      title: Linked Profile
-      type: object
-      properties:
-        id:
-          type: string
-        email:
-          type: string
-        first_name:
-          type: string
-        last_name:
-          type: string
-        user_status:
-          type: string
-        updated_at:
-          type: integer
-        created_at:
-          type: integer
-        preferred_name:
-          type: string
-        image:
-          type: object
-          items:
-            $ref: '#/components/schemas/Image'
-        full_name:
-          type: string
-    Image:
-      title: Image
-      type: object
-      properties:
-        id:
-          type: string
-          description: unique identifier of the image
-        filename:
-          type: string
-          description: image's file name
-        mime_type:
-          type: string
-          description: image type
-        original:
-          type: string
-          description: link of image with original resolution
-        thumbs:
-          $ref: '#/components/schemas/Thumb'
-    Link:
-      title: Link
-      type: object
-      properties:
-        type:
-          type: string
-    Like:
-      title: Like
-      type: object
-      properties:
-        id:
-          type: string
-          description: unique identifier of the like
-        href:
-          type: string
-          description: a link to the profile of "liker"
-        full_name:
-          type: string
-          description: full name of the "liker" per his/her profile
-        job_title:
-          type: string
-          description: label of the job title of the "liker" per his/her profile
-        links:
-          type: object
-          properties:
-            image:
-              type: string
-              description: unique identifier of the profile image of the "liker"
-            thumbs:
-              type: object
-              description: multiple resolutions of the profile image
-    Events_Meta:
-      title: Events Meta
-      type: object
-      properties:
-        response:
-          description: HTTP response
-          type: integer
-        use_comments:
-          description: <code>true</code> if the company has commenting enabled on the home feed; same on the <code>event</code> object
-          type: boolean
-        use_updates:
-          description: <code>true</code> if the token bearer has a role with permission to post announcements on the home feed
-          type: boolean
-        use_mentions:
-          description: <code>true</code> if the company has mentioning enabled on the home feed
-          type: boolean
-        use_appreciations:
-          description: <code>true</code> if the company has appreciations enabled on the home feed
-          type: boolean
-        use_likes:
-          description: <code>true</code> if the company has likes enabled on the home feed
-          type: boolean
-        count:
-          description: number of events returned on the page
           type: integer
     Profile:
       title: Profile
@@ -1171,16 +1102,85 @@ components:
         namely_time_manager_role:
           description: only applies to companies using Namely Time
           type: string
-    Group_Link:
-      title: Group Link
+    Office:
+      title: Office
+      type: object
+      description: these fields represent the entire office address and are inherited from the "Office Location" group assigned to the profile
+      properties:
+        address1:
+          type: string
+          description: address line 1 of the office address
+        address2:
+          type: string
+          description: address line 2 of the office address
+        city:
+          type: string
+          description: city of the office address
+        state_id:
+          type: string
+          description: 'state of the office address; for US, must be the 2-digit code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints'
+        country_id:
+          type: string
+          description: '"US" for the US; must be the ISO Alpha-2 code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints or just use the ISO Alpha-2 code'
+        zip:
+          type: string
+          description: zip or postal code of the office address
+        phone:
+          type: string
+          description: phone number associated with the office location
+    Create_Event:
+      title: Create Event
+      required:
+      - events
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/Create_Event_Payload'
+    Healthcare:
+      title: Healthcare
+      type: object
+      properties:
+        beneficiary:
+          description: relationship of the profile's healthcare plan's beneficiary to the profile; valid values include <code>Employee Only</code>, <code>Employee/Child</code>, <code>Employee/Spouse</code>, <code>Family</code>, <code>Not Applicable</code>, and <code>Waive</code>; blank if never provided or provided then deleted; cannot be <code>null</code> if any other <code>healthcare</code> keys provided
+          type: string
+        amount:
+          description: amount of the profile's healthcare plan; numbers only; cannot be <code>null</code> if any other <code>healthcare</code> keys provided
+          type: string
+        currency_type:
+          description: currency type of the profile's healthcare plan amount; default <code>USD</code>
+          type: string
+    Comment_Meta:
+      title: Comment Meta
+      type: object
+      properties:
+        status:
+          type: integer
+          description: HTTP response
+        page:
+          type: integer
+        use_at_mentions:
+          type: boolean
+          description: <code>true</code> if the company has mentioning enabled on the home feed
+    Image:
+      title: Image
       type: object
       properties:
         id:
           type: string
-          description: unique identifier of the group
-        name:
+          description: unique identifier of the image
+        filename:
           type: string
-          description: name/label of the group
+          description: image's file name
+        mime_type:
+          type: string
+          description: image type
+        original:
+          type: string
+          description: link of image with original resolution
+        thumbs:
+          $ref: '#/components/schemas/Thumb'
   securitySchemes:
     Authorization:
       name: Authorization

@@ -54,6 +54,22 @@ paths:
       - Authorization: []
 components:
   schemas:
+    Column:
+      title: Column
+      type: array
+      description: 'columns within the report; note: position of the columns is important'
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            description: immutable name of the report column
+          type:
+            type: string
+            description: data type of the report column
+          label:
+            type: string
+            description: name/label of the report column
     Content:
       title: Content
       type: array
@@ -80,22 +96,6 @@ components:
             $ref: '#/components/schemas/Content'
         links:
           type: object
-    Column:
-      title: Column
-      type: array
-      description: 'columns within the report; note: position of the columns is important'
-      items:
-        type: object
-        properties:
-          name:
-            type: string
-            description: immutable name of the report column
-          type:
-            type: string
-            description: data type of the report column
-          label:
-            type: string
-            description: name/label of the report column
   securitySchemes:
     Authorization:
       name: Authorization

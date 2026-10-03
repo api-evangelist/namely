@@ -144,97 +144,6 @@ paths:
       - Authorization: []
 components:
   schemas:
-    File:
-      title: File
-      type: object
-      properties:
-        id:
-          type: string
-        filename:
-          type: string
-        mime_type:
-          type: string
-        original:
-          type: string
-        thumbs:
-          type: array
-          items:
-            $ref: '#/components/schemas/Thumb'
-    Link:
-      title: Link
-      type: object
-      properties:
-        type:
-          type: string
-    Comment:
-      title: Comment
-      type: object
-      properties:
-        id:
-          type: string
-          description: unique identifier of the comment
-        content:
-          type: string
-          description: content of the comment, displayed in markdown
-        html_content:
-          type: string
-          description: content of the comment, displayed in HTML
-        created_at:
-          type: integer
-          description: epoch time that the comment was created
-        can_destroy:
-          type: boolean
-          description: <code>true</code> if the token bearer has a role with permission to delete the comment; will always be <code>true</code> for one's own comment
-        links:
-          type: object
-          properties:
-            profile:
-              type: string
-        utc_offset:
-          type: integer
-          description: the hour difference between UTC and the main office of the company
-        likes_count:
-          type: integer
-          description: total number of likes on comment
-        liked_by_current_profile:
-          type: boolean
-          description: <code>true</code> if the token bearer has liked this comment
-    Create_Comment:
-      title: Create Comment
-      required:
-      - comments
-      type: object
-      properties:
-        comments:
-          type: array
-          items:
-            $ref: '#/components/schemas/Create_Comment_Payload'
-    Linked_Profile:
-      title: Linked Profile
-      type: object
-      properties:
-        id:
-          type: string
-        email:
-          type: string
-        first_name:
-          type: string
-        last_name:
-          type: string
-        user_status:
-          type: string
-        updated_at:
-          type: integer
-        created_at:
-          type: integer
-        preferred_name:
-          type: string
-        image:
-          type: object
-          items:
-            $ref: '#/components/schemas/Image'
-        full_name:
-          type: string
     Create_Comment_Payload:
       title: Create Comment Payload
       type: object
@@ -269,6 +178,49 @@ components:
           type: string
         800x800c:
           type: string
+    Create_Comment:
+      title: Create Comment
+      required:
+      - comments
+      type: object
+      properties:
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Create_Comment_Payload'
+    Comment:
+      title: Comment
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the comment
+        content:
+          type: string
+          description: content of the comment, displayed in markdown
+        html_content:
+          type: string
+          description: content of the comment, displayed in HTML
+        created_at:
+          type: integer
+          description: epoch time that the comment was created
+        can_destroy:
+          type: boolean
+          description: <code>true</code> if the token bearer has a role with permission to delete the comment; will always be <code>true</code> for one's own comment
+        links:
+          type: object
+          properties:
+            profile:
+              type: string
+        utc_offset:
+          type: integer
+          description: the hour difference between UTC and the main office of the company
+        likes_count:
+          type: integer
+          description: total number of likes on comment
+        liked_by_current_profile:
+          type: boolean
+          description: <code>true</code> if the token bearer has liked this comment
     Comment_Meta:
       title: Comment Meta
       type: object
@@ -281,6 +233,12 @@ components:
         use_at_mentions:
           type: boolean
           description: <code>true</code> if the company has mentioning enabled on the home feed
+    Link:
+      title: Link
+      type: object
+      properties:
+        type:
+          type: string
     Image:
       title: Image
       type: object
@@ -299,6 +257,48 @@ components:
           description: link of image with original resolution
         thumbs:
           $ref: '#/components/schemas/Thumb'
+    File:
+      title: File
+      type: object
+      properties:
+        id:
+          type: string
+        filename:
+          type: string
+        mime_type:
+          type: string
+        original:
+          type: string
+        thumbs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Thumb'
+    Linked_Profile:
+      title: Linked Profile
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        user_status:
+          type: string
+        updated_at:
+          type: integer
+        created_at:
+          type: integer
+        preferred_name:
+          type: string
+        image:
+          type: object
+          items:
+            $ref: '#/components/schemas/Image'
+        full_name:
+          type: string
   securitySchemes:
     Authorization:
       name: Authorization

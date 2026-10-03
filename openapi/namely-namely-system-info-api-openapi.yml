@@ -57,28 +57,6 @@ paths:
       - Authorization: []
 components:
   schemas:
-    Country:
-      title: Country
-      type: object
-      properties:
-        id:
-          type: string
-          description: 'unique identifier of the profile; 2-digit ISO code; used when passing home or office #model:yq9tkBR24wuBhzizY'
-        name:
-          type: string
-          description: name of the country
-        subdivision_type:
-          type: string
-          description: name of the country's subdivision (e.g. State, Province)
-        links:
-          type: array
-          items:
-            type: object
-            properties:
-              subdivision:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Subdivision'
     countries:
       title: Countries
       type: object
@@ -102,6 +80,28 @@ components:
         name:
           type: string
           description: name of the subdivision unit (e.g. New Jersey)
+    Country:
+      title: Country
+      type: object
+      properties:
+        id:
+          type: string
+          description: 'unique identifier of the profile; 2-digit ISO code; used when passing home or office #model:yq9tkBR24wuBhzizY'
+        name:
+          type: string
+          description: name of the country
+        subdivision_type:
+          type: string
+          description: name of the country's subdivision (e.g. State, Province)
+        links:
+          type: array
+          items:
+            type: object
+            properties:
+              subdivision:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Subdivision'
   securitySchemes:
     Authorization:
       name: Authorization
