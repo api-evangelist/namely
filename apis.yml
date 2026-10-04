@@ -620,6 +620,9 @@ apis:
   - type: Sandbox
     url: sandbox/namely-sandbox.yml
 common:
+- type: CapabilityMap
+  url: capabilities/namely-capability-edges.yml
+  name: Namely Business Capability Map
 - type: DomainSecurity
   url: security/namely-domain-security.yml
 - type: Website

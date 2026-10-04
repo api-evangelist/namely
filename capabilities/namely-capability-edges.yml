@@ -1,0 +1,64 @@
+slug: namely
+provider: Namely
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 5
+edges:
+- tag: Profiles
+  spec_file: namely-profiles-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.82
+  evidence: GET /profiles 'Get all Profiles', POST /profiles 'Create a Profile'; schemas Salary, Job_Title,
+    Office, Dental on an HCM platform
+  reason: Profiles are employee master records (job title, salary, office, benefits) in Namely's HR platform,
+    i.e. creation and maintenance of employee records — HR Operations Management within Human Capital
+    Management.
+- tag: Home Feed
+  spec_file: namely-home-feed-api-openapi.yml
+  capability_id: BC-300.60
+  capability_id_l1: BC-300
+  capability_name: Employee Experience Management
+  confidence: 0.74
+  evidence: POST /events "Create an Announcement"; POST /events/{id}/comments "Create an Event's Comment";
+    POST /likes/event/{id} "Create an Event's Like"
+  reason: An internal social feed of announcements with comments and likes inside an HR platform is employee
+    engagement and internal communications, i.e. Employee Experience Management.
+- tag: Jobs Info
+  spec_file: namely-jobs-info-api-openapi.yml
+  capability_id: BC-300
+  capability_id_l1: BC-300
+  capability_name: Human Capital Management
+  confidence: 0.72
+  evidence: GET /job_tiers "Get all Job Tiers"; POST /job_titles "Create a Job Title"
+  reason: Combined job tier and job title administration — HR job-architecture data in an HCM platform.
+    L1 only, as it spans compensation structure and HR records without naming either.
+- tag: Job Tier
+  spec_file: namely-job-tier-api-openapi.yml
+  capability_id: BC-300
+  capability_id_l1: BC-300
+  capability_name: Human Capital Management
+  confidence: 0.7
+  evidence: POST /job_tiers "Create a Job Tier"; schemas Job_Tier, Job_Title, Update_Job_Tier
+  reason: Job tier/level definitions are job-architecture master data in an HCM platform. Clearly Human
+    Capital Management, but the evidence does not distinguish between compensation structure, workforce
+    planning or HR records, so L1 only.
+- tag: Job Title
+  spec_file: namely-job-title-api-openapi.yml
+  capability_id: BC-300
+  capability_id_l1: BC-300
+  capability_name: Human Capital Management
+  confidence: 0.7
+  evidence: POST /job_titles "Create a Job Title"; schemas Job_Title, Job_Tier, Update_Job_Title
+  reason: CRUD over job titles linked to job tiers is HR job-architecture reference data within Human
+    Capital Management; the specific sub-capability is not determinable from these four operations.
