@@ -187,12 +187,6 @@ paths:
               $ref: '#/components/schemas/Update_Job_Title'
 components:
   schemas:
-    Link:
-      title: Link
-      type: object
-      properties:
-        type:
-          type: string
     Create_Job_Title:
       title: Create Job Title
       type: object
@@ -203,6 +197,52 @@ components:
             $ref: '#/components/schemas/Create_Job_Title_Payload'
       required:
       - job_titles
+    Job_Title:
+      title: Job Title
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the job title
+        parent_id:
+          type: string
+          description: id of the job tier associated with the job title (when creating a job title, the key is "parent")
+        title:
+          type: string
+          description: name/label of the job title
+        links:
+          type: object
+          properties:
+            job_tier:
+              type: string
+              description: 'id of the job tier associated with the job title '
+    Job_Tier:
+      title: Job Tier
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the job tier
+        numerical_id:
+          type: string
+        title:
+          type: string
+          default: ''
+          description: name/label of the job tier
+        links:
+          type: object
+          properties:
+            job_titles:
+              type: array
+              description: id of the job titles associated with the job tier
+              items:
+                type: string
+    Link:
+      title: Link
+      type: object
+      properties:
+        type:
+          type: string
     Meta:
       title: Meta
       type: object
@@ -213,6 +253,16 @@ components:
         status:
           type: integer
           description: HTTP response
+    Update_Job_Title:
+      title: Update Job Title
+      type: object
+      properties:
+        job_titles:
+          type: array
+          items:
+            $ref: '#/components/schemas/update-job-title-payload'
+      required:
+      - job_titles
     update-job-title-payload:
       title: Update Job Title Payload
       type: object
@@ -239,56 +289,6 @@ components:
       required:
       - title
       - parent
-    Update_Job_Title:
-      title: Update Job Title
-      type: object
-      properties:
-        job_titles:
-          type: array
-          items:
-            $ref: '#/components/schemas/update-job-title-payload'
-      required:
-      - job_titles
-    Job_Tier:
-      title: Job Tier
-      type: object
-      properties:
-        id:
-          type: string
-          description: unique identifier of the job tier
-        numerical_id:
-          type: string
-        title:
-          type: string
-          default: ''
-          description: name/label of the job tier
-        links:
-          type: object
-          properties:
-            job_titles:
-              type: array
-              description: id of the job titles associated with the job tier
-              items:
-                type: string
-    Job_Title:
-      title: Job Title
-      type: object
-      properties:
-        id:
-          type: string
-          description: unique identifier of the job title
-        parent_id:
-          type: string
-          description: id of the job tier associated with the job title (when creating a job title, the key is "parent")
-        title:
-          type: string
-          description: name/label of the job title
-        links:
-          type: object
-          properties:
-            job_tier:
-              type: string
-              description: 'id of the job tier associated with the job title '
   securitySchemes:
     Authorization:
       name: Authorization

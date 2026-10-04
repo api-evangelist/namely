@@ -171,15 +171,6 @@ components:
         status:
           type: integer
           description: HTTP response
-    Update_Section_Payload:
-      title: Update Section Payload
-      type: object
-      properties:
-        title:
-          type: string
-          description: new name/label of the profile field section
-      required:
-      - title
     Field:
       title: Field
       type: object
@@ -214,6 +205,15 @@ components:
             section:
               type: string
               description: 'unique identifier of the #endpoint:66aqLXinWcyrR2aY2 in which the profile field is located'
+    Update_Section_Payload:
+      title: Update Section Payload
+      type: object
+      properties:
+        title:
+          type: string
+          description: new name/label of the profile field section
+      required:
+      - title
   securitySchemes:
     Authorization:
       name: Authorization

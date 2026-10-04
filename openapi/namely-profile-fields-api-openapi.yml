@@ -289,16 +289,6 @@ paths:
               $ref: '#/components/schemas/Update_Section'
 components:
   schemas:
-    Create_Profile_Field:
-      title: Create Profile Field
-      required:
-      - fields
-      type: object
-      properties:
-        fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/Create_Profile_Field_Payload'
     Section:
       title: Section
       type: object
@@ -332,6 +322,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Update_Section_Payload'
+    Update_Section_Payload:
+      title: Update Section Payload
+      type: object
+      properties:
+        title:
+          type: string
+          description: new name/label of the profile field section
+      required:
+      - title
     Meta:
       title: Meta
       type: object
@@ -352,32 +351,6 @@ components:
         section:
           description: id of the [new] profile field section in which you want the place the field
           type: string
-    Update_Section_Payload:
-      title: Update Section Payload
-      type: object
-      properties:
-        title:
-          type: string
-          description: new name/label of the profile field section
-      required:
-      - title
-    Create_Profile_Field_Payload:
-      title: Create Profile Field Payload
-      type: object
-      properties:
-        label:
-          type: string
-          description: label of the profile field; cannot contain special characters; cannot contain word "id"; must be unique; immutable <code>name</code> will be auto-generated based on label
-        section:
-          description: id of the profile field section in which you want the place the field
-          type: string
-        type:
-          description: field type; valid values are <code>text</code>, <code>long_text</code>, <code>date</code>, <code>file</code>, and <code>number</code>
-          type: string
-      required:
-      - label
-      - section
-      - type
     Field:
       title: Field
       type: object
@@ -422,6 +395,33 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Update_Profile_Field_Payload'
+    Create_Profile_Field:
+      title: Create Profile Field
+      required:
+      - fields
+      type: object
+      properties:
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/Create_Profile_Field_Payload'
+    Create_Profile_Field_Payload:
+      title: Create Profile Field Payload
+      type: object
+      properties:
+        label:
+          type: string
+          description: label of the profile field; cannot contain special characters; cannot contain word "id"; must be unique; immutable <code>name</code> will be auto-generated based on label
+        section:
+          description: id of the profile field section in which you want the place the field
+          type: string
+        type:
+          description: field type; valid values are <code>text</code>, <code>long_text</code>, <code>date</code>, <code>file</code>, and <code>number</code>
+          type: string
+      required:
+      - label
+      - section
+      - type
   securitySchemes:
     Authorization:
       name: Authorization

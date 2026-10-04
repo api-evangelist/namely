@@ -57,19 +57,6 @@ paths:
       - Authorization: []
 components:
   schemas:
-    countries:
-      title: Countries
-      type: object
-      properties:
-        id:
-          type: string
-          description: unique identifier of the profile; 2-digit ISO code; used when passing home or office <code>address</code>
-        name:
-          type: string
-          description: name of the country
-        subdivision_type:
-          type: string
-          description: name of the country's subdivision (e.g. State, Province)
     Subdivision:
       title: Subdivision
       type: object
@@ -102,6 +89,19 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/Subdivision'
+    countries:
+      title: Countries
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the profile; 2-digit ISO code; used when passing home or office <code>address</code>
+        name:
+          type: string
+          description: name of the country
+        subdivision_type:
+          type: string
+          description: name of the country's subdivision (e.g. State, Province)
   securitySchemes:
     Authorization:
       name: Authorization

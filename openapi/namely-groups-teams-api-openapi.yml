@@ -286,16 +286,66 @@ paths:
                           $ref: '#/components/schemas/team-category'
 components:
   schemas:
-    Job_Title_Link:
-      title: Job Title Link
+    Meta_Group:
+      title: Meta Group
+      type: object
+      properties:
+        response:
+          type: integer
+          description: HTTP response
+        count:
+          type: integer
+          description: number of total groups
+        page_title:
+          type: string
+        page_copy:
+          type: string
+    Group_Link:
+      title: Group Link
       type: object
       properties:
         id:
           type: string
-          description: unique identifier of the job title
-        title:
+          description: unique identifier of the group
+        name:
           type: string
-          description: name/label of the job title
+          description: name/label of the group
+    Home:
+      title: Home
+      type: object
+      description: fields represent the entire home address
+      properties:
+        address1:
+          type: string
+          description: address line 1 of the home address
+        address2:
+          type: string
+          description: address line 2 of the home address
+        city:
+          type: string
+          description: city of the home address
+        state_id:
+          type: string
+          description: 'state of the home address; for US, must be the 2-digit code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints'
+        country_id:
+          type: string
+          description: '"US" for the US; must be the ISO Alpha-2 code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints or just use the ISO Alpha-2 code'
+        zip:
+          type: string
+          description: zip or postal code of the home address
+    Healthcare:
+      title: Healthcare
+      type: object
+      properties:
+        beneficiary:
+          description: relationship of the profile's healthcare plan's beneficiary to the profile; valid values include <code>Employee Only</code>, <code>Employee/Child</code>, <code>Employee/Spouse</code>, <code>Family</code>, <code>Not Applicable</code>, and <code>Waive</code>; blank if never provided or provided then deleted; cannot be <code>null</code> if any other <code>healthcare</code> keys provided
+          type: string
+        amount:
+          description: amount of the profile's healthcare plan; numbers only; cannot be <code>null</code> if any other <code>healthcare</code> keys provided
+          type: string
+        currency_type:
+          description: currency type of the profile's healthcare plan amount; default <code>USD</code>
+          type: string
     Salary:
       title: Salary
       type: object
@@ -333,46 +383,6 @@ components:
         payroll_job:
           type: string
           description: Name of the Payroll Job for this Salary. Required if multiple Payroll Companies. Value of "Job name" will take first Payroll Job from specified Payroll Company.
-    team-category:
-      title: Team Category
-      type: object
-      properties:
-        id:
-          type: string
-          description: unique identifier of the team category
-        title:
-          type: string
-          description: name/label of the team category
-    Meta:
-      title: Meta
-      type: object
-      properties:
-        count:
-          type: integer
-          description: number of total objects
-        status:
-          type: integer
-          description: HTTP response
-    Team_Link:
-      title: Team Link
-      type: object
-      properties:
-        id:
-          type: string
-          description: unique identifier of the team
-        name:
-          type: string
-          description: name/label of the team
-    Group_Link:
-      title: Group Link
-      type: object
-      properties:
-        id:
-          type: string
-          description: unique identifier of the group
-        name:
-          type: string
-          description: name/label of the group
     Address:
       title: Address
       type: object
@@ -408,29 +418,6 @@ components:
         currency_type:
           description: currency type of the profile's dental plan amount; default <code>USD</code>
           type: string
-    Home:
-      title: Home
-      type: object
-      description: fields represent the entire home address
-      properties:
-        address1:
-          type: string
-          description: address line 1 of the home address
-        address2:
-          type: string
-          description: address line 2 of the home address
-        city:
-          type: string
-          description: city of the home address
-        state_id:
-          type: string
-          description: 'state of the home address; for US, must be the 2-digit code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints'
-        country_id:
-          type: string
-          description: '"US" for the US; must be the ISO Alpha-2 code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints or just use the ISO Alpha-2 code'
-        zip:
-          type: string
-          description: zip or postal code of the home address
     Group:
       title: Group
       type: object
@@ -459,37 +446,6 @@ components:
             group_type:
               type: string
               description: group type to which the group belongs
-    Link:
-      title: Link
-      type: object
-      properties:
-        type:
-          type: string
-    Thumb:
-      title: Thumb
-      type: object
-      description: different resolutions of the image
-      properties:
-        75x75:
-          type: string
-        75x75c:
-          type: string
-        150x150:
-          type: string
-        150x150c:
-          type: string
-        300x300:
-          type: string
-        300x300c:
-          type: string
-        450x450:
-          type: string
-        550x450c:
-          type: string
-        800x800:
-          type: string
-        800x800c:
-          type: string
     Profile:
       title: Profile
       type: object
@@ -688,8 +644,18 @@ components:
         namely_time_manager_role:
           description: only applies to companies using Namely Time
           type: string
-    team:
-      title: Team
+    Job_Title_Link:
+      title: Job Title Link
+      type: object
+      properties:
+        id:
+          type: string
+          description: unique identifier of the job title
+        title:
+          type: string
+          description: name/label of the job title
+    Team_Link:
+      title: Team Link
       type: object
       properties:
         id:
@@ -698,61 +664,29 @@ components:
         name:
           type: string
           description: name/label of the team
-        email:
-          type: string
-          description: email address (@namely.com) of the team; emails all members of the team
-        updated_at:
-          type: number
-          description: epoch time of when the team was updated
-        created_at:
-          type: number
-          description: epoch time of when the team was created
-        links:
-          type: object
-          properties:
-            team_categories:
-              type: array
-              description: <code>id</code> of any team categories to which the team belongs; 0 to many
-              items:
-                type: string
-    Office:
-      title: Office
-      type: object
-      description: these fields represent the entire office address and are inherited from the "Office Location" group assigned to the profile
-      properties:
-        address1:
-          type: string
-          description: address line 1 of the office address
-        address2:
-          type: string
-          description: address line 2 of the office address
-        city:
-          type: string
-          description: city of the office address
-        state_id:
-          type: string
-          description: 'state of the office address; for US, must be the 2-digit code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints'
-        country_id:
-          type: string
-          description: '"US" for the US; must be the ISO Alpha-2 code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints or just use the ISO Alpha-2 code'
-        zip:
-          type: string
-          description: zip or postal code of the office address
-        phone:
-          type: string
-          description: phone number associated with the office location
-    Healthcare:
-      title: Healthcare
+    Image:
+      title: Image
       type: object
       properties:
-        beneficiary:
-          description: relationship of the profile's healthcare plan's beneficiary to the profile; valid values include <code>Employee Only</code>, <code>Employee/Child</code>, <code>Employee/Spouse</code>, <code>Family</code>, <code>Not Applicable</code>, and <code>Waive</code>; blank if never provided or provided then deleted; cannot be <code>null</code> if any other <code>healthcare</code> keys provided
+        id:
           type: string
-        amount:
-          description: amount of the profile's healthcare plan; numbers only; cannot be <code>null</code> if any other <code>healthcare</code> keys provided
+          description: unique identifier of the image
+        filename:
           type: string
-        currency_type:
-          description: currency type of the profile's healthcare plan amount; default <code>USD</code>
+          description: image's file name
+        mime_type:
+          type: string
+          description: image type
+        original:
+          type: string
+          description: link of image with original resolution
+        thumbs:
+          $ref: '#/components/schemas/Thumb'
+    Link:
+      title: Link
+      type: object
+      properties:
+        type:
           type: string
     group-singular:
       title: Group Singular
@@ -807,38 +741,104 @@ components:
         x_groups_as_teams:
           type: boolean
           description: <code>true</code> if the group type has been chosen to display on the "Teams" page in Namely, eligible for @mention (additional permissions apply)
-    Image:
-      title: Image
+    Meta:
+      title: Meta
+      type: object
+      properties:
+        count:
+          type: integer
+          description: number of total objects
+        status:
+          type: integer
+          description: HTTP response
+    team:
+      title: Team
       type: object
       properties:
         id:
           type: string
-          description: unique identifier of the image
-        filename:
+          description: unique identifier of the team
+        name:
           type: string
-          description: image's file name
-        mime_type:
+          description: name/label of the team
+        email:
           type: string
-          description: image type
-        original:
+          description: email address (@namely.com) of the team; emails all members of the team
+        updated_at:
+          type: number
+          description: epoch time of when the team was updated
+        created_at:
+          type: number
+          description: epoch time of when the team was created
+        links:
+          type: object
+          properties:
+            team_categories:
+              type: array
+              description: <code>id</code> of any team categories to which the team belongs; 0 to many
+              items:
+                type: string
+    Office:
+      title: Office
+      type: object
+      description: these fields represent the entire office address and are inherited from the "Office Location" group assigned to the profile
+      properties:
+        address1:
           type: string
-          description: link of image with original resolution
-        thumbs:
-          $ref: '#/components/schemas/Thumb'
-    Meta_Group:
-      title: Meta Group
+          description: address line 1 of the office address
+        address2:
+          type: string
+          description: address line 2 of the office address
+        city:
+          type: string
+          description: city of the office address
+        state_id:
+          type: string
+          description: 'state of the office address; for US, must be the 2-digit code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints'
+        country_id:
+          type: string
+          description: '"US" for the US; must be the ISO Alpha-2 code; for other countries, refer to the #docTextSection:7izuT4kPbi3FngZbD endpoints or just use the ISO Alpha-2 code'
+        zip:
+          type: string
+          description: zip or postal code of the office address
+        phone:
+          type: string
+          description: phone number associated with the office location
+    Thumb:
+      title: Thumb
+      type: object
+      description: different resolutions of the image
+      properties:
+        75x75:
+          type: string
+        75x75c:
+          type: string
+        150x150:
+          type: string
+        150x150c:
+          type: string
+        300x300:
+          type: string
+        300x300c:
+          type: string
+        450x450:
+          type: string
+        550x450c:
+          type: string
+        800x800:
+          type: string
+        800x800c:
+          type: string
+    team-category:
+      title: Team Category
       type: object
       properties:
-        response:
-          type: integer
-          description: HTTP response
-        count:
-          type: integer
-          description: number of total groups
-        page_title:
+        id:
           type: string
-        page_copy:
+          description: unique identifier of the team category
+        title:
           type: string
+          description: name/label of the team category
   securitySchemes:
     Authorization:
       name: Authorization
