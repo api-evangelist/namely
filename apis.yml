@@ -45,7 +45,7 @@ x-type: company
 x-source: harvest:secondary-market
 specificationVersion: '0.20'
 created: '2026-08-26'
-modified: '2026-09-16'
+modified: '2026-10-06'
 tags:
 - Human Resources
 - HCM
@@ -620,6 +620,8 @@ apis:
   - type: Sandbox
     url: sandbox/namely-sandbox.yml
 common:
+- url: https://namely.com/feed/
+  type: BlogRSS
 - type: CapabilityMap
   url: capabilities/namely-capability-edges.yml
   name: Namely Business Capability Map
