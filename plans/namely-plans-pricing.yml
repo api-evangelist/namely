@@ -73,3 +73,38 @@ api_pricing:
 quote: >-
   "Namely helps customers with a tailored diagnostic of their needs and will provide pricing based
   on complexity, modules, and services required."
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - subscription
+  units: []
+  plans:
+  - name: NamelyNow
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods: []
+  - name: NamelyPlus
+    access: other
+    model: unstated
+    model_how: derived
+    units:
+    - other
+    periods: []
+  - name: NamelyPlus People
+    access: other
+    model: unstated
+    model_how: derived
+    units:
+    - other
+    periods: []
+  - name: NamelyComplete
+    access: other
+    model: unstated
+    model_how: derived
+    units:
+    - other
+    periods: []
