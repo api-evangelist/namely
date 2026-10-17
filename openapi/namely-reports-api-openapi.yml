@@ -54,12 +54,6 @@ paths:
       - Authorization: []
 components:
   schemas:
-    Content:
-      title: Content
-      type: array
-      description: this is technically an array of arrays without any keys "sub"-arrays; each "sub"-array represents a line in the report, and is a list of values, whose position on the list within "sub"-array sequentially corresponds to the column; for example, if the second "column" is "last name", the second "value" in each "sub"-array is the value
-      items:
-        type: array
     Report:
       title: Report
       type: object
@@ -80,6 +74,12 @@ components:
             $ref: '#/components/schemas/Content'
         links:
           type: object
+    Content:
+      title: Content
+      type: array
+      description: this is technically an array of arrays without any keys "sub"-arrays; each "sub"-array represents a line in the report, and is a list of values, whose position on the list within "sub"-array sequentially corresponds to the column; for example, if the second "column" is "last name", the second "value" in each "sub"-array is the value
+      items:
+        type: array
     Column:
       title: Column
       type: array
